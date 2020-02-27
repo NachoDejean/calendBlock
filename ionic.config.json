@@ -1,0 +1,7 @@
+{
+  "name": "calendBlock",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
