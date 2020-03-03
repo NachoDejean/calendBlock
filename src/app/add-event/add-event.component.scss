@@ -1,0 +1,97 @@
+//@import './picker.min.css';
+
+$darkBg: #09121F;
+$linkBlueClear: #86C3DF; 
+
+ion-modal {
+    --background: $darkBg;
+    --ion-background-color: $darkBg;
+}
+ion-item{
+    --ion-item-background: none !important;
+    --background: none !important;
+    color: whitesmoke;
+    --color: whitesmoke;
+    --background-activated: none !important;
+    --background-focused: none !important;
+    --background-hover: none !important;
+    --padding-start: 0;
+    font-size: 14px !important;
+    --border-color: whitesmoke !important;
+
+    ion-input {
+        font-size: 14px !important;
+        
+    }
+}
+
+
+ion-card {
+    max-width: 700px;
+    height: 100%;
+    margin-left: initial !important;
+    margin-right: initial !important;
+    margin-top: initial !important;
+    margin: 0 auto !important;
+    box-shadow: initial !important;
+    --background: none;
+
+    ion-card-content {
+        padding-top: 0;
+        height: 100%;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-around;
+    }
+
+    ion-row {
+        ion-col {
+            padding: 1px;
+
+            ion-input{
+                text-align: center;
+                font-size: 12px !important;
+            }
+        }
+    }
+
+    ion-toggle {
+        --background: lightgrey !important;
+    }
+}
+
+.addEventForm {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+}
+
+.btnCreateEvent {
+    --background: #0cd1e8;
+    color: whitesmoke;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    margin-top: 2.5vh;
+}
+
+.calendTags {
+    display: flex;
+}
+
+.tagCircleColor {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 1.5vw;
+}
+
+// #inputStart, #inputEnd {
+//     font-size: 14px !important;
+//     --font-size: 14px !important;
+//     --font: 400 14px system-ui !important;
+// }
+
+

@@ -1,0 +1,13 @@
+{
+  "name": "Blockstack CalendBlock",
+  "short_name": "New CalendBlock",
+  "description": "Blockstack Encrypted Calendar",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "400x400",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "."
+}

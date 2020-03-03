@@ -1,31 +1,556 @@
-#container {
-  text-align: center;
+$blueDark: #09121F;
+$blueSemiDark: #193354;
+$whiteSmoke: whitesmoke;
+$loginBg: #112238;
+$footerBg: #3A404A;
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+//tags
+$standardBlue: rgb(79, 195, 247);
+$redpinkTag: #CF195E;
+
+.backBg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: $blueDark;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+#homePage {
+    //--background: #09121F;
+    --background: #3A404A;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+//TODAY
 
-  color: #8c8c8c;
-
-  margin: 0;
+#todayPage, #calendarPage {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    background: $blueDark;
 }
 
-#container a {
-  text-decoration: none;
+.weatherObj {
+    position: relative;
+    //margin-top: -5vh;
+    //text-align: center;
+
+    .weatherGrid {
+        //width: 60vw;
+        padding: 0;
+        color: $whiteSmoke;
+        display: flex;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 15px;
+    }
 }
 
-ion-content ion-toolbar {
-  --background: translucent;
+.mainWeahterRow {
+    align-items: center;
+    ion-col {
+        text-align: center;
+    }
+
+    .dataWeatherCol {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
+
+.todayAndCalendar {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    max-width: 300px;
+    margin: 0 auto;
+
+    .flexCol {
+        flex: 1;
+        //cursor: pointer;
+    }
+
+    .calendarMode {
+        text-align: center;
+        img {
+            width: 30px;
+        }
+    }
+
+    .tabMenuLinkActive {
+        background: #3A404A;
+        border-radius: 20px;
+        padding: 2.5% 0;
+    }
+}
+
+.dateMonth {
+    position: relative;
+    padding: 2.5% 5%;
+    color: $whiteSmoke;
+    display: flex;
+    flex-flow: column;
+
+    .todayTextDay {
+        font-size: 14px;
+        font-weight: 700;
+    }
+    .todayTextMonth {
+        font-size: 32px;
+        font-weight: 500;
+    }
+
+    // span {
+    //     font-size: 32px;
+    //     font-weight: bold;
+    //     letter-spacing: -1px;
+    // }
+}
+
+.wrapTodayEvents{
+    // display: flex;
+    // flex-wrap: wrap;
+    // position: relative;
+
+    .todayOverflow {
+        position: absolute;
+        width: 100%;
+        overflow: auto;
+        height: 100%;
+        padding-bottom: 150px;
+        display: flex;
+        flex-wrap: wrap;  
+    }
+}
+
+.todayEvent {
+    position: relative;
+    width: 45%;
+    display: flex;
+    flex-flow: column;
+    padding: 2.5%;
+    border-radius: 20px;
+    background: $standardBlue;
+    margin: 2.5%;
+    justify-content: space-between;
+    color: $whiteSmoke;
+    max-height: 150px;
+    //flex: 1 0 auto;
+
+    //border: 1px solid #ccc;
+    //max-width: 33%;
+
+    .hsDetail, .allDayTxt {
+        color: $whiteSmoke;
+        font-weight: bolder;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    // .allDayTxt {
+    //     text-transform: uppercase;
+    // }
+
+    .event-detail {
+        color: $whiteSmoke;
+        font-weight: bold;
+        font-size: 20px;
+        padding-top: 5%;
+        padding-bottom: 5%;
+    }
+
+    .moreInfoEvent {
+        font-weight: bolder;
+        font-size: 20px;
+        align-self: flex-end;
+    }
+}
+
+.todayBg {
+    position: absolute;
+    width: 100%;
+    //height: 75vh;
+    top: 0; 
+    bottom: 0; 
+    // background: url('../../assets/bgs/todayBgPage.svg') no-repeat;
+    // background-size: cover;
+    // background-position: 0 15vh;
+}
+
+// EVENT DETAIL SCREEN
+
+.eventDetailScreen {
+    width: 100%;
+    min-width: 100vw;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    background: $blueDark;
+    z-index: 9;
+}
+
+.eventDetailWrapper {
+    position: relative;
+    width: 95%;
+    max-width: 700px;
+    min-height: 80vh;
+    max-height: 85vh;
+    margin: 0 auto;
+
+    .eventInfo {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 5%;
+        display: flex;
+        flex-direction: column;
+
+        .eventInfoWrapper {
+            height: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            flex: 1 0 auto;
+        }
+
+        .controlsBtnEventDetail {
+            display: flex;
+            align-self: flex-end;
+            width: 170px;
+            opacity: .8;
+            margin-top: -5px;
+            margin-right: -10px;
+        }
+
+        .flexRow {
+            flex: 1 0 auto;
+        }
+    }
+
+    .eventDataWrapper {
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .eventTimeRow {
+        position: relative;
+        width: 100%;
+        max-width: 350px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        //height: 35px;
+        align-items: center;
+        margin: 0 auto;
+        margin-top: 2.5%;
+
+        .colTime {
+            flex: 1 0 auto;
+            text-align: center;
+        }
+
+        .titileTime {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: .8;
+            font-weight: bold;
+        }
+
+        .eventTime, .allDayTxt {
+            font-weight: bold;
+            font-size: 52px;
+            letter-spacing: -1.5px;
+            text-transform: uppercase;
+        }
+    }
+
+    .allDayRow {
+        max-width: initial;
+        justify-content: left;
+    }
+
+    .btnEventDetail {
+        height: 100%;
+        flex: 1 0 auto;
+        text-align: center;
+
+        img {
+            width: auto;
+            max-height: 25px;
+        }
+    }
+
+    
+
+    .eventColorWhite {
+        color: $whiteSmoke;
+    }
+
+    .eventTitle {
+        h1 {
+            font-weight: bold;
+            letter-spacing: -.5px;
+            font-size: 32px;
+            line-height: 1; 
+        }
+    }
+
+    .rowTime {
+        display: flex;
+
+        .colTime {
+            margin-right: 50%;
+            position: relative;
+            text-align: center;  
+        }
+
+        .titileTime {
+            font-size: 8px;
+            text-transform: uppercase;
+            opacity: .8;
+            font-weight: bold;
+        }
+    }
+
+    .eventDescription {
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: 1.25px;
+        //max-height: 150px;
+        line-height: 1;
+        overflow: auto;
+        position: relative;
+    }
+
+    .locationTitle {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+
+        h3 {
+            margin: 0;
+            margin-left: 2.5vw;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: .5px;
+        }
+
+        .eventLocation {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1.25px;
+            line-height: 1;
+            overflow: auto;
+        }
+    }
+    
+}
+.calendarRow {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+
+    h1 {
+        margin: 0;
+        margin-left: 2.5vw;
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.imgCalendarName {
+    img {
+
+    }
+}
+
+.eventDetailBg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.defaultEventBg {
+    background: $standardBlue;
+}
+
+.todayNoEventsWrap {
+    margin: 0 auto;
+}
+
+.todayNoEvents {
+    position: relative;
+    width: 95%;
+    max-width: 500px;
+    display: flex;
+    flex-flow: column;
+    padding: 2.5%;
+    border-radius: 10px;
+    margin: 2.5%;
+    margin-top: 1.5vh;
+    //color: $whiteSmoke;
+    align-items: center;
+
+    h2 {
+      color: #A8BFD7;
+      opacity: 0.8;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: .5px;
+    }
+
+    .btnCreateEvent {
+        --background: #0cd1e8;
+        color: whitesmoke;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: -1px;
+        margin-top: 2.5vh;
+        width: 250px;
+        height: 50px;
+    }
+    .btnCreateEvent:hover {
+        background: #0cd1e8;
+    }
+}
+
+
+
+// CALENDAR PAGE
+
+#calendarPage {
+    .table {
+        
+        td {
+            border: none !important;
+        }
+    }   
+}
+
+.monthViewHeader {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    .backMonth, .fwMonth {
+        ion-button {
+            color: $whiteSmoke;
+        }
+    }
+}
+
+.table-bordered{
+    border: none !important;
+}
+
+.calendarTitileHeader {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    color: $whiteSmoke;
+    margin: 0;
+}
+
+// .wrapListEvents {
+//     display: flex;
+//     flex-flow: wrap;
+//     justify-content: center;
+//     align-items: center;
+//     flex: 1 0 auto;
+//     overflow: auto;
+//     position: absolute;
+//     width: 100%;
+//     height: 100%;
+// }
+
+.wrapListEvents {
+    display: flex;
+    flex-flow: column;
+    //justify-content: center;
+    align-items: center;
+    //flex: 1 0 auto;
+    //overflow: auto;
+    //position: absolute;
+    width: 100%;
+    height: 50%;
+    overflow: auto;
+    position: absolute;
+}
+.listEventsOverflow {
+    width: 100%;
+    padding-bottom: 30px;
+}
+.todayEventCalendar {
+    position: relative;
+    width: 95%;
+    max-width: 500px;
+    display: flex;
+    flex-flow: row;
+    padding: 2.5%;
+    border-radius: 10px;
+    background: $standardBlue;
+    margin: 2.5%;
+    margin-top: 1.5vh;
+    color: $whiteSmoke;
+    align-items: center;
+
+    .hsDetail {
+        font-size: 12px;
+        font-weight: bold;
+        margin-right: 5vw;
+    }
+
+    .event-detail {
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.wrapNoEvents {
+    background: rgba(107, 107, 107, 0.7);
+    span {
+        margin: 0 auto;
+        text-transform: uppercase;
+        font-size: 14px;
+        /* font-weight: bold; */
+        letter-spacing: -.5px;
+        color: $whiteSmoke;
+    }
+}
+
+// LOGIN WRAPPER
+
+.loginPage {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background: $loginBg;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+}
+
+// TODOS WRAPPER 
+
+.toDoPage {
+    background: $blueDark;
+    height: 100%;
+    // border-bottom-left-radius: 25px;
+    // border-bottom-right-radius: 25px;
+}
+
+
+

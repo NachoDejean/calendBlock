@@ -1,0 +1,104 @@
+<div class="todoSliderWrapper">
+  <ion-slides #slides pager [options]="slideOpts">
+
+    <ion-slide class="taskListSlide" *ngFor="let todosIndexList of todosIndex; let i = index">
+      <div class="taskWrapper" *ngIf="!newList || i != 0" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)">
+        <!-- <div class="actionBtnTasksLists">
+          <img src="assets/icons/threeDots.svg" />
+        </div> -->
+        <div class="infoTask" >     
+          <h1 class="todoNameList">{{todosIndexList.nameList}} => {{i}}</h1>
+          <h4 class="todoTaskLength">{{todosIndexList.task.length}} Tasks</h4>
+        </div>
+        <div class="percentCompleted">
+          <div class="progressBar">
+            <div class="progress-outer">
+             <!-- <div class="progress-inner" [style.width]="balloon.speed + '%'"></div> -->
+             <div class="progress-inner"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="taskWrapper" *ngIf="newList && i === 0" [style.background]='newTagColor'>
+        <div class="infoTask">     
+          <ion-input autofocus="true" placeholder="New List" class="todoNewListH1" [(ngModel)]="createTask.name"></ion-input>
+          <div class="colorTaskList">
+            <ion-row class="colorRow">
+              <ion-col *ngFor="let color of tagsColors">
+                <a class="circleTaskColor" [style.background]="color.color" (click)="colorTaskList(color.color)" [ngClass]="{'colorActive': newTagColor === color.color }">
+    
+                </a>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+        <div class="saveNewTaskList">
+          <ion-button class="btnAddNewList" fill="none" clear (click)="createNewList(true)">
+           Add New List
+          </ion-button>
+        </div>
+      </div>
+      
+
+    </ion-slide>
+
+  </ion-slides> 
+
+  <!-- <div class="addToDoListBtn">
+    <ion-button class="loginBlock" fill="none" clear (click)="createNewList()">
+      New List
+    </ion-button>
+  </div> -->
+
+  <!-- <ion-fab *ngIf="!newTaskList" vertical="bottom" horizontal="end" slot="fixed" (click)="createNewList()">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+
+</div>
+
+<div class="insideTaskWrapper" [style.background]='taskOpen.color' *ngIf="openTaskView">
+  <div class="actionBtnTasksLists">
+      <img src="assets/icons/threeDots.svg" />
+  </div>
+  <!-- <div class="infoTask" *ngIf="!newTaskList">      -->
+  <div class="infoTask" >     
+    <h4 class="todoTaskLength">12 Tasks</h4>
+    <h1 class="todoNameList">{{taskOpen.nameList}}</h1>
+  </div>
+  
+  <div class="infoTask newTask" *ngIf="newTaskList || todoSources.length == 0">
+    <!-- <h4 class="todoTaskLength">12 Tasks</h4>
+    <h1 class="todoNameList">{{createTask?.name}}</h1> -->
+    <ion-item>
+      <!-- <ion-label position="floating">List Name</ion-label> -->
+      <ion-input autofocus="true" placeholder="New Task" class="inputNewTag" [(ngModel)]="createTask.name"></ion-input>
+      <ion-button *ngIf="createTask.name != ''" class="btnAddTask" fill="none" clear (click)="storeTask(createTask.name, taskOpen)"> Add</ion-button>
+    </ion-item>     
+    
+  </div>
+
+  <ion-list *ngIf="todoSources.length != 0">
+
+    <!-- <ion-item>
+      <ion-button class="btnAddTask" fill="none" clear expand="block" (click)="storeTask()"> + Add New Task</ion-button>
+    </ion-item> -->
+    <ion-item-sliding *ngFor="let task of todoSources" >
+    <!-- <ion-item-sliding *ngFor="let task of toDosOpen.task"> -->
+      <ion-item>
+        <ion-label>{{task}}</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="slideTask(task)">Delete</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="openTaskView" (click)="newTask()">
+    <ion-fab-button>
+      <ion-icon name="add" mode="ios"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</div>

@@ -1,0 +1,103 @@
+  <ion-card>
+    <ion-card-content>
+
+      <form class="addEventForm" (ngSubmit)="addEvent()" #addEventForm="ngForm">
+
+      <ion-item>
+        <ion-label position="floating">Title</ion-label>
+        <ion-input [(ngModel)]="event.title" name="title" type="text" required minlength="2" maxlength="50" #title="ngModel"></ion-input>
+        </ion-item>
+        <div class="formAlert" *ngIf="title.errors && (title.dirty || title.touched)">
+          <div [hidden]="!title.errors.required">
+              The title is required
+          </div>
+          <div [hidden]="!title.errors.minlength">
+            The title must have a minimum of 2 characters
+          </div>
+        </div>
+
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea name="desc" [(ngModel)]="event.desc"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Location <span class="smalTxtForm">(Optional)</span></ion-label>
+        <ion-input name="loc" [(ngModel)]="event.loc"></ion-input>
+      </ion-item>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked"> Starts </ion-label>
+            <!-- <ion-input name="startTime" [(ngModel)]="event.startTime" id="inputStart" required #inputStart="ngModel"></ion-input> -->
+            <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.startTime"  [ngModelOptions]="{standalone: true}" id="inputStart" required></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Ends</ion-label>
+            <!-- <ion-input name="endTime" [(ngModel)]="event.endTime" id="inputEnd" required #inputEnd="ngModel"></ion-input> -->
+            <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.endTime"  [ngModelOptions]="{standalone: true}" id="inputEnd" required></ion-datetime>
+            </ion-item>
+        </ion-col>
+        <!-- <div class="formAlert" *ngIf="inputStart.errors && (inputStart.dirty || inputStart.touched)">
+          <div [hidden]="!inputStart.errors.required">
+              The start date is required
+          </div>
+        </div>
+        <div class="formAlert" *ngIf="inputEnd.errors && (inputEnd.dirty || inputEnd.touched)">
+          <div [hidden]="!inputEnd.errors.required">
+              The ends date is required
+          </div>
+        </div> -->
+      </ion-row>     
+      
+      <ion-item>
+        <ion-label>All Day?</ion-label>
+        <ion-toggle name="allDay" [(ngModel)]="event.allDay" [checked]="true" color="secondary"></ion-toggle>
+      </ion-item>
+
+      <ion-item detail (click)="chooseTag()">
+        <ion-label>Tag</ion-label>
+        <div class="calendTags">
+          <div class="tagCircleColor" [style.background]='tagEvent.color'></div>
+          <div class="tagName">{{tagEvent.name}}</div>
+        </div>
+      </ion-item>
+
+      <ion-button *ngIf="!editMode" [disabled]="!addEventForm.form.valid" class="btnCreateEvent" fill="none" clear expand="block" (click)="addEvent()">Create</ion-button>
+      <ion-button *ngIf="editMode" [disabled]="!addEventForm.form.valid" class="btnCreateEvent" fill="none" clear expand="block" (click)="saveEditEvent()">Save</ion-button>
+      
+      <div class="pickerContainer"></div>
+
+    </form>
+
+      <div class="tagsWrapper" *ngIf="createTagScreen">
+        <div class="tagsWrapperBg"></div>
+        <h4>Choose a calendar tag</h4>
+        <div class="calendTags">
+          <ion-item lines="full" class="tag" *ngFor="let tag of tags">
+            <div class="tagCircleColor" [style.background]='tag.color'></div>
+            <a>
+              <span>{{tag.name}} </span>
+            </a>
+          </ion-item>
+        </div>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <div class="calendTagsWrapper">
+    <h4>Choose a calendar tag</h4>
+    <div class="calendTags">
+      <div class="tag" *ngFor="let tag of tags">
+        <a>
+          <span>{{tag.name}}</span>
+          <span>{{tag.color}}</span>
+        </a>
+      </div>
+    </div>
+  </div> -->
+

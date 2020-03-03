@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar mode="ios">
+    <ion-buttons slot="start" *ngIf=!newTagScreen>
+      <ion-back-button class="backBtnHeader" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf=!newTagScreen>
+      <span class="btnsHeader" (click)='newTagScreen = !newTagScreen'>New Tag</span>
+    </ion-buttons>
+    <ion-title>Tags</ion-title>
+    <ion-buttons slot="start" *ngIf=newTagScreen>
+      <span class="btnsHeader" (click)='newTagScreen = !newTagScreen'>Cancel</span>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf=newTagScreen>
+      <span class="btnsHeader" (click)='createNewTag()'>Save</span>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding contentTagsWrapper">
+  <div class="calendarTagsWrapper" *ngIf=!newTagScreen>
+    <div class="calendTags">
+      <ion-item  class="tag" *ngFor="let tag of tags" (click)="tagSelected(tag)">
+        <div class="tagCircleColor" [style.background]='tag.color'></div>
+        <span>{{tag.name}} </span>
+      </ion-item>
+    </div>
+  </div>
+  <div class="newTag" *ngIf=newTagScreen>
+    <ion-item>
+      <ion-label position="floating">Tag Name</ion-label>
+      <ion-input autofocus="true" class="inputNewTag" [(ngModel)]="tag.label"></ion-input>
+    </ion-item>
+
+    <div class="colorTags">
+      <ion-radio-group>
+        <ion-item *ngFor="let colorTag of tagsColors" (ionSelect)="radioSelect($event)">      
+            <div class="tagCircleColor" [style.background]='colorTag.color'></div>
+            <div class="tagName" >{{colorTag.name}}</div>
+          <ion-radio checked=tagsColors[0] slot="end" color="#0cd1e8" mode="ios" [value]="colorTag"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </div>
+    
+  </div>
+</ion-content >
+<!-- <ion-footer>
+  <ion-button *ngIf=!newTagScreen class="btnCreateTag" fill="none" clear expand="block" (click)="newTag()">New Tag</ion-button>
+  <ion-button *ngIf=newTagScreen class="btnCreateTag" fill="none" clear expand="block" (click)="createTag()">Create Tag</ion-button>
+</ion-footer> -->

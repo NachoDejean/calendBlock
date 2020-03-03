@@ -4,7 +4,11 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { NgCalendarModule  } from 'ionic2-calendar';
 import { HomePage } from './home.page';
+import {AddEventComponent} from '../add-event/add-event.component';
+import {LoginBlockComponent} from '../login-block/login-block.component';
+import {TodoSliderComponent} from '../todo-slider/todo-slider.component';
 
 @NgModule({
   imports: [
@@ -16,8 +20,10 @@ import { HomePage } from './home.page';
         path: '',
         component: HomePage
       }
-    ])
+    ]),
+    NgCalendarModule,
+    
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, AddEventComponent, LoginBlockComponent, TodoSliderComponent]
 })
 export class HomePageModule {}

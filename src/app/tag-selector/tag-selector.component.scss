@@ -1,0 +1,78 @@
+.backBtnHeader {
+    color: whitesmoke !important;
+}
+
+.btnsHeader {
+    padding: 10px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: -.25px;
+    cursor: pointer;
+}
+
+.contentTagsWrapper {
+    --background: #222;
+
+    ion-item {
+        --background: transparent;
+        --border-color: #86C3DF;
+        --padding-start: 0;
+        color: whitesmoke;
+        --background-activated: transparent;
+        --background-focused: transparent;
+        --background-hover: transparent;
+
+        ion-label {
+            font-size: 12px !important;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+    // ion-item:hover {
+    //     color: whitesmoke;
+    //     --color: whitesmoke;
+    // }
+
+    ion-item:hover, .item-radio-checked {
+        --color: #0cd1e8;
+        color: #0cd1e8;
+    }
+}
+
+.calendTags {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.tagCircleColor {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 2.5vw;
+}
+
+.newTag {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.colorTags {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+}
+
+// .tagBlue {
+//     background-color: #86c3d8;
+// }
+
+// .tagRed {
+//     background-color: crimson;
+// }
+
+// .tagGreen {
+//     background-color: darkolivegreen;
+// }

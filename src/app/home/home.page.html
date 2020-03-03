@@ -1,20 +1,280 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header>
+  <ion-toolbar mode="ios">
+    
+      <ion-menu-toggle autoHide="false">
+        <ion-button class="openMenu" color="clear" clear>
+            <img src="../../assets/icons/customMenu.svg" />
+        </ion-button>
+      </ion-menu-toggle>
+    <ion-title *ngIf="!showAddEventComponent">Hi {{personaName}}</ion-title>
+    <ion-title *ngIf="showAddEventComponent && !eventIsEditing">Add New Event</ion-title>
+    <ion-title *ngIf="showAddEventComponent && eventIsEditing">Edit Event</ion-title>
+    <ion-buttons slot="end">
+    <ion-button *ngIf="!toDosPage && !eventSelected" slot="end" class="addEventBtn" color="clear" clear (click)="openAddEvent()">
+      <!-- <img [ngClass]="showAddEventComponent ? 'closeAddEvent' : 'openAddEvent'" src="../../assets/icons/plusAddEvent.png" /> -->
+      <span [ngClass]="showAddEventComponent ? 'closeAddEvent' : 'openAddEvent'">+</span>
+    </ion-button>
+    <ion-button *ngIf="toDosPage && !taskIsOpen" slot="end" class="addEventBtn" color="clear" clear (click)="createToDoList()">
+      <span [ngClass]="createNewToDoList ? 'closeAddEvent' : 'openAddEvent'">+</span>
+    </ion-button>
+    <ion-button *ngIf="toDosPage && taskIsOpen" slot="end" class="addEventBtn" color="clear" clear (click)="closeTaskOpen()">
+      <span [ngClass]="taskIsOpen ? 'closeAddEvent' : 'openAddEvent'">+</span>
+    </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end" *ngIf="eventSelected">
+      <ion-button class="addEventBtn" color="clear" clear (click)="deleteEventSelected(event)">
+        <img src="assets/icons/delete.svg" />
+      </ion-button>
+      <ion-button class="addEventBtn" color="clear" clear (click)="editEventSelected(event)">
+        <img src="assets/icons/editWhite.svg" />
+      </ion-button>
+      <ion-button class="addEventBtn" color="clear" clear (click)="closeEventSelected()">
+        <span [ngClass]="eventSelected ? 'closeAddEvent' : 'openAddEvent'">+</span>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-button *ngIf="eventSelected" slot="end" class="addEventBtn" color="clear" clear (click)="closeEventSelected()">
+      <span [ngClass]="eventSelected ? 'closeAddEvent' : 'openAddEvent'">+</span>
+    </ion-button> -->
+  
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content id="homePage">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+<!-- <div class="backBg"></div> -->
+
+  <!-- <ion-button (click)="login()">Login</ion-button>
+  <ion-button (click)="loginBlock()">Login Block</ion-button>
+  <ion-button (click)="showProfileFirst()">Profile Block</ion-button>
+  <ion-button (click)="loadEvents()">Events</ion-button> -->
+  
+  <div id="todayPage" *ngIf=todayPage>
+    <!-- <div class="todayBg"></div> -->
+
+    <div class="todayAndCalendar">
+      <div class="dateMonth flexCol">
+        <span class="todayTextDay">{{textDay}}</span>
+        <span class="todayTextMonth">{{textMonth}}</span>
+      </div>
+    
+
+      <!-- <div class="weatherObj flexCol">
+        <ion-grid class="weatherGrid">
+          <ion-row class="mainWeahterRow">
+            <ion-col class="iconWeatherCol"> 
+              <div class="weatherIcon">
+                <img src="http://openweathermap.org/img/wn/{{weatherObj?.weather[0].icon}}@2x.png" />
+              </div>
+            </ion-col>
+            <ion-col class="dataWeatherCol">
+              <ion-row>
+                <div class="weatherCity">{{weatherObj.name}}</div>
+              </ion-row>
+              <ion-row>
+                <ion-col> 
+                  <div class="weatherTemp">{{weatherObj.main.temp | number: '1.0-0'}}º</div>
+                </ion-col>
+                <ion-col>
+                  <div class="weatherCity">{{weatherObj.weather[0].main}}</div>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          </ion-grid>  
+      </div> -->
+    </div>
+    <!-- <div class="todayAndCalendar">
+      <div class="dateMonth" [ngClass]="{'tabMenuLinkActive': todayPage }" (click)="changeScreen('today')">
+        <span class="todayTextDay">{{textDay}}</span>
+        <span class="todayTextMonth">{{textMonth}}</span>
+      </div>
+      <div class="calendarMode" [ngClass]="{'tabMenuLinkActive': calendarPage }" (click)="changeScreen('calendar')">
+        <img src="assets/icons/calendar.svg" />
+      </div>
+    </div> -->
+
+    <ng-template #todayScreenTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+      <div class="wrapTodayEvents">
+        <div class="todayOverflow">
+          <div class="todayEvent" [style.background]='event.tagColor' *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
+            <div class="hsDetail"  *ngIf='!event.allDay'><h4 class=" allDayTxt">{{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}</h4> </div>
+            <div class="hsDetail"  *ngIf='event.allDay'><h4 class=" allDayTxt">All day</h4> </div>
+            <span class="event-detail">  {{event.title}}</span>
+            <div class="moreInfoEvent">+</div>
+          </div>
+
+          <div class="todayNoEventsWrap" *ngIf="selectedDate?.events.length == 0">
+            <div class="todayNoEvents">
+              <h2> No events for you today… </h2>
+
+              <ion-button class="btnCreateEvent" fill="none" clear (click)="openAddEvent()">
+                + Add new Event
+              </ion-button>
+
+              
+            </div>
+            <div class="imgNoEvents">
+              <img src="assets/bgs/loginCreateEvents.svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <calendar id="dayViewCalendar"
+      [eventSource]="eventSource" 
+      [calendarMode]="calendar.mode" 
+      [currentDate]="calendar.currentDate"
+      [monthviewEventDetailTemplate]="todayScreenTemplate"
+      [formatMonthTitle]="''"
+      (onEventSelected)="onEventSelected($event)"
+      (onTitleChanged)="onViewTitleChanged($event)"
+      (onTimeSelected)="onTimeSelected($event)"
+      startHour="0"
+      endHour="24"
+      step="30"
+      startingDayWeek="1">
+    </calendar>
   </div>
+
+  <div id="calendarPage" *ngIf=calendarPage>
+    <div class="calendarView">
+      <div class="monthViewHeader">
+        <div class="backMonth">
+          <ion-button fill="clear" (click)="backMonth()">
+            <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+        <div class="titleMonth">
+          <h1 class="calendarTitileHeader">{{ viewTitle }}</h1>
+        </div>
+        <div class="fwMonth">
+          <ion-button fill="clear" (click)="nextMonth()">
+            <ion-icon name="arrow-forward-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <calendar id="monthViewCalendarCustom"
+        [eventSource]="eventSource" 
+        [calendarMode]="calendar.mode" 
+        [currentDate]="calendar.currentDate"
+        [monthviewEventDetailTemplate]="calendarEventsTemplate"
+        (onEventSelected)="onEventSelected($event)"
+        (onTitleChanged)="onViewTitleChanged($event)"
+        (onTimeSelected)="onTimeSelected($event)"
+        startHour="0"
+        endHour="24"
+        step="30"
+        startingDayWeek="1">
+      </calendar>
+    </div>
+
+    <ng-template #calendarEventsTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+      <div class="wrapListEvents">
+        <div class="listEventsOverflow">
+          <div class="todayEventCalendar" [style.background]='event.tagColor' *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
+            <div class="hsDetail">{{event.startTime|date: 'HH:mm'}} <br/> {{event.endTime|date: 'HH:mm'}} </div>
+            <span class="event-detail">  {{event.title}}</span>
+          </div>
+          <div class="todayNoEvents" *ngIf="selectedDate?.events.length == 0">
+            <!-- <span class="no-events-label">{{noEventsLabel}}</span> -->
+            <h2> No events for you today… </h2>
+            <ion-button class="btnCreateEvent" fill="none" clear (click)="openAddEvent()">
+              + Add new Event
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <div id="addEventScreen" class="addEventPage" *ngIf="showAddEventComponent">
+    <div class="bgAddEvent"></div>
+    <app-add-event></app-add-event>
+  </div>
+  
+  <div id="loginScreen" class="loginPage" *ngIf="showLoginComponent">
+    <app-login-block></app-login-block>
+  </div>
+
+  <div id="tasksPage" class="toDoPage" *ngIf="toDosPage">
+    <app-todo-slider></app-todo-slider>
+  </div>
+
+  <div class="eventDetailScreen" *ngIf="eventSelected">   
+    <div class="eventDetailWrapper">
+      <div class="eventDetailBg defaultEventBg" [style.background]='event.tagColor'></div>
+      <div class="eventInfo">
+        <div class="eventInfoWrapper eventColorWhite">
+          <!-- <div class="controlsBtnEventDetail">
+            <div class="btnEventDetail">
+              <div class="eventEdit" (click)="deleteEventSelected(event)">
+                <img src="assets/icons/delete.svg" />
+              </div>
+            </div>
+            <div class="btnEventDetail">
+              <div class="eventEdit" (click)="editEventSelected(event)">
+                <img src="assets/icons/editWhite.svg" />
+              </div>
+            </div>
+            <div class="btnEventDetail">
+              <div class="eventClose" (click)="closeEventSelected()">
+                <img src="assets/icons/closeWhite.svg" />
+              </div>
+            </div>
+          </div> -->
+          <div class="calendarRow flexRow">
+            <div class="imgCalendarName">
+              <img src="assets/icons/calendar.svg" />
+            </div>
+            <h1 class="calendarName">{{event.tag}}</h1>
+          </div>
+          <div class="headerRow eventTimeRow flexRow" *ngIf='event.allDay === false'>
+            <div class="colTime">
+              <div class="titileTime">From</div>
+              <div class="eventTime ">{{event.startTime|date: 'HH:mm'}}</div>
+            </div>
+            <div class="colTime">
+              <div class="titileTime">To</div>
+              <div class="eventTime ">{{event.endTime|date: 'HH:mm'}}</div>
+            </div>
+          </div>
+          <div class="headerRow eventTimeRow allDayRow flexRow" *ngIf='event.allDay === true'>
+            <h4 class="allDayTxt">All Day</h4>
+          </div>
+          <div class="eventDataWrapper flexRow">
+            <div class="eventRow">
+              <div class="eventTitle">
+                <h1>{{event.title}}</h1>
+              </div>
+              <div class="eventDescription">
+                <p>{{event.desc}}</p>
+              </div>
+            </div>
+          </div>
+              <div *ngIf="event.loc != ''" class="locationRow eventRow flexRow">
+                <div class="locationTitle">
+                  <div><img src="assets/icons/location.svg" /></div>
+                  <div><h3>Location</h3></div>
+                </div>
+                <div class="eventLocation">
+                  <p>{{event.loc}}</p>
+                </div>
+              </div>
+        </div>      
+      </div>
+    </div>
+  </div>
+  
 </ion-content>
+
+<ion-footer id="mainFooter" *ngIf="!showAddEventComponent">
+  <ion-grid>
+    <ion-row>
+      <ion-col> <a class="tabMenuLink" [ngClass]="{'tabMenuLinkActive': todayPage }" (click)="changeScreen('today')"> Today </a></ion-col>
+      <ion-col> <a class="tabMenuLink" [ngClass]="{'tabMenuLinkActive': calendarPage }" (click)="changeScreen('calendar')"> Calendar </a></ion-col>
+      <ion-col> <a class="tabMenuLink" [ngClass]="{'tabMenuLinkActive': toDosPage }" (click)="changeScreen('todos')"> Tasks </a></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

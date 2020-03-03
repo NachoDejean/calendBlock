@@ -1,0 +1,142 @@
+.todoSliderWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+
+    ion-slides {
+        height: 100%;
+        padding: 2.5%;
+        width: 95%;
+    }
+}
+
+.swiper-slide {
+    // text-align: center;
+    // font-size: 18px;
+    // background: #fff;
+    width: 80%;
+    max-width: 400px;
+  }
+
+.taskWrapper {
+    position: relative;
+    //height: 300px;
+    height: 55vh;
+    max-height: 400px;
+    width: 100%;
+    background: whitesmoke;
+    border-radius: 25px;
+    padding: 5%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    text-align: left;
+
+    .actionBtnTasksLists {
+        align-self: flex-end;
+        top: 5%;
+        position: absolute;
+        padding: 2.5%;
+        opacity: .7;
+    }
+    .percentCompleted {
+        width: 90%;
+        height: 30px;
+        position: absolute;
+        bottom: 15%;
+        background: lightblue;
+    }
+}
+
+.addToDoListBtn {
+    position: absolute;
+    bottom: 50px;
+}
+
+.insideTaskWrapper {
+    position: absolute;
+    width: 98%;
+    height: 99%;
+    top: 0;
+    bottom: 1%;
+    left: 1%;
+    z-index: 14;
+    //background: whitesmoke;
+    display: flex;
+    flex-flow: column;
+    padding: 5%;
+    color: whitesmoke;
+    border-radius: 25px;
+
+    ion-list {
+        background: transparent;
+    }
+    ion-item {
+        color: whitesmoke;
+        --padding-start: 0;
+        --background: transparent;
+    }
+    .todoNameList {
+        //margin: 0;
+    }
+
+    .todoTaskLength {
+        margin: 0;
+        font-size: 13px;
+    }
+}
+
+.actionBtnTasksLists {
+    position: absolute;
+    align-self: flex-end;
+    padding: 2.5%;
+    margin-top: -2.5%;
+    margin-right: -2.5%;
+
+    img {
+        height: 15px;
+    }
+}
+.colorRow {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    //justify-content: space-around;
+    ion-col {
+        padding: 2.5%;
+    }
+}
+.circleTaskColor {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.colorActive {
+    border: 2px solid #f0f0f0;
+    mix-blend-mode: hard-light;
+}
+
+.todoNewListH1 {
+    font-size: 26px;
+    font-weight: 500;
+    color: whitesmoke;
+}
+
+.saveNewTaskList {
+    position: absolute;
+    bottom: 5%;
+    align-self: center;
+
+    .btnAddNewList {
+        background: transparent;
+        --background: transparent;
+        border: 2px solid #fff;
+        border-radius: 25px;
+        color: whitesmoke;
+        text-transform: uppercase;
+    }
+}
+
+

@@ -1,0 +1,39 @@
+  <div class="loginBrand">
+    <img class="calendBlockLogo" src="assets/calendBlock.svg" />
+  </div>
+
+  <ion-slides class="loginSlider" pager="true" [options]="slideOpts">
+    <ion-slide>
+      <div class="imgSlideCreateEvents">
+        <img src="assets/bgs/loginCreateEvents.svg" />
+      </div>
+      <h1 class="titleSlide">Create Events</h1>
+      <h4 class="textSlide">
+        Create events with custom-named color labels, description, location, start & end time or all-day event.
+      </h4>
+    </ion-slide>
+    <ion-slide>
+      <div class="imgSlideCreateEvents">
+        <img src="assets/bgs/loginToDo.svg" />
+      </div>
+      <h1 class="titleSlide">Get things done</h1>
+      <h4 class="textSlide">
+        Create TO DO lists with custom-named color labels and achive your goals!
+      </h4>
+    </ion-slide>
+    <ion-slide>
+      <h1 class="titleSlide">Secure & Encrypted</h1>
+      <h2>Encrypt all your data in a secure way. Only you will be able to access it.</h2>
+      <h4 class="textSlide">
+        You can easily create an <a hfref="https://blockstack.org/try-blockstack" target="_blank" >Blockstack's</a> account and have a unique identity and decentralized encrypted storage.
+        <br />
+        Blockstack ID provides user-controlled login and storage that enable you to take back control of your identity and data.
+      </h4>
+      <div class="actionBtn">
+        <ion-button class="loginBlock" fill="none" clear (click)="loginFlow()">
+          Get Started
+        </ion-button>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
