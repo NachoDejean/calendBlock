@@ -48,6 +48,11 @@ export class TodoSliderComponent implements OnInit {
   ];
   toDosOpen = [];
   
+  createTaskList = {
+    name: '',
+    color: ''
+  };
+
   createTask = {
     name: ''
   };
@@ -108,7 +113,7 @@ export class TodoSliderComponent implements OnInit {
   }
 
   loadGaiaTodos(){
-    userSession.getFile('todosIndex.json', gaiaGetOptions)
+    userSession.getFile('tareasIndex.json', gaiaGetOptions)
     .then(data => {
       if(data){
         let todosIndexInGaia = JSON.parse(data as string);
@@ -194,11 +199,18 @@ export class TodoSliderComponent implements OnInit {
   storeNewList(list){
     // list = [];
     // console.log(list);
-    this.todosIndex.push(list.name);
-    this.todoSources.push(list);
+    let newTareasList = {
+      nameList: list.name,
+        color: this.newTagColor,
+        task: []
+    }
+    //this.todoSources.push(list);
+    
+    this.todosIndex.push(newTareasList);
+    //this.todosIndex.unshift(newTareasList);
     let todosIndexToString = JSON.stringify(this.todosIndex);
     let todosOnlyToString = JSON.stringify(list);
-    userSession.putFile('todosIndex.json', todosIndexToString, gaiaPutOptions);
+    userSession.putFile('tareasIndex.json', todosIndexToString, gaiaPutOptions);
     userSession.putFile('todosList/' + list.name + '.json', todosOnlyToString, gaiaPutOptions);
   }
 
@@ -236,7 +248,7 @@ export class TodoSliderComponent implements OnInit {
       //this.todoSources.(todoData);
       this.createTask.name = '';
       this.newTaskList = true;
-      userSession.putFile('todosIndex.json', todosIndexData, gaiaPutOptions);
+      userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
       //console.log(this.todoSources);
     }
     

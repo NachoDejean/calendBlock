@@ -99,11 +99,12 @@
 }
 .colorRow {
     width: 100%;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    //justify-content: space-around;
+    // flex-wrap: nowrap;
+    // overflow-x: auto;
+    justify-content: center;
     ion-col {
         padding: 2.5%;
+        flex-grow: initial;
     }
 }
 .circleTaskColor {
@@ -114,14 +115,18 @@
 }
 
 .colorActive {
-    border: 2px solid #f0f0f0;
-    mix-blend-mode: hard-light;
+    border: 2px dashed #f0f0f0;
+    //mix-blend-mode: hard-light;
 }
 
 .todoNewListH1 {
     font-size: 26px;
     font-weight: 500;
     color: whitesmoke;
+    background: rgba(0,0,0, .25);
+    border-radius: 20px;
+    --padding-start: 8px;
+    border: 1px dashed;
 }
 
 .saveNewTaskList {

@@ -4,7 +4,7 @@
       <form class="addEventForm" (ngSubmit)="addEvent()" #addEventForm="ngForm">
 
       <ion-item>
-        <ion-label position="floating">Title</ion-label>
+        <ion-label position="stacked">Title</ion-label>
         <ion-input [(ngModel)]="event.title" name="title" type="text" required minlength="2" maxlength="50" #title="ngModel"></ion-input>
         </ion-item>
         <div class="formAlert" *ngIf="title.errors && (title.dirty || title.touched)">
@@ -17,12 +17,12 @@
         </div>
 
       <ion-item>
-        <ion-label position="floating">Description</ion-label>
+        <ion-label position="stacked">Description</ion-label>
         <ion-textarea name="desc" [(ngModel)]="event.desc"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Location <span class="smalTxtForm">(Optional)</span></ion-label>
+        <ion-label position="stacked">Location</ion-label>
         <ion-input name="loc" [(ngModel)]="event.loc"></ion-input>
       </ion-item>
 
@@ -31,17 +31,17 @@
           <ion-item>
             <ion-label position="stacked"> Starts </ion-label>
             <!-- <ion-input name="startTime" [(ngModel)]="event.startTime" id="inputStart" required #inputStart="ngModel"></ion-input> -->
-            <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.startTime"  [ngModelOptions]="{standalone: true}" id="inputStart" required></ion-datetime>
+            <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.startTime" name="inputStart"   id="inputStart" #inputStart required></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
             <ion-label position="stacked">Ends</ion-label>
             <!-- <ion-input name="endTime" [(ngModel)]="event.endTime" id="inputEnd" required #inputEnd="ngModel"></ion-input> -->
-            <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.endTime"  [ngModelOptions]="{standalone: true}" id="inputEnd" required></ion-datetime>
+            <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.endTime"  name="inputEnd"  id="inputEnd" #inputEnd required></ion-datetime>
             </ion-item>
         </ion-col>
-        <!-- <div class="formAlert" *ngIf="inputStart.errors && (inputStart.dirty || inputStart.touched)">
+        <div class="formAlert" *ngIf="inputStart.errors && (inputStart.dirty || inputStart.touched)">
           <div [hidden]="!inputStart.errors.required">
               The start date is required
           </div>
@@ -50,7 +50,7 @@
           <div [hidden]="!inputEnd.errors.required">
               The ends date is required
           </div>
-        </div> -->
+        </div>
       </ion-row>     
       
       <ion-item>
@@ -69,11 +69,11 @@
       <ion-button *ngIf="!editMode" [disabled]="!addEventForm.form.valid" class="btnCreateEvent" fill="none" clear expand="block" (click)="addEvent()">Create</ion-button>
       <ion-button *ngIf="editMode" [disabled]="!addEventForm.form.valid" class="btnCreateEvent" fill="none" clear expand="block" (click)="saveEditEvent()">Save</ion-button>
       
-      <div class="pickerContainer"></div>
+      <!-- <div class="pickerContainer"></div> -->
 
     </form>
 
-      <div class="tagsWrapper" *ngIf="createTagScreen">
+      <!-- <div class="tagsWrapper" *ngIf="createTagScreen">
         <div class="tagsWrapperBg"></div>
         <h4>Choose a calendar tag</h4>
         <div class="calendTags">
@@ -84,7 +84,7 @@
             </a>
           </ion-item>
         </div>
-      </div>
+      </div> -->
 
     </ion-card-content>
   </ion-card>

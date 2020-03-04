@@ -76,6 +76,7 @@ export class HomePage implements OnInit{
   weatherObj: Object;
   textMonth: string;
   textDay: string;
+  numberDay: string;
   
   
   
@@ -93,7 +94,8 @@ export class HomePage implements OnInit{
     this.beSubscribe();
     let todayDate = new Date();
     this.textDay = todayDate.toLocaleString('default', { weekday: 'long' });
-    this.textMonth = todayDate.toLocaleString('default', { day: 'numeric', month: 'short' });
+    this.textMonth = todayDate.toLocaleString('default', { month: 'short' });
+    this.numberDay = todayDate.toLocaleString('default', { day: 'numeric'});
   }
 
   beSubscribe(){
@@ -411,6 +413,25 @@ export class HomePage implements OnInit{
   //      console.log('Error getting location', error);
   //    });
   // }
+
+  segmentCalendar(screen){
+    //console.log(screen);
+    if(screen.detail.value == 'today'){
+      this.todayPage = true;
+      this.calendarPage = false;
+      this.toDosPage = false;
+    }
+    if(screen.detail.value == 'calendar'){
+      this.todayPage = false;
+      this.toDosPage = false;
+      this.calendarPage = true;
+    }
+    if(screen == 'todos'){
+      this.todayPage = false;
+      this.calendarPage = false;
+      this.toDosPage = true;
+    }
+  }
 
   changeScreen(screen){
     if(screen == 'today'){

@@ -17,12 +17,33 @@ ion-item{
     --background-hover: none !important;
     --padding-start: 0;
     font-size: 14px !important;
-    --border-color: whitesmoke !important;
+    --border-color: none !important;
+    --inner-border-width: 0;
 
-    ion-input {
-        font-size: 14px !important;
-        
+    ion-label {
+        text-transform: uppercase;
+        color: #78A0B3;
+        font-weight: 600;
     }
+
+    ion-input, ion-textarea, ion-datetime {
+        font-size: 14px !important;
+        color: whitesmoke;
+        --color: whitesmoke;
+        background: #4D6975;
+        border-radius: 15px;
+        --padding-start: 8px;
+        //padding: 2.5%;
+
+        .datetime-text {
+            text-align: center !important;
+        }
+    }
+
+    ion-datetime {
+        text-align: center !important;
+    }
+    
 }
 
 
@@ -64,7 +85,7 @@ ion-card {
     height: 100%;
     display: flex;
     flex-flow: column;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .btnCreateEvent {

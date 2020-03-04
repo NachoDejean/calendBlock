@@ -1,5 +1,7 @@
 $blueDark: #09121F;
+$blueDarkTwo: #173847;
 $blueSemiDark: #193354;
+$blueTasks: #2A6682;
 $whiteSmoke: whitesmoke;
 $loginBg: #112238;
 $footerBg: #3A404A;
@@ -17,7 +19,7 @@ $redpinkTag: #CF195E;
 
 #homePage {
     //--background: #09121F;
-    --background: #3A404A;
+    --background: #2A6682;
 }
 
 //TODAY
@@ -28,7 +30,7 @@ $redpinkTag: #CF195E;
     top: 0;
     bottom: 0;
     overflow: hidden;
-    background: $blueDark;
+    background: $blueDarkTwo;
 }
 
 .weatherObj {
@@ -93,6 +95,15 @@ $redpinkTag: #CF195E;
     color: $whiteSmoke;
     display: flex;
     flex-flow: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row;
+
+    .colRowDay {
+        display: flex;
+        flex-flow: column; 
+    }
 
     .todayTextDay {
         font-size: 14px;
@@ -103,6 +114,12 @@ $redpinkTag: #CF195E;
         font-weight: 500;
     }
 
+    .todayNumberDay{
+        font-size: 56px;
+        line-height: 1;
+        margin-left: 10px; 
+    }
+
     // span {
     //     font-size: 32px;
     //     font-weight: bold;
@@ -110,34 +127,101 @@ $redpinkTag: #CF195E;
     // }
 }
 
+.calendarSegment {
+    width: 100%;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    text-transform: uppercase;
+    color: whitesmoke;
+
+    .btnSegment {
+        padding: 15px 0;
+        background: #2B4E5E;
+        border-radius: 30px;
+        /* max-width: 40%; */
+        text-align: center;
+        margin: 2.5%;
+        width: 150px;
+        position: relative;
+        height: 40px;
+        
+        a {
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            line-height: 40px;
+            color: #78A0B3;
+        }
+    }
+
+    .segmentLinkActive {
+        transition: ease-in-out;
+        transition-duration: .55s;
+       background: #9BB6CA;
+       
+       a {
+           color: #2A6682;
+       }
+    }
+}
+
+// .calSegment {
+//     --background: transparent;
+//     text-transform: uppercase;
+    
+//     ion-segment-button {
+//         padding: 10px;
+//         ion-label {
+//             padding: 0 25px;
+//             font-size: 14px;
+//         }
+        
+//     }
+
+//     .segment-button-indicator-background {
+//         border-radius: 100px !important;
+//         --border-radius: 100px !important;
+//     }
+    
+// }
+
 .wrapTodayEvents{
     // display: flex;
     // flex-wrap: wrap;
-    // position: relative;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
 
     .todayOverflow {
         position: absolute;
         width: 100%;
         overflow: auto;
         height: 100%;
-        padding-bottom: 150px;
-        display: flex;
-        flex-wrap: wrap;  
+        padding-bottom: 120px;
+        // display: flex;
+        // flex-wrap: wrap;
+        
     }
 }
 
 .todayEvent {
     position: relative;
-    width: 45%;
+    width: 95%;
     display: flex;
     flex-flow: column;
     padding: 2.5%;
     border-radius: 20px;
     background: $standardBlue;
     margin: 2.5%;
-    justify-content: space-between;
+    //justify-content: space-between;
     color: $whiteSmoke;
-    max-height: 150px;
+    max-height: 120px;
     //flex: 1 0 auto;
 
     //border: 1px solid #ccc;
@@ -145,7 +229,7 @@ $redpinkTag: #CF195E;
 
     .hsDetail, .allDayTxt {
         color: $whiteSmoke;
-        font-weight: bolder;
+        font-weight: 900;
         font-size: 14px;
         text-transform: uppercase;
     }
@@ -156,10 +240,12 @@ $redpinkTag: #CF195E;
 
     .event-detail {
         color: $whiteSmoke;
-        font-weight: bold;
+        font-weight: 400;
         font-size: 20px;
-        padding-top: 5%;
-        padding-bottom: 5%;
+        letter-spacing: -.5px;
+        // padding-top: 5%;
+        // padding-bottom: 5%;
+        padding: 2% 0;
     }
 
     .moreInfoEvent {
@@ -317,12 +403,18 @@ $redpinkTag: #CF195E;
         }
     }
 
+    // .eventDescription {
+    //     font-size: 20px;
+    //     font-weight: 500;
+    //     letter-spacing: 1.25px;
+    //     //max-height: 150px;
+    //     line-height: 1;
+    //     overflow: auto;
+    //     position: relative;
+    // }
     .eventDescription {
         font-size: 20px;
-        font-weight: 500;
-        letter-spacing: 1.25px;
-        //max-height: 150px;
-        line-height: 1;
+        font-weight: 400;
         overflow: auto;
         position: relative;
     }
@@ -382,13 +474,19 @@ $redpinkTag: #CF195E;
 }
 
 .todayNoEventsWrap {
-    margin: 0 auto;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    text-align: center;
 }
 
 .todayNoEvents {
     position: relative;
     width: 95%;
-    max-width: 500px;
+    //max-width: 500px;
     display: flex;
     flex-flow: column;
     padding: 2.5%;
@@ -398,13 +496,20 @@ $redpinkTag: #CF195E;
     //color: $whiteSmoke;
     align-items: center;
 
+    h1 {
+        margin: 0;
+        color: #D8E3E9;
+    }
+
     h2 {
-      color: #A8BFD7;
+      //color: #A8BFD7;
+      color: #F17E7E;
       opacity: 0.8;
       text-align: center;
-      font-size: 32px;
+      font-size: 3vh;
       font-weight: bold;
-      letter-spacing: .5px;
+      letter-spacing: -.5px;
+      margin: 0;
     }
 
     .btnCreateEvent {
@@ -423,6 +528,9 @@ $redpinkTag: #CF195E;
     }
 }
 
+.imgNoEvents {
+    opacity: .5;
+}
 
 
 // CALENDAR PAGE
@@ -494,7 +602,7 @@ $redpinkTag: #CF195E;
 .todayEventCalendar {
     position: relative;
     width: 95%;
-    max-width: 500px;
+    //max-width: 500px;
     display: flex;
     flex-flow: row;
     padding: 2.5%;
@@ -546,7 +654,7 @@ $redpinkTag: #CF195E;
 // TODOS WRAPPER 
 
 .toDoPage {
-    background: $blueDark;
+    background: $blueDarkTwo;
     height: 100%;
     // border-bottom-left-radius: 25px;
     // border-bottom-right-radius: 25px;

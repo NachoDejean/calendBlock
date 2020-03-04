@@ -22,7 +22,7 @@
 
       <div class="taskWrapper" *ngIf="newList && i === 0" [style.background]='newTagColor'>
         <div class="infoTask">     
-          <ion-input autofocus="true" placeholder="New List" class="todoNewListH1" [(ngModel)]="createTask.name"></ion-input>
+          <ion-input autofocus="true" placeholder="New List" class="todoNewListH1" [(ngModel)]="createTaskList.name"></ion-input>
           <div class="colorTaskList">
             <ion-row class="colorRow">
               <ion-col *ngFor="let color of tagsColors">
@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="saveNewTaskList">
-          <ion-button class="btnAddNewList" fill="none" clear (click)="createNewList(true)">
+          <ion-button class="btnAddNewList" fill="none" clear (click)="storeNewList(createTaskList)">
            Add New List
           </ion-button>
         </div>
