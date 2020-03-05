@@ -272,11 +272,12 @@ $redpinkTag: #CF195E;
     width: 100%;
     min-width: 100vw;
     position: absolute;
-    top: 0;
-    bottom: 0;
+    height: 100%;
+    // top: 0;
+    // bottom: 0;
     display: flex;
     align-items: center;
-    background: $blueDark;
+    background: $blueDarkTwo;
     z-index: 9;
 }
 
@@ -284,12 +285,12 @@ $redpinkTag: #CF195E;
     position: relative;
     width: 95%;
     max-width: 700px;
-    min-height: 80vh;
+    min-height: 30vh;
     max-height: 85vh;
     margin: 0 auto;
 
     .eventInfo {
-        position: absolute;
+        position: relative;
         width: 100%;
         height: 100%;
         padding: 5%;
@@ -334,6 +335,10 @@ $redpinkTag: #CF195E;
         align-items: center;
         margin: 0 auto;
         margin-top: 2.5%;
+
+        .dateTime {
+            width: 100%;
+        }
 
         .colTime {
             flex: 1 0 auto;
@@ -447,6 +452,13 @@ $redpinkTag: #CF195E;
     display: flex;
     flex-flow: row;
     align-items: center;
+
+    .tagCircleColor {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 2.5vw;
+    }
 
     h1 {
         margin: 0;

@@ -6,7 +6,7 @@
             <img src="../../assets/icons/customMenu.svg" />
         </ion-button>
       </ion-menu-toggle> -->
-    <ion-title *ngIf="!showAddEventComponent">Hi {{personaName}}</ion-title>
+    <ion-title *ngIf="!showAddEventComponent && !eventSelected">Hi {{personaName}}</ion-title>
     <ion-title *ngIf="showAddEventComponent && !eventIsEditing">Add New Event</ion-title>
     <ion-title *ngIf="showAddEventComponent && eventIsEditing">Edit Event</ion-title>
     
@@ -23,6 +23,14 @@
     </ion-button>
     </ion-buttons>
 
+    <div class="calendarRow flexRow" *ngIf="eventSelected">
+      <!-- <div class="imgCalendarName">
+        <img src="assets/icons/calendar.svg" />
+      </div> -->
+      <div class="tagCircleColor" [style.background]='event.tagColor'></div>
+      <h1 class="calendarName">{{event.tag}}</h1>
+    </div>
+
     <ion-buttons slot="end" *ngIf="eventSelected">
       <ion-button class="addEventBtn" color="clear" clear (click)="deleteEventSelected(event)">
         <img src="assets/icons/delete.svg" />
@@ -34,12 +42,14 @@
         <span [ngClass]="eventSelected ? 'closeAddEvent' : 'openAddEvent'">+</span>
       </ion-button>
     </ion-buttons>
+
+
     <!-- <ion-button *ngIf="eventSelected" slot="end" class="addEventBtn" color="clear" clear (click)="closeEventSelected()">
       <span [ngClass]="eventSelected ? 'closeAddEvent' : 'openAddEvent'">+</span>
     </ion-button> -->
   
   </ion-toolbar>
-  <ion-toolbar *ngIf="calendarPage || todayPage">
+  <ion-toolbar *ngIf="calendarPage && !eventSelected || todayPage && !eventSelected">
     <div class="calendarSegment">
       <div class="btnSegment" [ngClass]="{'segmentLinkActive': todayPage }">
         <a  (click)="changeScreen('today')">Today</a>
@@ -222,13 +232,18 @@
               </div>
             </div>
           </div> -->
-          <div class="calendarRow flexRow">
+
+          <!-- <div class="calendarRow flexRow">
             <div class="imgCalendarName">
               <img src="assets/icons/calendar.svg" />
             </div>
             <h1 class="calendarName">{{event.tag}}</h1>
-          </div>
+          </div> -->
+
           <div class="headerRow eventTimeRow flexRow" *ngIf='event.allDay === false'>
+            <div class="dateTime">
+              {{event.startTime | date:'EEEE dd, MMM'}}
+            </div>
             <div class="colTime">
               <div class="titileTime">From</div>
               <div class="eventTime ">{{event.startTime|date: 'HH:mm'}}</div>

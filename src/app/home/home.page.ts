@@ -3,21 +3,13 @@ import { AlertController } from '@ionic/angular';
 //import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
 
-import { formatISO, parseISO } from 'date-fns';
+import {parseISO } from 'date-fns';
 
 import * as blockstack from 'blockstack';
-//declare var blockstack;
 
-//import {UserSession, AppConfig, Person} from 'blockstack';
 
 import { WeatherService } from '../services/weather.service';
 import { ShareDataService } from '../services/shareData.service';
-
-// import {EventDetailComponent} from '../event-detail/event-detail.component';
-// import {AddEventComponent} from '../add-event/add-event.component';
-
-// import { myEnterAnimation } from '../animations/enter';
-// import { myLeaveAnimation } from '../animations/leave';
 
 const appConfig = new blockstack.AppConfig(['store_write', 'publish_data']);
 const userSession = new blockstack.UserSession({ appConfig: appConfig });
@@ -43,6 +35,7 @@ export class HomePage implements OnInit{
   todayPage: boolean;
   calendarPage: boolean;
   toDosPage: boolean;
+  settingsPage: boolean;
   showAddEventComponent: boolean;
   eventIsEditing: boolean = false;
   eventSelected: boolean = false;
@@ -52,7 +45,14 @@ export class HomePage implements OnInit{
 
   eventIndex = [];
   eventSource = [];
+  
+  weatherObj: Object;
+
   viewTitle: string;
+  textMonth: string;
+  textDay: string;
+  numberDay: string;
+
   calendar = {
     mode: 'month',
     currentDate: new Date(),
@@ -69,18 +69,9 @@ export class HomePage implements OnInit{
     tag: '',
     tagColor: ''
   };
- 
-  //minDate = new Date().toISOString();
 
   @ViewChild(CalendarComponent, null) myCal: CalendarComponent;
-  weatherObj: Object;
-  textMonth: string;
-  textDay: string;
-  numberDay: string;
-  
-  
-  
-  
+
   constructor(
               //private geolocation: Geolocation,
               private dataService: ShareDataService,
@@ -448,6 +439,13 @@ export class HomePage implements OnInit{
       this.todayPage = false;
       this.calendarPage = false;
       this.toDosPage = true;
+    }
+    
+    if(screen == 'settings'){
+      this.todayPage = false;
+      this.calendarPage = false;
+      this.toDosPage = false;
+      this.settingsPage = false;
     }
   }
 
