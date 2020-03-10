@@ -69,6 +69,8 @@ $redpinkTag: #CF195E;
     align-items: center;
     max-width: 300px;
     margin: 0 auto;
+    position: relative;
+    height: 10%;
 
     .flexCol {
         flex: 1;
@@ -199,11 +201,11 @@ $redpinkTag: #CF195E;
 
 
     .todayOverflow {
-        position: absolute;
+        position: relative;
         width: 100%;
         overflow: auto;
-        height: 100%;
-        padding-bottom: 120px;
+        height: 90%;
+        //padding-bottom: 120px;
         // display: flex;
         // flex-wrap: wrap;
         
@@ -221,7 +223,7 @@ $redpinkTag: #CF195E;
     margin: 2.5%;
     //justify-content: space-between;
     color: $whiteSmoke;
-    max-height: 120px;
+    //max-height: 120px;
     //flex: 1 0 auto;
 
     //border: 1px solid #ccc;
@@ -293,7 +295,7 @@ $redpinkTag: #CF195E;
         position: relative;
         width: 100%;
         height: 100%;
-        padding: 5%;
+        padding: 2.5%;
         display: flex;
         flex-direction: column;
 
@@ -323,7 +325,13 @@ $redpinkTag: #CF195E;
         position: relative;
         padding-bottom: 10px;
     }
-
+    .dateTime {
+        //width: 100%;
+        margin: 5% auto;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
     .eventTimeRow {
         position: relative;
         width: 100%;
@@ -336,9 +344,7 @@ $redpinkTag: #CF195E;
         margin: 0 auto;
         margin-top: 2.5%;
 
-        .dateTime {
-            width: 100%;
-        }
+        
 
         .colTime {
             flex: 1 0 auto;
@@ -384,10 +390,12 @@ $redpinkTag: #CF195E;
 
     .eventTitle {
         h1 {
-            font-weight: bold;
+            text-align: center;
+            font-weight: 500;
             letter-spacing: -.5px;
-            font-size: 32px;
-            line-height: 1; 
+            font-size: 28px;
+            line-height: 1;
+            margin: 5% 0; 
         }
     }
 
@@ -422,6 +430,7 @@ $redpinkTag: #CF195E;
         font-weight: 400;
         overflow: auto;
         position: relative;
+        border-top: 1px dashed #f1f1f1;
     }
 
     .locationTitle {
@@ -457,14 +466,20 @@ $redpinkTag: #CF195E;
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        margin-right: 2.5vw;
+        margin: 0 2.5%;
     }
 
     h1 {
         margin: 0;
-        margin-left: 2.5vw;
+        //margin-left: 2.5vw;
         font-size: 20px;
-        font-weight: 700;
+        font-weight: 400;
+    }
+}
+
+.btnsHeaderEventSelected {
+    ion-button {
+        margin-inline-start: 12px !important; 
     }
 }
 
@@ -628,7 +643,15 @@ $redpinkTag: #CF195E;
     .hsDetail {
         font-size: 12px;
         font-weight: bold;
-        margin-right: 5vw;
+        margin-right: 2.5vw;
+        width: 50px;
+        border-right: 1px solid;
+
+        h4 {
+            font-size: 12px;
+            margin: 0;
+            text-transform: uppercase;
+        }
     }
 
     .event-detail {

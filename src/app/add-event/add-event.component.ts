@@ -3,7 +3,7 @@ import { ShareDataService } from '../services/shareData.service';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { formatISO, parseISO } from 'date-fns';
+import {parseISO, subMinutes, subDays, endOfDay, startOfDay } from 'date-fns';
 
 import Picker from 'pickerjs';
 //import { TagSelectorComponent } from '../tag-selector/tag-selector.component'
@@ -23,10 +23,12 @@ export class AddEventComponent implements OnInit {
     startTime: null,
     endTime: null,
     allDay: false,
+    remindMe: false,
     loc: '',
     storeDate: '',
     tag: '',
-    tagColor: ''
+    tagColor: '',
+    reminder: null
   };
 
   tags = [];
@@ -50,12 +52,22 @@ export class AddEventComponent implements OnInit {
     name: '',
     color: ''
   }
+
+  // customPopoverOptions: any = {
+  //   header: 'Hair Color',
+  //   subHeader: 'Select your hair color',
+  //   message: 'Only select your dominant hair color'
+  // };
  
   minDate = new Date().toISOString();
 
   createTagScreen: boolean = false;
   newTagScreen: boolean = false;
   editMode: boolean;
+
+  reminderTime: any;
+  reminderSelectBoo: boolean = true;
+  reminderVal: any;
 
   constructor( private dataService: ShareDataService,
                private nav: Router,
@@ -66,6 +78,7 @@ export class AddEventComponent implements OnInit {
     this.loadTags();
     this.resetEvent();
     this.editEventSubscribe();
+    this.reminderSelectBoo = true;
     //this.loadPickerElements();  
   }
 
@@ -76,10 +89,12 @@ export class AddEventComponent implements OnInit {
       startTime: '',
       endTime: '',
       allDay: false,
+      remindMe: false,
       loc: '',
       storeDate: '',
       tag: '',
-      tagColor: ''
+      tagColor: '',
+      reminder: null
     };
   }
 
@@ -95,11 +110,13 @@ export class AddEventComponent implements OnInit {
         startTime:  parseISO(this.event.startTime),
         endTime: parseISO(this.event.endTime),
         allDay: this.event.allDay,
+        remindMe: this.event.remindMe,
         desc: this.event.desc,
         loc: this.event.loc,
         storeDate: Date.parse(this.event.startTime),
         tag: this.tagEvent.name,
-        tagColor: this.tagEvent.color
+        tagColor: this.tagEvent.color,
+        reminder: this.reminderTime
       }
    }
     if(this.editMode){
@@ -108,21 +125,29 @@ export class AddEventComponent implements OnInit {
         startTime:  new Date(this.event.startTime),
         endTime: new Date(this.event.endTime),
         allDay: this.event.allDay,
+        remindMe: this.event.remindMe,
         desc: this.event.desc,
         loc: this.event.loc,
         storeDate: this.event.storeDate,
         tag: this.tagEvent.name,
-        tagColor: this.tagEvent.color
+        tagColor: this.tagEvent.color,
+        reminder: this.reminderTime
       }
   //this.editPickerElements(this.event.startTime, this.event.endTime);
    }
  
     if (eventCopy.allDay) {
+      // eventCopy.startTime = startOfDay(new Date(this.event.startTime));
+      // eventCopy.endTime = endOfDay(new Date(this.event.endTime));
+      // eventCopy.endTime = endOfDay(eventCopy.endTime);
       let start = eventCopy.startTime;
       let end = eventCopy.endTime;
  
-      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
+      //eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
+      //eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()));
+
+      // eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
+      // eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
     }
     if(!this.editMode){
       this.dataService.addEventData(eventCopy);
@@ -178,10 +203,12 @@ export class AddEventComponent implements OnInit {
           // startTime: '',
           // endTime: '',
           allDay: event.allDay,
+          remindMe: event.remindMe,
           loc: event.loc,
           storeDate: event.storeDate,
           tag: event.tag,
-          tagColor: event.tagColor
+          tagColor: event.tagColor,
+          reminder: event.reminder
         };
         this.editPickerElements(event.startTime, event.endTime);
         this.tagEvent = {
@@ -274,6 +301,36 @@ export class AddEventComponent implements OnInit {
         }
       }
     });
+  }
+
+  dataSelected(date){
+    console.log(date);
+    this.reminderSelectBoo = false;
+  }
+
+  reminderSelect(reminder){
+    console.log('el selected reminder es => ', reminder.detail.value);
+    this.reminderVal = reminder.detail.value;
+    if(this.reminderVal === 'r1') {
+      this.reminderTime = parseISO(this.event.startTime);
+      console.log('elegimos el 1 => ', this.reminderTime);
+    }
+    if(this.reminderVal === 'r2') {
+      this.reminderTime = subMinutes(parseISO(this.event.startTime), 5);
+      console.log('elegimos el 2 => ', this.reminderTime);
+    }
+    if(this.reminderVal === 'r3') {
+      this.reminderTime = subMinutes(parseISO(this.event.startTime), 15);
+      console.log('elegimos el 3 => ', this.reminderTime);
+    }
+    if(this.reminderVal === 'r4') {
+      this.reminderTime = subMinutes(parseISO(this.event.startTime), 60);
+      console.log('elegimos el 4 => ', this.reminderTime);
+    }
+    if(this.reminderVal === 'r5') {
+      this.reminderTime = subDays(parseISO(this.event.startTime), 1);
+      console.log('elegimos el 5 => ', this.reminderTime);
+    }
   }
 
   onSubmit(){

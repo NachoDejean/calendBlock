@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar mode="md">
+  <ion-toolbar mode="ios">
     
       <!-- <ion-menu-toggle autoHide="false">
         <ion-button class="openMenu" color="clear" clear>
@@ -31,7 +31,7 @@
       <h1 class="calendarName">{{event.tag}}</h1>
     </div>
 
-    <ion-buttons slot="end" *ngIf="eventSelected">
+    <ion-buttons slot="end" *ngIf="eventSelected" class="btnsHeaderEventSelected">
       <ion-button class="addEventBtn" color="clear" clear (click)="deleteEventSelected(event)">
         <img src="assets/icons/delete.svg" />
       </ion-button>
@@ -49,7 +49,7 @@
     </ion-button> -->
   
   </ion-toolbar>
-  <ion-toolbar *ngIf="calendarPage && !eventSelected || todayPage && !eventSelected">
+  <ion-toolbar *ngIf="calendarPage && !eventSelected && !showAddEventComponent || todayPage && !eventSelected && !showAddEventComponent">
     <div class="calendarSegment">
       <div class="btnSegment" [ngClass]="{'segmentLinkActive': todayPage }">
         <a  (click)="changeScreen('today')">Today</a>
@@ -61,7 +61,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="homePage" scrollY=false>
+<ion-content id="homePage" scrollY="false">
 
 <!-- <div class="backBg"></div> -->
 
@@ -91,8 +91,8 @@
         </div>
         <div class="todayOverflow">
           <div class="todayEvent" [style.background]='event.tagColor' *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
-            <div class="hsDetail"  *ngIf='!event.allDay'><h4 class=" allDayTxt">{{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}</h4> </div>
             <div class="hsDetail"  *ngIf='event.allDay'><h4 class=" allDayTxt">All day</h4> </div>
+            <div class="hsDetail"  *ngIf='!event.allDay'><h4 class=" allDayTxt">{{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}</h4> </div>
             <span class="event-detail">  {{event.title}}</span>
             <div class="moreInfoEvent">+</div>
           </div>
@@ -172,7 +172,7 @@
         (onTitleChanged)="onViewTitleChanged($event)"
         (onTimeSelected)="onTimeSelected($event)"
         startHour="0"
-        endHour="24"
+        endHour="23"
         step="30"
         startingDayWeek="1">
       </calendar>
@@ -182,7 +182,9 @@
       <div class="wrapListEvents">
         <div class="listEventsOverflow">
           <div class="todayEventCalendar" [style.background]='event.tagColor' *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
-            <div class="hsDetail">{{event.startTime|date: 'HH:mm'}} <br/> {{event.endTime|date: 'HH:mm'}} </div>
+            <div class="hsDetail"  *ngIf='event.allDay'><h4 class=" allDayTxt">All <br/>day</h4> </div>
+            <div class="hsDetail"  *ngIf='!event.allDay'><h4 class=" allDayTxt">{{event.startTime|date: 'HH:mm'}} <br/> {{event.endTime|date: 'HH:mm'}}</h4> </div>
+            <!-- <div class="hsDetail">{{event.startTime|date: 'HH:mm'}} <br/> {{event.endTime|date: 'HH:mm'}} </div> -->
             <span class="event-detail">  {{event.title}}</span>
           </div>
           <div class="todayNoEvents" *ngIf="selectedDate?.events.length == 0">
@@ -215,35 +217,12 @@
       <div class="eventDetailBg defaultEventBg" [style.background]='event.tagColor'></div>
       <div class="eventInfo">
         <div class="eventInfoWrapper eventColorWhite">
-          <!-- <div class="controlsBtnEventDetail">
-            <div class="btnEventDetail">
-              <div class="eventEdit" (click)="deleteEventSelected(event)">
-                <img src="assets/icons/delete.svg" />
-              </div>
-            </div>
-            <div class="btnEventDetail">
-              <div class="eventEdit" (click)="editEventSelected(event)">
-                <img src="assets/icons/editWhite.svg" />
-              </div>
-            </div>
-            <div class="btnEventDetail">
-              <div class="eventClose" (click)="closeEventSelected()">
-                <img src="assets/icons/closeWhite.svg" />
-              </div>
-            </div>
-          </div> -->
-
-          <!-- <div class="calendarRow flexRow">
-            <div class="imgCalendarName">
-              <img src="assets/icons/calendar.svg" />
-            </div>
-            <h1 class="calendarName">{{event.tag}}</h1>
-          </div> -->
-
+          
+          <div class="dateTime">
+            {{event.startTime | date:'EEEE dd, MMM'}}
+          </div>
+          
           <div class="headerRow eventTimeRow flexRow" *ngIf='event.allDay === false'>
-            <div class="dateTime">
-              {{event.startTime | date:'EEEE dd, MMM'}}
-            </div>
             <div class="colTime">
               <div class="titileTime">From</div>
               <div class="eventTime ">{{event.startTime|date: 'HH:mm'}}</div>
@@ -261,7 +240,7 @@
               <div class="eventTitle">
                 <h1>{{event.title}}</h1>
               </div>
-              <div class="eventDescription">
+              <div class="eventDescription" *ngIf="event.desc != ''">
                 <p>{{event.desc}}</p>
               </div>
             </div>

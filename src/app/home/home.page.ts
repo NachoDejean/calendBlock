@@ -3,13 +3,16 @@ import { AlertController } from '@ionic/angular';
 //import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
 
-import {parseISO } from 'date-fns';
+import {parseISO, endOfDay } from 'date-fns';
 
 import * as blockstack from 'blockstack';
 
 
-import { WeatherService } from '../services/weather.service';
+//import { WeatherService } from '../services/weather.service';
 import { ShareDataService } from '../services/shareData.service';
+
+import { Plugins } from '@capacitor/core';
+const { LocalNotifications } = Plugins;
 
 const appConfig = new blockstack.AppConfig(['store_write', 'publish_data']);
 const userSession = new blockstack.UserSession({ appConfig: appConfig });
@@ -64,10 +67,12 @@ export class HomePage implements OnInit{
     startTime: '',
     endTime: '',
     allDay: false,
+    remindMe: false,
     loc: '',
     storeDate: '',
     tag: '',
-    tagColor: ''
+    tagColor: '',
+    reminder: null
   };
 
   @ViewChild(CalendarComponent, null) myCal: CalendarComponent;
@@ -76,7 +81,8 @@ export class HomePage implements OnInit{
               //private geolocation: Geolocation,
               private dataService: ShareDataService,
               private alertCtrl: AlertController,
-              private ws: WeatherService) {}
+              //private ws: WeatherService
+              ) {}
 
   ngOnInit(){
     this.loginBlockstack();
@@ -141,14 +147,17 @@ export class HomePage implements OnInit{
               loc: eventDataGaia.loc,
               storeDate: eventDataGaia.storeDate,
               tag: eventDataGaia.tag,
-              tagColor: eventDataGaia.tagColor
+              tagColor: eventDataGaia.tagColor,
+              reminder: parseISO(eventDataGaia.reminder),
             }
             if (eventData.allDay) {
-              let start = eventData.startTime;
-              let end = eventData.endTime;
+              // let start = eventData.startTime;
+              // let end = eventData.endTime;
+
+              eventData.endTime = endOfDay(eventData.endTime);
   
-              eventData.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-              eventData.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
+              //eventData.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
+              //eventData.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
             }
 
             this.eventSource.push(eventData);
@@ -170,10 +179,12 @@ export class HomePage implements OnInit{
       startTime: '',
       endTime: '',
       allDay: false,
+      remindMe: false,
       loc: '',
       storeDate: '', 
       tag: '',
-      tagColor: ''
+      tagColor: '',
+      reminder: null
     };
   }
 
@@ -321,11 +332,14 @@ export class HomePage implements OnInit{
       event = null;
       this.showAddEventComponent = false;
     });
+    if(event.remindMe){
+      this.addEventNotification(event);
+    }
   }
 
   createToDoList(){
     this.createNewToDoList = !this.createNewToDoList;
-    console.log("createNewToDoList => " ,this.createNewToDoList)
+    console.log("createNewToDoList => " ,this.createNewToDoList);
     this.dataService.createToDoList(this.createNewToDoList);
   }
 
@@ -446,7 +460,30 @@ export class HomePage implements OnInit{
       this.calendarPage = false;
       this.toDosPage = false;
       this.settingsPage = false;
+      //this.testNoti();
     }
+  }
+
+  addEventNotification(event){
+    console.log('test notifications => ', event);
+    //console.log(LocalNotifications.areEnabled());
+    //LocalNotifications.areEnabled().then(()=>{console.log('notis are enabled!')})
+    LocalNotifications.schedule({
+      notifications: [
+        {
+          title: event.title,
+          body: event.desc,
+          id: event.storeDate,
+          //schedule: { at: new Date(Date.now() + 1000 * 5) },
+          schedule: { at: event.reminder },
+          sound: null,
+          attachments: null,
+          actionTypeId: "",
+          extra: null
+        }
+      ]
+    });
+
   }
 
 }

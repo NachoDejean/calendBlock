@@ -20,11 +20,13 @@ export class TodoSliderComponent implements OnInit {
     zoom: {
       toggle: false,
     },
+    observer: true
   };
 
   openTaskView: boolean = false;
   newTaskList: boolean = false;
   newList: boolean = false;
+  saveAndCloseNewList: boolean = false;
   taskOpen: any;
 
   todosIndex = [];
@@ -171,12 +173,14 @@ export class TodoSliderComponent implements OnInit {
   }
 
   createNewList(newList){
-    this.newTagColor = this.tagsColors[0].color;
-    this.newList = newList;
+    
     console.log('create new list => ', newList);
     // this.openTaskView = true;
     // this.newTaskList = true;
     if(newList){
+      this.newTagColor = this.tagsColors[0].color;
+      this.newList = newList;
+      console.log('por aca tambíen?');
       let defualtSettingsList = {
         nameList: 'New List',
         color: this.newTagColor,
@@ -187,6 +191,7 @@ export class TodoSliderComponent implements OnInit {
     } if(!newList){
       console.log("pasamos por aqui...")
       this.todosIndex.shift();
+      this.newList = false;
     }
     
   }
@@ -199,23 +204,44 @@ export class TodoSliderComponent implements OnInit {
   storeNewList(list){
     // list = [];
     // console.log(list);
+    this.todosIndex.shift();
     let newTareasList = {
       nameList: list.name,
-        color: this.newTagColor,
-        task: []
+      color: this.newTagColor,
+      task: []
     }
+    //this.todosIndex.unshift(newTareasList);
+    this.todosIndex.push(newTareasList);
+    //this.todosIndex.splice(0, 0, newTareasList);
+    this.slides.update();
+    this.slides.slideTo(this.todosIndex.length, 1500);
     //this.todoSources.push(list);
     
-    this.todosIndex.push(newTareasList);
-    //this.todosIndex.unshift(newTareasList);
+    //this.todosIndex.push(newTareasList);
     let todosIndexToString = JSON.stringify(this.todosIndex);
-    let todosOnlyToString = JSON.stringify(list);
-    userSession.putFile('tareasIndex.json', todosIndexToString, gaiaPutOptions);
-    userSession.putFile('todosList/' + list.name + '.json', todosOnlyToString, gaiaPutOptions);
+    //let todosOnlyToString = JSON.stringify(list);
+    userSession.putFile('tareasIndex.json', todosIndexToString, gaiaPutOptions)
+    .then(()=>{
+      this.newList = false;
+      this.dataService.createToDoList(false);
+      this.saveAndCloseNewList = true;
+    });
+    //userSession.putFile('todosList/' + list.name + '.json', todosOnlyToString, gaiaPutOptions);
   }
 
   slideTask(item){
 
+  }
+
+  deleteTaskList(taskList){
+    let indexArrName: string = taskList.nameList;
+    let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
+    console.log(arrIndex);
+    this.todosIndex.splice(arrIndex, 1);
+    this.openTaskView = false;
+    console.log(this.todosIndex);
+    let todosIndexData = JSON.stringify(this.todosIndex);
+    userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
   }
 
   newTask(){

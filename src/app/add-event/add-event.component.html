@@ -31,7 +31,7 @@
           <ion-item>
             <ion-label position="stacked"> Starts </ion-label>
             <!-- <ion-input name="startTime" [(ngModel)]="event.startTime" id="inputStart" required #inputStart="ngModel"></ion-input> -->
-            <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.startTime" name="inputStart"   id="inputStart" #inputStart required></ion-datetime>
+            <ion-datetime (ionChange)="dataSelected($event)" displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.startTime" name="inputStart" id="inputStart" #inputStart required></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col>
@@ -41,7 +41,7 @@
             <ion-datetime displayFormat="MMM D, YYYY HH:mm" pickerFormat="MMM D, YYYY HH:mm" [(ngModel)]="event.endTime"  name="inputEnd"  id="inputEnd" #inputEnd required></ion-datetime>
             </ion-item>
         </ion-col>
-        <div class="formAlert" *ngIf="inputStart.errors && (inputStart.dirty || inputStart.touched)">
+        <!-- <div class="formAlert" *ngIf="inputStart.errors && (inputStart.dirty || inputStart.touched)">
           <div [hidden]="!inputStart.errors.required">
               The start date is required
           </div>
@@ -50,13 +50,40 @@
           <div [hidden]="!inputEnd.errors.required">
               The ends date is required
           </div>
-        </div>
-      </ion-row>     
+        </div> -->
+      </ion-row>
       
-      <ion-item>
-        <ion-label>All Day?</ion-label>
-        <ion-toggle name="allDay" [(ngModel)]="event.allDay" [checked]="true" color="secondary"></ion-toggle>
-      </ion-item>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>All Day?</ion-label>
+            <ion-toggle name="allDay" [(ngModel)]="event.allDay" [checked]="true" color="secondary"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row >
+        <ion-col>
+          <ion-item>
+            <ion-label>Remind me</ion-label>
+            <ion-toggle [disabled]="reminderSelectBoo" name="remindMe" [(ngModel)]="event.remindMe" [checked]="false" color="secondary"></ion-toggle>
+          </ion-item>
+        </ion-col>
+        <ion-col *ngIf="event.remindMe">
+          <ion-item >
+            <!-- <ion-select value="r1" (ionChange)="reminderSelect($event)" class="reminderSelect" mode="ios" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select a reminder"> -->
+            <ion-select value="r1" (ionChange)="reminderSelect($event)" class="reminderSelect" mode="ios" interface="popover" placeholder="Select a reminder">
+              <ion-select-option value="r1">At time of the event</ion-select-option>
+              <ion-select-option value="r2">5 min before</ion-select-option>
+              <ion-select-option value="r3">15 min before</ion-select-option>
+              <ion-select-option value="r4">1 hour before</ion-select-option>
+              <ion-select-option value="r5">1 day before</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      
+      
 
       <ion-item detail (click)="chooseTag()">
         <ion-label>Tag</ion-label>

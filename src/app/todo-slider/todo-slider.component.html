@@ -2,7 +2,8 @@
   <ion-slides #slides pager [options]="slideOpts">
 
     <ion-slide class="taskListSlide" *ngFor="let todosIndexList of todosIndex; let i = index">
-      <div class="taskWrapper" *ngIf="!newList || i != 0" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)">
+      <!-- <div class="taskWrapper" *ngIf="!newList || i != 0" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)"> -->
+      <div class="taskWrapper" *ngIf="!newList" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)">
         <!-- <div class="actionBtnTasksLists">
           <img src="assets/icons/threeDots.svg" />
         </div> -->
@@ -61,7 +62,7 @@
 
 <div class="insideTaskWrapper" [style.background]='taskOpen.color' *ngIf="openTaskView">
   <div class="actionBtnTasksLists">
-      <img src="assets/icons/threeDots.svg" />
+      <img (click)="deleteTaskList(taskOpen)" src="assets/icons/threeDots.svg" />
   </div>
   <!-- <div class="infoTask" *ngIf="!newTaskList">      -->
   <div class="infoTask" >     
