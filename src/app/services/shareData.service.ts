@@ -34,10 +34,16 @@ export class ShareDataService {
         this.tagObject.next(tag);
     }
     
-    private addToDoList = new BehaviorSubject<any>(false);
+    private addToDoList = new BehaviorSubject<any>(null);
     newToDoList = this.addToDoList.asObservable();
     createToDoList(list: any){
         this.addToDoList.next(list);
+    }
+    
+    private closeNewToDoList = new BehaviorSubject<any>(null);
+    closeNewTaskList = this.closeNewToDoList.asObservable();
+    closeToDoList(list: any){
+        this.closeNewToDoList.next(list);
     }
     
     private taskListOpen = new BehaviorSubject<any>(false);

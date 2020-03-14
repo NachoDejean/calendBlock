@@ -119,6 +119,12 @@ export class HomePage implements OnInit{
         this.taskIsOpen = true;
       }
     });
+    this.dataService.closeNewTaskList.subscribe(close => {
+      if(close !== null){
+        this.createToDoList();
+
+      }
+    })
   }
 
   loadGaiaEvents(){

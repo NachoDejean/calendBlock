@@ -101,7 +101,12 @@ export class TodoSliderComponent implements OnInit {
   ngOnInit() {
     this.loadGaiaTodos();
     this.dataService.newToDoList.subscribe(list => {
-      this.createNewList(list);
+      if(list === null){
+
+      }else {
+
+        this.createNewList(list);
+      }
       // if(list){
       //   console.log('creamos una nueva lista');
       // }
@@ -121,39 +126,11 @@ export class TodoSliderComponent implements OnInit {
       if(data){
         let todosIndexInGaia = JSON.parse(data as string);
         this.todosIndex = todosIndexInGaia;
-        // for (let indexTodos of this.todosIndex){
-        //   userSession.getFile('todosList/'+ indexTodos + '.json', gaiaGetOptions)
-        //   .then(data => {
-        //     if(data){
-        //       let todoDataInGaia = JSON.parse(data as string);
-        //       let todoData = {
-        //         nameList: indexTodos,
-        //         task: todoDataInGaia
-        //       }
-        //       // this.todoSources.push(todoData);
-        //       this.todoSources.push(todoData);
-        //     } else {
-        //       // console.log('no hay todos data en Gaia');
-        //       // this.todoSources = [];
-        //     }
-        //   });
-        // }
       } else {
         console.log('no hay data en gaia');
         this.todosIndex = this.todosIndexDefaults;
-        // for (let taskInLists of this.todosIndex){
-        //   let dataInList = {
-        //     nameList: taskInLists.nameList,
-        //     task: taskInLists.task
-        //   };
-        //   this.todoSources.push(dataInList);
-        //   console.log(this.todoSources);
-        // }
-      }
-      
-      
+      }  
     });
-    
   }
 
   colorTaskList(color){
@@ -170,9 +147,6 @@ export class TodoSliderComponent implements OnInit {
     console.log(this.taskOpen);
     this.todoSources = this.taskOpen.task;
     console.log(this.todoSources);
-    // let arrIndex = this.todoSources.findIndex(list => list.nameList === taskList.nameList);
-    // this.toDosOpen = this.todoSources[arrIndex];
-    // console.log(this.toDosOpen)
   }
 
   createNewList(newList){
@@ -183,7 +157,6 @@ export class TodoSliderComponent implements OnInit {
     if(newList){
       this.newTagColor = this.tagsColors[0].color;
       this.newList = newList;
-      console.log('por aca tambíen?');
       let defualtSettingsList = {
         nameList: 'New List',
         color: this.newTagColor,
@@ -195,6 +168,7 @@ export class TodoSliderComponent implements OnInit {
       console.log("pasamos por aqui...")
       this.todosIndex.shift();
       this.newList = false;
+      //this.dataService.createToDoList(false);
     }
     
   }
@@ -205,8 +179,6 @@ export class TodoSliderComponent implements OnInit {
   }
 
   storeNewList(list){
-    // list = [];
-    // console.log(list);
     this.todosIndex.shift();
     let newTareasList = {
       nameList: list.name,
@@ -226,8 +198,10 @@ export class TodoSliderComponent implements OnInit {
     userSession.putFile('tareasIndex.json', todosIndexToString, gaiaPutOptions)
     .then(()=>{
       this.newList = false;
-      this.dataService.createToDoList(false);
-      this.saveAndCloseNewList = true;
+      this.dataService.closeToDoList(false);
+      this.createTaskList.name = '';
+      this.createTaskList.color = this.tagsColors[0].color;
+      //this.saveAndCloseNewList = true;
     });
     //userSession.putFile('todosList/' + list.name + '.json', todosOnlyToString, gaiaPutOptions);
   }
