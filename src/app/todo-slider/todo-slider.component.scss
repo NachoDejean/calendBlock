@@ -1,3 +1,4 @@
+$blueDarkTwo: #173847;
 .todoSliderWrapper {
     height: 100%;
     display: flex;
@@ -17,6 +18,14 @@
     width: 80%;
     max-width: 400px;
   }
+
+//   ion-checkbox .item-cover{
+//     display:none;
+//   }
+
+.checkboxConteiner {
+    position: relative;
+}
 
 .taskWrapper {
     position: relative;
@@ -61,29 +70,62 @@
     bottom: 1%;
     left: 1%;
     z-index: 14;
-    //background: whitesmoke;
+    background:#fff;
     display: flex;
     flex-flow: column;
-    padding: 5%;
+    //padding: 5%;
     color: whitesmoke;
     border-radius: 25px;
 
+    
+
     ion-list {
         background: transparent;
+        overflow: auto;
     }
     ion-item {
-        color: whitesmoke;
+        color: $blueDarkTwo;
         --padding-start: 0;
         --background: transparent;
+        padding: 0 2.5%;
+
+        .cheked {
+            text-decoration: line-through;
+        }
     }
     .todoNameList {
         //margin: 0;
     }
 
     .todoTaskLength {
-        margin: 0;
+        margin: 1% 0;
         font-size: 13px;
     }
+}
+
+.headerTasks {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
+    flex-flow: column;
+    padding: 5%;
+}
+
+.infoTask {
+    h1 {
+        margin: 0;
+        /* text-transform: uppercase; */
+        font-weight: 400;
+        font-size: 24px;  
+    }
+
+    h4 {
+        
+    }
+}
+
+.bgFabAdd {
+    --background: #173847;
 }
 
 .actionBtnTasksLists {
@@ -91,7 +133,7 @@
     align-self: flex-end;
     padding: 2.5%;
     margin-top: -2.5%;
-    margin-right: -2.5%;
+    //margin-right: -2.5%;
 
     img {
         height: 15px;

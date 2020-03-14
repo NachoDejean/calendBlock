@@ -28,7 +28,8 @@ export class AddEventComponent implements OnInit {
     storeDate: '',
     tag: '',
     tagColor: '',
-    reminder: null
+    reminder: null,
+    reminderLegend: ''
   };
 
   tags = [];
@@ -68,6 +69,7 @@ export class AddEventComponent implements OnInit {
   reminderTime: any;
   reminderSelectBoo: boolean = true;
   reminderVal: any;
+  reminderText: string;
 
   constructor( private dataService: ShareDataService,
                private nav: Router,
@@ -94,7 +96,8 @@ export class AddEventComponent implements OnInit {
       storeDate: '',
       tag: '',
       tagColor: '',
-      reminder: null
+      reminder: null,
+      reminderLegend: ''
     };
   }
 
@@ -116,7 +119,8 @@ export class AddEventComponent implements OnInit {
         storeDate: Date.parse(this.event.startTime),
         tag: this.tagEvent.name,
         tagColor: this.tagEvent.color,
-        reminder: this.reminderTime
+        reminder: this.reminderTime,
+        reminderLegend: this.reminderVal
       }
    }
     if(this.editMode){
@@ -131,7 +135,8 @@ export class AddEventComponent implements OnInit {
         storeDate: this.event.storeDate,
         tag: this.tagEvent.name,
         tagColor: this.tagEvent.color,
-        reminder: this.reminderTime
+        reminder: this.reminderTime,
+        reminderLegend: this.reminderVal
       }
   //this.editPickerElements(this.event.startTime, this.event.endTime);
    }
@@ -208,7 +213,8 @@ export class AddEventComponent implements OnInit {
           storeDate: event.storeDate,
           tag: event.tag,
           tagColor: event.tagColor,
-          reminder: event.reminder
+          reminder: event.reminder,
+          reminderLegend: event.reminderLegend
         };
         this.editPickerElements(event.startTime, event.endTime);
         this.tagEvent = {
@@ -314,22 +320,27 @@ export class AddEventComponent implements OnInit {
     if(this.reminderVal === 'r1') {
       this.reminderTime = parseISO(this.event.startTime);
       console.log('elegimos el 1 => ', this.reminderTime);
+      this.reminderText = 'At time of the event';
     }
     if(this.reminderVal === 'r2') {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 5);
       console.log('elegimos el 2 => ', this.reminderTime);
+      this.reminderText = '5 minutes before';
     }
     if(this.reminderVal === 'r3') {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 15);
       console.log('elegimos el 3 => ', this.reminderTime);
+      this.reminderText = '15 minutes before';
     }
     if(this.reminderVal === 'r4') {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 60);
       console.log('elegimos el 4 => ', this.reminderTime);
+      this.reminderText = '1 hour before';
     }
     if(this.reminderVal === 'r5') {
       this.reminderTime = subDays(parseISO(this.event.startTime), 1);
       console.log('elegimos el 5 => ', this.reminderTime);
+      this.reminderText = '1 day before';
     }
   }
 

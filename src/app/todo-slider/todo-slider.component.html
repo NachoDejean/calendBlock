@@ -3,13 +3,14 @@
 
     <ion-slide class="taskListSlide" *ngFor="let todosIndexList of todosIndex; let i = index">
       <!-- <div class="taskWrapper" *ngIf="!newList || i != 0" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)"> -->
-      <div class="taskWrapper" *ngIf="!newList" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)">
+      <div class="taskWrapper" *ngIf="!newList || i != 0" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)">
         <!-- <div class="actionBtnTasksLists">
           <img src="assets/icons/threeDots.svg" />
         </div> -->
         <div class="infoTask" >     
-          <h1 class="todoNameList">{{todosIndexList.nameList}} => {{i}}</h1>
-          <h4 class="todoTaskLength">{{todosIndexList.task.length}} Tasks</h4>
+          <h1 class="todoNameList">{{todosIndexList.nameList}}</h1>
+          <h4 class="todoTaskLength" *ngIf="todosIndexList.task.length > 1 || todosIndexList.task.length == 0">{{todosIndexList.task.length}} Tasks</h4>
+          <h4 class="todoTaskLength" *ngIf="todosIndexList.task.length == 1">{{todosIndexList.task.length}} Task</h4>
         </div>
         <div class="percentCompleted">
           <div class="progressBar">
@@ -27,9 +28,7 @@
           <div class="colorTaskList">
             <ion-row class="colorRow">
               <ion-col *ngFor="let color of tagsColors">
-                <a class="circleTaskColor" [style.background]="color.color" (click)="colorTaskList(color.color)" [ngClass]="{'colorActive': newTagColor === color.color }">
-    
-                </a>
+                <a class="circleTaskColor" [style.background]="color.color" (click)="colorTaskList(color.color)" [ngClass]="{'colorActive': newTagColor === color.color }"></a>
               </ion-col>
             </ion-row>
           </div>
@@ -60,15 +59,21 @@
 
 </div>
 
-<div class="insideTaskWrapper" [style.background]='taskOpen.color' *ngIf="openTaskView">
-  <div class="actionBtnTasksLists">
+<div class="insideTaskWrapper"  *ngIf="openTaskView">
+  <div class="headerTasks" [style.background]='taskOpen.color'>
+    <div class="infoTask" >     
+      <h4 class="todoTaskLength" *ngIf="taskOpen.task.length > 1 || taskOpen.task.length == 0">{{taskOpen.task.length}} Tasks</h4>
+      <h4 class="todoTaskLength" *ngIf="taskOpen.task.length == 1">{{taskOpen.task.length}} Task</h4>
+      <h1 class="todoNameList">{{taskOpen.nameList}}</h1>
+    </div>
+
+    <div class="actionBtnTasksLists">
       <img (click)="deleteTaskList(taskOpen)" src="assets/icons/threeDots.svg" />
+    </div>
   </div>
+  
   <!-- <div class="infoTask" *ngIf="!newTaskList">      -->
-  <div class="infoTask" >     
-    <h4 class="todoTaskLength">12 Tasks</h4>
-    <h1 class="todoNameList">{{taskOpen.nameList}}</h1>
-  </div>
+  
   
   <div class="infoTask newTask" *ngIf="newTaskList || todoSources.length == 0">
     <!-- <h4 class="todoTaskLength">12 Tasks</h4>
@@ -86,19 +91,27 @@
     <!-- <ion-item>
       <ion-button class="btnAddTask" fill="none" clear expand="block" (click)="storeTask()"> + Add New Task</ion-button>
     </ion-item> -->
-    <ion-item-sliding *ngFor="let task of todoSources" >
+    <ion-item-sliding #slidingItem *ngFor="let task of todoSources; let i = index" >
     <!-- <ion-item-sliding *ngFor="let task of toDosOpen.task"> -->
       <ion-item>
-        <ion-label>{{task}}</ion-label>
+        <div class="checkboxConteiner">
+          <!-- <ion-checkbox checked="task.isChecked" (click)="storeTaskCompleted(task, taskOpen, task.isChecked)" mode="ios" slot="start" [(ngModel)]="task.isChecked"></ion-checkbox> -->
+          <ion-checkbox (click)="storeTaskCompleted(task, i, taskOpen, task.isChecked)" mode="ios" slot="start" [(ngModel)]="task.isChecked"></ion-checkbox>
+        </div>
+        <ion-label [ngClass]="{'cheked': task.isChecked }">{{task.task}}</ion-label>
+        <!-- <ion-icon  name="information-circle-outline" slot="end" (click)="slidingItem.open()"></ion-icon> -->
+        <!-- <ion-icon  name="information-circle-outline" slot="end"></ion-icon> -->
+        <ion-icon *ngIf="task.isChecked" name="trash-outline" slot="end" (click)="deleteTask(task, i, taskOpen)"></ion-icon>
+        <!-- <ion-icon  name="close-circle-outline" slot="end" (click)="deleteTask(task, i, taskOpen)"></ion-icon> -->
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option (click)="slideTask(task)">Delete</ion-item-option>
+        <ion-item-option (click)="slideTask(task, slidingItem)">Delete</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="openTaskView" (click)="newTask()">
-    <ion-fab-button>
+  <ion-fab-button  class="bgFabAdd">
       <ion-icon name="add" mode="ios"></ion-icon>
     </ion-fab-button>
   </ion-fab>

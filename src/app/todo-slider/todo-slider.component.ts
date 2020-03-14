@@ -92,6 +92,7 @@ export class TodoSliderComponent implements OnInit {
   newTagColor: any;
 
   @ViewChild('slides', {static: false}) slides;
+  fabBgColor: any;
   
   constructor( private dataService: ShareDataService) { 
     this.todoSources = [];
@@ -152,6 +153,7 @@ export class TodoSliderComponent implements OnInit {
       
       
     });
+    
   }
 
   colorTaskList(color){
@@ -163,6 +165,7 @@ export class TodoSliderComponent implements OnInit {
     this.newTaskList = false;
     this.dataService.openToDoList(true);
     this.taskOpen = taskList;
+    this.fabBgColor = this.taskOpen.color;
     this.createTask.name = '';
     console.log(this.taskOpen);
     this.todoSources = this.taskOpen.task;
@@ -229,8 +232,9 @@ export class TodoSliderComponent implements OnInit {
     //userSession.putFile('todosList/' + list.name + '.json', todosOnlyToString, gaiaPutOptions);
   }
 
-  slideTask(item){
-
+  slideTask(task, item){
+      item.close();
+      task.style
   }
 
   deleteTaskList(taskList){
@@ -244,6 +248,14 @@ export class TodoSliderComponent implements OnInit {
     userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
   }
 
+  deleteTask(task, taskIndex, taskList) {
+    let indexArrName: string = taskList.nameList;
+    let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
+    this.todosIndex[arrIndex].task.splice(taskIndex, 1);
+    let todosIndexData = JSON.stringify(this.todosIndex);
+    userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
+  }
+
   newTask(){
     this.newTaskList = true;
   }
@@ -253,32 +265,83 @@ export class TodoSliderComponent implements OnInit {
     let indexArrName: string = taskList.nameList;
     if(task != ''){
       let todoData = {
-        task: task
+        task: task,
+        isChecked: false
       }
-      //this.todoSources.push(task);
-      //this.todoSources.splice(taskList.name, 0, task);
 
       let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
-      console.log(arrIndex);
-      //console.log(this.todosIndex.splice(arrIndex, 0, this.todoSources));
-      
-      //this.todosIndex[arrIndex].task = this.todoSources;
-      //this.todosIndex[arrIndex].task.splice(0, 0, this.todoSources);
-      //let taskToString = JSON.stringify(this.todoSources);
-      this.todosIndex[arrIndex].task.splice(0, 0, task);
+      //console.log(arrIndex);
+      //this.todosIndex[arrIndex].task.splice(0, 0, task);
+      this.todosIndex[arrIndex].task.splice(0, 0, todoData);
       console.log(this.todosIndex);
       let todosIndexData = JSON.stringify(this.todosIndex);
-      //this.todoSources.splice(this.todoSources[arrIndex], 1);
-      //this.toDosOpen[0].task.splice(0,0,task);
-      //console.log(this.toDosOpen.task);
-      //this.todoSources.(todoData);
       this.createTask.name = '';
       this.newTaskList = true;
       userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
-      //console.log(this.todoSources);
     }
-    
-    
+  }
+
+  storeTaskCompleted(task, taskIndex, taskList, isChecked){
+    console.log('checked dice que... => ' ,isChecked)
+    let todoData = {};
+    if(isChecked){
+      console.log('NO esta checked');
+      todoData = {
+        task: task.task,
+        isChecked: false
+      }
+    }
+    if(!isChecked){
+      console.log('esta checked');
+      todoData = {
+        task: task.task,
+        isChecked: true
+      }
+    }
+    console.log('todoData => ' ,todoData);
+    let indexArrName: string = taskList.nameList;
+    let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
+    this.todosIndex[arrIndex].task.splice(taskIndex, 1, todoData);
+    let todosIndexData = JSON.stringify(this.todosIndex);
+    userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
+    this.getPercentageCompleted(this.todosIndex[arrIndex].task)
+  }
+
+  getPercentageCompleted(tasksList){
+    // for (let task of this.todosIndex[].length) {
+
+    // }
+
+    console.log(tasksList);
+
+    // let arrayPercentages = [];
+
+    // for (let taskChecked of this.todosIndex){
+    //   for (let checkTasks of taskChecked.task){
+    //     //let isCheckedTaskLabel = checkTasks.isChecked;
+    //     // arrayPercentages = checkTasks.filter(checked => checked.isChecked === true);
+    //     // console.log(arrayPercentages);
+    //     // let checkedTasks = checkTasks.find(taskCompleted => taskCompleted.isChecked === true);
+    //     console.log(checkTasks.isChecked);
+    //   }
+    // }
+
+    // for (let i = 0; i < this.todosIndex.length; i++) {
+    //   // let totalTasksChecked = [];
+    //   // let totalTasks = this.todosIndex[i].task.length;
+    //   // console.log("totalTasks => ", totalTasks);
+    //   let totalTasks = this.todosIndex[i].task[i].task;
+    //   //console.log(totalTasks);
+    //   //totalTasks.find(task => task.isChecked === true);
+    //   // for(let taskCompleted of this.todosIndex[i].task) {
+    //   //   console.log('taskCompleted => ', taskCompleted);
+    //   //   if(taskCompleted.isChecked === true){
+    //   //     totalTasksChecked.push(taskCompleted);
+    //   //   }
+    //   // }
+    //   //console.log("totalTasksChecked", totalTasksChecked.length);
+    //   //let getPercentage = Math.round(total)
+    // }
   }
 
 }

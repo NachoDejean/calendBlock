@@ -72,7 +72,8 @@ export class HomePage implements OnInit{
     storeDate: '',
     tag: '',
     tagColor: '',
-    reminder: null
+    reminder: null,
+    reminderLegend: ''
   };
 
   @ViewChild(CalendarComponent, null) myCal: CalendarComponent;
@@ -148,7 +149,9 @@ export class HomePage implements OnInit{
               storeDate: eventDataGaia.storeDate,
               tag: eventDataGaia.tag,
               tagColor: eventDataGaia.tagColor,
+              remindMe: eventDataGaia.remindMe,
               reminder: parseISO(eventDataGaia.reminder),
+              reminderLegend: eventDataGaia.reminderLegend
             }
             if (eventData.allDay) {
               // let start = eventData.startTime;
@@ -184,7 +187,8 @@ export class HomePage implements OnInit{
       storeDate: '', 
       tag: '',
       tagColor: '',
-      reminder: null
+      reminder: null,
+      reminderLegend: ''
     };
   }
 
