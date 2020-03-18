@@ -132,8 +132,15 @@ $blueDarkTwo: #173847;
     position: absolute;
     align-self: flex-end;
     padding: 2.5%;
+    padding-right: 1%;
     margin-top: -2.5%;
+
     //margin-right: -2.5%;
+
+    ion-icon {
+        width: 25px;
+        height: 25px;
+    }
 
     img {
         height: 15px;

@@ -216,7 +216,7 @@ export class AddEventComponent implements OnInit {
           reminder: event.reminder,
           reminderLegend: event.reminderLegend
         };
-        this.editPickerElements(event.startTime, event.endTime);
+        //this.editPickerElements(event.startTime, event.endTime);
         this.tagEvent = {
           name: event.tag,
           color: event.tagColor

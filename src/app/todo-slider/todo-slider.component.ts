@@ -1,10 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { AlertController, PopoverController } from '@ionic/angular';
 import { ShareDataService } from '../services/shareData.service';
 import {UserSession} from 'blockstack';
+import { PopTasksComponent} from '../components/pop-tasks/pop-tasks.component';
+
+import { takeWhile } from 'rxjs/operators'
 
 const userSession = new UserSession;
-const gaiaPutOptions = { encrypt: false }
-const gaiaGetOptions = { decrypt: false }
+const gaiaPutOptions = { encrypt: false };
+const gaiaGetOptions = { decrypt: false };
+
+//const popover = PopoverController;
+let popOverSub = null;
 
 @Component({
   selector: 'app-todo-slider',
@@ -28,6 +35,8 @@ export class TodoSliderComponent implements OnInit {
   newList: boolean = false;
   saveAndCloseNewList: boolean = false;
   taskOpen: any;
+
+  
 
   todosIndex = [];
   todoSources = [];
@@ -93,31 +102,51 @@ export class TodoSliderComponent implements OnInit {
 
   @ViewChild('slides', {static: false}) slides;
   fabBgColor: any;
+  taskListOpen: any;
+  currentPopOver;
   
-  constructor( private dataService: ShareDataService) { 
+  constructor( private dataService: ShareDataService,
+               private alertCtrl: AlertController,
+               public popoverController: PopoverController ) { 
     this.todoSources = [];
+    // this.dataService.openPopOverList.subscribe(action => {
+    //   if(action === null){ console.log('null no hacemos nada')}
+    //   if(action === 'edit'){
+    //     console.log('editamos la lista');
+    //     //this.dataService.openPopOver(null);
+    //     //this.dataService.openPopOverList.unsubscribe();
+    //   }
+    //   if(action === 'delete'){
+    //     this.deleteTaskList(this.taskListOpen);
+    //     this.dataService.openPopOver(null);
+    //   }
+    // }).unsubscribe();
+    //this.dataService.openPopOverList.takeUntil()
   }
 
   ngOnInit() {
     this.loadGaiaTodos();
     this.dataService.newToDoList.subscribe(list => {
       if(list === null){
-
       }else {
-
         this.createNewList(list);
       }
-      // if(list){
-      //   console.log('creamos una nueva lista');
-      // }
     });
     this.dataService.openTaskList.subscribe(isOpenTask => {
-      if(!isOpenTask){
+      if(!isOpenTask){  
         console.log('is open task es false asi que cerramos');
         this.openTaskView = false;
         this.newTaskList = true;
+        //this.dataService.openPopOver(null);
       }
-    })
+    });
+    
+  }
+
+  ngOnDestroy(){
+    console.log('on destroy');
+    this.dataService.openPopOverList.subscribe().unsubscribe();
+    //this.dataService.openPopOverList.pipe(takeUntil(this.openTaskView === false));
   }
 
   loadGaiaTodos(){
@@ -129,7 +158,8 @@ export class TodoSliderComponent implements OnInit {
       } else {
         console.log('no hay data en gaia');
         this.todosIndex = this.todosIndexDefaults;
-      }  
+      }
+      console.log(this.todosIndex)  
     });
   }
 
@@ -147,13 +177,10 @@ export class TodoSliderComponent implements OnInit {
     console.log(this.taskOpen);
     this.todoSources = this.taskOpen.task;
     console.log(this.todoSources);
+    //this.dataService.openPopOver(null);
   }
 
   createNewList(newList){
-    
-    console.log('create new list => ', newList);
-    // this.openTaskView = true;
-    // this.newTaskList = true;
     if(newList){
       this.newTagColor = this.tagsColors[0].color;
       this.newList = newList;
@@ -164,19 +191,20 @@ export class TodoSliderComponent implements OnInit {
       };
       this.todosIndex.unshift(defualtSettingsList);
       this.slides.slideTo(0, 1500);
-    } if(!newList){
-      console.log("pasamos por aqui...")
+    } 
+    if(!newList){
+      //console.log("pasamos por aqui...")
       this.todosIndex.shift();
       this.newList = false;
       //this.dataService.createToDoList(false);
-    }
-    
+    }    
   }
-  saveCreateNewList(){
-    console.log('save create new list');
-    this.openTaskView = false;
-    this.newTaskList = false;
-  }
+
+  // saveCreateNewList(){
+  //   console.log('save create new list');
+  //   this.openTaskView = false;
+  //   this.newTaskList = false;
+  // }
 
   storeNewList(list){
     this.todosIndex.shift();
@@ -185,16 +213,14 @@ export class TodoSliderComponent implements OnInit {
       color: this.newTagColor,
       task: []
     }
-    //this.todosIndex.unshift(newTareasList);
-    this.todosIndex.push(newTareasList);
     //this.todosIndex.splice(0, 0, newTareasList);
-    this.slides.update();
-    this.slides.slideTo(this.todosIndex.length, 1500);
-    //this.todoSources.push(list);
-    
+    this.todosIndex.unshift(newTareasList);
     //this.todosIndex.push(newTareasList);
+    console.log(this.todosIndex)
+    this.slides.update();
+    //this.slides.slideTo(this.todosIndex.length, 1500);
+    this.slides.slideTo(0, 1500);
     let todosIndexToString = JSON.stringify(this.todosIndex);
-    //let todosOnlyToString = JSON.stringify(list);
     userSession.putFile('tareasIndex.json', todosIndexToString, gaiaPutOptions)
     .then(()=>{
       this.newList = false;
@@ -203,23 +229,98 @@ export class TodoSliderComponent implements OnInit {
       this.createTaskList.color = this.tagsColors[0].color;
       //this.saveAndCloseNewList = true;
     });
-    //userSession.putFile('todosList/' + list.name + '.json', todosOnlyToString, gaiaPutOptions);
   }
 
-  slideTask(task, item){
-      item.close();
-      task.style
+  // identify(index, item){
+  //   console.log(index, item);
+
+  //   return item;
+  // }
+
+  // slideTask(task, item){
+  //     item.close();
+  //     task.style
+  // }
+
+  async tasksOptionsPopover(ev: any, taskListOpen) {
+    this.dataService.openPopOver('');
+    
+    this.taskListOpen = taskListOpen;
+    this.currentPopOver = await this.popoverController.create({
+      component: PopTasksComponent,
+      event: ev,
+      translucent: true,
+      animated: true,
+      mode: "ios"
+    });
+
+    ev.preventDefault();
+
+    //this.currentPopOver = popover;
+
+    popOverSub = this.dataService.openPopOverList.subscribe(action => {
+      if(action === ''){ 
+        console.log('null no hacemos nada');
+        //this.popOverSub.unsubscribe();
+      }
+      if(action === 'edit'){
+        this.editTheList();
+        //this.dataService.openPopOver(null);
+      }
+      if(action === 'delete'){
+        this.deleteTaskList(this.taskListOpen);
+        //this.dataService.openPopOver(null);
+        //this.popOverSub.unsubscribe();
+      }
+    });
+
+    return await this.currentPopOver.present();
   }
 
-  deleteTaskList(taskList){
-    let indexArrName: string = taskList.nameList;
-    let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
-    console.log(arrIndex);
-    this.todosIndex.splice(arrIndex, 1);
-    this.openTaskView = false;
-    console.log(this.todosIndex);
-    let todosIndexData = JSON.stringify(this.todosIndex);
-    userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
+  async deleteTaskList(taskList){
+    this.currentPopOver.dismiss();
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm list deletion?',
+      subHeader: 'This is permanent',
+      message: 'Do you really want to delete this list?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+            //this.dataService.openPopOver(null);
+            popOverSub.unsubscribe();
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+            let indexArrName: string = taskList.nameList;
+            let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
+            this.todosIndex.splice(arrIndex, 1);
+            this.openTaskView = false;
+            this.dataService.openToDoList(false);
+            
+            //this.dataService.openPopOver(null);
+            popOverSub.unsubscribe();
+            let todosIndexData = JSON.stringify(this.todosIndex);
+            userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  editTheList(){
+    console.log('editamos la lista');
+        //this.popOverSub.unsubscribe();
+        //this.dataService.openPopOver('');
+        this.currentPopOver.dismiss();
+        popOverSub.unsubscribe();
+    //this.dataService.openPopOverList.subscribe().unsubscribe();
   }
 
   deleteTask(task, taskIndex, taskList) {
@@ -278,7 +379,7 @@ export class TodoSliderComponent implements OnInit {
     this.todosIndex[arrIndex].task.splice(taskIndex, 1, todoData);
     let todosIndexData = JSON.stringify(this.todosIndex);
     userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
-    this.getPercentageCompleted(this.todosIndex[arrIndex].task)
+    //this.getPercentageCompleted(this.todosIndex[arrIndex].task)
   }
 
   getPercentageCompleted(tasksList){
@@ -317,5 +418,6 @@ export class TodoSliderComponent implements OnInit {
     //   //let getPercentage = Math.round(total)
     // }
   }
+
 
 }

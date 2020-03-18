@@ -118,13 +118,16 @@ export class HomePage implements OnInit{
       if(isOpenTask){
         this.taskIsOpen = true;
       }
+      if(!isOpenTask){
+        this.taskIsOpen = false;
+      }
     });
     this.dataService.closeNewTaskList.subscribe(close => {
       if(close !== null){
         this.createToDoList();
-
       }
-    })
+    });
+    
   }
 
   loadGaiaEvents(){
@@ -470,6 +473,7 @@ export class HomePage implements OnInit{
       this.calendarPage = false;
       this.toDosPage = false;
       this.settingsPage = false;
+      
       //this.testNoti();
     }
   }

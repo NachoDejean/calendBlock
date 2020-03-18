@@ -43,10 +43,11 @@ import { ShareDataService } from './services/shareData.service';
 
 //import {EventDetailComponent} from './event-detail/event-detail.component';
 import { TagSelectorComponent } from '../app/tag-selector/tag-selector.component';
+import { PopTasksComponent } from '../app/components/pop-tasks/pop-tasks.component';
 
 @NgModule({
-  declarations: [AppComponent, TagSelectorComponent],
-  entryComponents: [],
+  declarations: [AppComponent, TagSelectorComponent, PopTasksComponent],
+  entryComponents: [PopTasksComponent],
   imports: [BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
   providers: [
     StatusBar,

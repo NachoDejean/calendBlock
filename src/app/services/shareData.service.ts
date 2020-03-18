@@ -52,6 +52,12 @@ export class ShareDataService {
         this.taskListOpen.next(list);
     }
     
+    private popOverOps = new BehaviorSubject<string>('');
+    openPopOverList = this.popOverOps.asObservable();
+    openPopOver(action: string){
+        this.popOverOps.next(action);
+    }
+    
     
 
     

@@ -1,6 +1,7 @@
 <div class="todoSliderWrapper">
   <ion-slides #slides pager [options]="slideOpts">
 
+    <!-- <ion-slide class="taskListSlide" *ngFor="let todosIndexList of todosIndex; let i = index; trackBy:identify"> -->
     <ion-slide class="taskListSlide" *ngFor="let todosIndexList of todosIndex; let i = index">
       <!-- <div class="taskWrapper" *ngIf="!newList || i != 0" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)"> -->
       <div class="taskWrapper" *ngIf="!newList || i != 0" [style.background]='todosIndexList.color' (click)="openTaskList(todosIndexList)">
@@ -23,6 +24,7 @@
       </div>
 
       <div class="taskWrapper" *ngIf="newList && i === 0" [style.background]='newTagColor'>
+      <!-- <div class="taskWrapper" *ngIf="newList" [style.background]='newTagColor'> -->
         <div class="infoTask">     
           <ion-input autofocus="true" placeholder="New List" class="todoNewListH1" [(ngModel)]="createTaskList.name"></ion-input>
           <div class="colorTaskList">
@@ -68,7 +70,9 @@
     </div>
 
     <div class="actionBtnTasksLists">
-      <img (click)="deleteTaskList(taskOpen)" src="assets/icons/threeDots.svg" />
+      <!-- <img (click)="deleteTaskList(taskOpen)" src="assets/icons/threeDots.svg" /> -->
+      <img (click)="tasksOptionsPopover($event, taskOpen)" src="assets/icons/threeDots.svg" />
+      <!-- <ion-icon name="trash-outline" slot="end" (click)="deleteTaskList(taskOpen)"></ion-icon> -->
     </div>
   </div>
   
@@ -91,9 +95,8 @@
     <!-- <ion-item>
       <ion-button class="btnAddTask" fill="none" clear expand="block" (click)="storeTask()"> + Add New Task</ion-button>
     </ion-item> -->
-    <ion-item-sliding #slidingItem *ngFor="let task of todoSources; let i = index" >
     <!-- <ion-item-sliding *ngFor="let task of toDosOpen.task"> -->
-      <ion-item>
+      <ion-item *ngFor="let task of todoSources; let i = index"> 
         <div class="checkboxConteiner">
           <!-- <ion-checkbox checked="task.isChecked" (click)="storeTaskCompleted(task, taskOpen, task.isChecked)" mode="ios" slot="start" [(ngModel)]="task.isChecked"></ion-checkbox> -->
           <ion-checkbox (click)="storeTaskCompleted(task, i, taskOpen, task.isChecked)" mode="ios" slot="start" [(ngModel)]="task.isChecked"></ion-checkbox>
@@ -104,10 +107,6 @@
         <ion-icon *ngIf="task.isChecked" name="trash-outline" slot="end" (click)="deleteTask(task, i, taskOpen)"></ion-icon>
         <!-- <ion-icon  name="close-circle-outline" slot="end" (click)="deleteTask(task, i, taskOpen)"></ion-icon> -->
       </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option (click)="slideTask(task, slidingItem)">Delete</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="openTaskView" (click)="newTask()">
