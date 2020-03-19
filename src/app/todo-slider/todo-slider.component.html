@@ -62,19 +62,42 @@
 </div>
 
 <div class="insideTaskWrapper"  *ngIf="openTaskView">
-  <div class="headerTasks" [style.background]='taskOpen.color'>
+  <div *ngIf="!listTitileEdit" class="headerTasks" [style.background]='taskOpen.color'>
     <div class="infoTask" >     
       <h4 class="todoTaskLength" *ngIf="taskOpen.task.length > 1 || taskOpen.task.length == 0">{{taskOpen.task.length}} Tasks</h4>
       <h4 class="todoTaskLength" *ngIf="taskOpen.task.length == 1">{{taskOpen.task.length}} Task</h4>
-      <h1 class="todoNameList">{{taskOpen.nameList}}</h1>
+      <h1 class="todoNameList" >{{taskOpen.nameList}}</h1>
     </div>
-
+    
+    
     <div class="actionBtnTasksLists">
       <!-- <img (click)="deleteTaskList(taskOpen)" src="assets/icons/threeDots.svg" /> -->
       <img (click)="tasksOptionsPopover($event, taskOpen)" src="assets/icons/threeDots.svg" />
       <!-- <ion-icon name="trash-outline" slot="end" (click)="deleteTaskList(taskOpen)"></ion-icon> -->
     </div>
   </div>
+  <div *ngIf="listTitileEdit" class="headerTasks editTaskList" [style.background]='newTagColor'>
+    <div class="colorTaskList">
+      <ion-row class="colorRow">
+        <ion-col *ngFor="let color of tagsColors">
+          <a class="circleTaskColor" [style.background]="color.color" (click)="colorTaskList(color.color)" [ngClass]="{'colorActive': newTagColor === color.color }"></a>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
+      <div class="infoTask" >
+        <ion-input autofocus="true" class="todoNewListH1 editNameList" [(ngModel)]="createTaskList.name"></ion-input>
+      </div>
+      <div class="okConfirmEdit">
+        <ion-fab-button class="okConfirmButton" (click)="saveEditList(createTaskList)">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </ion-fab-button>
+      </div>
+  </ion-row>
+  </div>
+
+
+  
   
   <!-- <div class="infoTask" *ngIf="!newTaskList">      -->
   

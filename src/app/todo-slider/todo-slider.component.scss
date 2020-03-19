@@ -111,6 +111,15 @@ $blueDarkTwo: #173847;
     padding: 5%;
 }
 
+.editTaskList {
+    padding: 1.5%;
+
+    .circleTaskColor {
+        width: 30px;
+        height: 30px;
+    }
+}
+
 .infoTask {
     h1 {
         margin: 0;
@@ -124,8 +133,13 @@ $blueDarkTwo: #173847;
     }
 }
 
-.bgFabAdd {
+.bgFabAdd, .okConfirmButton {
     --background: #173847;
+}
+
+.okConfirmButton {
+    width: 40px;
+    height: 40px;
 }
 
 .actionBtnTasksLists {
@@ -176,6 +190,14 @@ $blueDarkTwo: #173847;
     border-radius: 20px;
     --padding-start: 8px;
     border: 1px dashed;
+}
+
+.editNameList {
+    width: 90%;
+}
+
+.okConfirmButton {
+
 }
 
 .saveNewTaskList {

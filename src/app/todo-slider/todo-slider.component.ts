@@ -34,6 +34,7 @@ export class TodoSliderComponent implements OnInit {
   newTaskList: boolean = false;
   newList: boolean = false;
   saveAndCloseNewList: boolean = false;
+  listTitileEdit: boolean = false;
   taskOpen: any;
 
   
@@ -138,6 +139,7 @@ export class TodoSliderComponent implements OnInit {
         this.openTaskView = false;
         this.newTaskList = true;
         //this.dataService.openPopOver(null);
+        this.listTitileEdit = false;
       }
     });
     
@@ -231,6 +233,8 @@ export class TodoSliderComponent implements OnInit {
     });
   }
 
+  
+
   // identify(index, item){
   //   console.log(index, item);
 
@@ -277,6 +281,8 @@ export class TodoSliderComponent implements OnInit {
     return await this.currentPopOver.present();
   }
 
+  
+
   async deleteTaskList(taskList){
     this.currentPopOver.dismiss();
     const alert = await this.alertCtrl.create({
@@ -316,12 +322,34 @@ export class TodoSliderComponent implements OnInit {
 
   editTheList(){
     console.log('editamos la lista');
-        //this.popOverSub.unsubscribe();
-        //this.dataService.openPopOver('');
-        this.currentPopOver.dismiss();
-        popOverSub.unsubscribe();
-    //this.dataService.openPopOverList.subscribe().unsubscribe();
+    this.listTitileEdit = true;
+    this.createTaskList.name = this.taskOpen.nameList;
+    this.newTagColor = this.taskOpen.color;
+    this.currentPopOver.dismiss();
+    popOverSub.unsubscribe();
   }
+
+  saveEditList(list){
+    console.log(list, this.newTagColor, this.taskListOpen)
+    let indexArrName: string = this.taskListOpen.nameList;
+    let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
+    let editTaskList = {
+      nameList: list.name,
+      color: this.newTagColor,
+      task: this.taskListOpen.task
+    }
+    this.todosIndex.splice(arrIndex, 1, editTaskList);
+    this.taskOpen.nameList = editTaskList.nameList;
+    this.taskOpen.color = editTaskList.color;
+    this.taskOpen.task = editTaskList.task;
+    this.listTitileEdit = false;
+    let todosIndexData = JSON.stringify(this.todosIndex);
+    userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
+  }
+
+  // editColorTaskList(color){
+  //   this.newTagColor = color;
+  // }
 
   deleteTask(task, taskIndex, taskList) {
     let indexArrName: string = taskList.nameList;
