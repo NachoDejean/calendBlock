@@ -196,17 +196,18 @@ export class AddEventComponent implements OnInit {
         console.log('el edit event es null no hacemos nada');
       } else {
         this.editMode = true;
-        console.log('el edit event NO es null, cargamos la data');
-        //let formatStart = new Date(event.startTime).toISOString();
+        console.log('el edit event NO es null, cargamos la data => ', event);
+        let formatStart = new Date(event.startTime).toISOString();
+        let formatEnd = new Date(event.endTime).toISOString();
         this.event = {
           title: event.title,
           desc: event.desc,
-          startTime: null,
-          endTime: null,
-          // startTime: event.startTime,
-          // endTime: event.endTime,
-          // startTime: '',
-          // endTime: '',
+          // startTime: null,
+          // endTime: null,
+          // startTime: new Date(event.startTime),
+          // endTime: new Date(event.endTime),
+          startTime: formatStart,
+          endTime: formatEnd,
           allDay: event.allDay,
           remindMe: event.remindMe,
           loc: event.loc,
@@ -310,7 +311,7 @@ export class AddEventComponent implements OnInit {
   }
 
   dataSelected(date){
-    console.log(date);
+    //console.log(date);
     this.reminderSelectBoo = false;
   }
 

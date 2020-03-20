@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, PopoverController } from '@ionic/angular';
 //import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
 
@@ -10,6 +10,7 @@ import * as blockstack from 'blockstack';
 
 //import { WeatherService } from '../services/weather.service';
 import { ShareDataService } from '../services/shareData.service';
+import { PopTasksComponent} from '../components/pop-tasks/pop-tasks.component';
 
 import { Plugins } from '@capacitor/core';
 const { LocalNotifications } = Plugins;
@@ -22,8 +23,10 @@ const redirectURI = 'https://calendblock.appassionates.com';
 const manifestURI = 'https://calendblock.appassionates.com/manifest.json';
 const scopes = ['store_write', 'publish_data'];
 const appDomain = 'https://calendblock.appassionates.com';
-const gaiaPutOptions = { encrypt: false }
-const gaiaGetOptions = { decrypt: false }
+const gaiaPutOptions = { encrypt: false };
+const gaiaGetOptions = { decrypt: false };
+
+let popOverSub = null;
 
 @Component({
   selector: 'app-home',
@@ -77,11 +80,13 @@ export class HomePage implements OnInit{
   };
 
   @ViewChild(CalendarComponent, null) myCal: CalendarComponent;
+  currentPopOver: any;
 
   constructor(
               //private geolocation: Geolocation,
               private dataService: ShareDataService,
               private alertCtrl: AlertController,
+              public popoverController: PopoverController
               //private ws: WeatherService
               ) {}
 
@@ -216,6 +221,7 @@ export class HomePage implements OnInit{
   }
 
   editEventSelected(event){
+    popOverSub.unsubscribe();
     this.dataService.editEventData(event);
     this.showAddEventComponent = !this.showAddEventComponent;
     this.eventIsEditing = true;
@@ -234,11 +240,13 @@ export class HomePage implements OnInit{
           cssClass: 'secondary',
           handler: (blah) => {
             console.log('Confirm Cancel: blah');
+            popOverSub.unsubscribe();
           }
         }, {
           text: 'Okay',
           handler: () => {
             console.log('Confirm Okay');
+            popOverSub.unsubscribe();
             userSession.deleteFile('calenderEvent/' + event.storeDate + '.json')
             .then(() => {
               this.eventIndex.splice(this.eventIndex.indexOf(event.storeDate), 1);
@@ -294,6 +302,45 @@ export class HomePage implements OnInit{
       this.eventIsEditing = false;
       this.dataService.editEventData(null);
     }
+  }
+
+  async tasksOptionsPopover(ev: any, eventOpen) {
+    console.log(ev);
+    this.dataService.openPopOver('');
+    
+    //this.taskListOpen = taskListOpen;
+    this.currentPopOver = await this.popoverController.create({
+      component: PopTasksComponent,
+      event: ev,
+      translucent: true,
+      animated: true,
+      mode: "ios"
+    });
+
+    //ev.preventDefault();
+
+    //this.currentPopOver = popover;
+
+    popOverSub = this.dataService.openPopOverList.subscribe(action => {
+      if(action === ''){ 
+        console.log('null no hacemos nada');
+        //this.popOverSub.unsubscribe();
+      }
+      if(action === 'edit'){
+        this.editEventSelected(eventOpen);
+        this.currentPopOver.dismiss();
+        //this.editTheList();
+        //this.dataService.openPopOver(null);
+      }
+      if(action === 'delete'){
+        this.deleteEventSelected(eventOpen);
+        this.currentPopOver.dismiss();
+        //this.dataService.openPopOver(null);
+        //this.popOverSub.unsubscribe();
+      }
+    });
+
+    return await this.currentPopOver.present();
   }
 
   storeEditEvent(event){

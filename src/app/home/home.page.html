@@ -6,7 +6,7 @@
             <img src="../../assets/icons/customMenu.svg" />
         </ion-button>
       </ion-menu-toggle> -->
-    <ion-title *ngIf="!showAddEventComponent && !eventSelected">Hi {{personaName}}</ion-title>
+    <ion-title *ngIf="!showAddEventComponent">Hi {{personaName}}</ion-title>
     <ion-title *ngIf="showAddEventComponent && !eventIsEditing">Add New Event</ion-title>
     <ion-title *ngIf="showAddEventComponent && eventIsEditing">Edit Event</ion-title>
     
@@ -29,12 +29,12 @@
     </div> -->
 
     <ion-buttons slot="end" *ngIf="eventSelected" class="btnsHeaderEventSelected">
-      <ion-button class="addEventBtn" color="clear" clear (click)="deleteEventSelected(event)">
+      <!-- <ion-button class="addEventBtn" color="clear" clear (click)="deleteEventSelected(event)">
         <img src="assets/icons/delete.svg" />
       </ion-button>
       <ion-button class="addEventBtn" color="clear" clear (click)="editEventSelected(event)">
         <img src="assets/icons/editWhite.svg" />
-      </ion-button>
+      </ion-button> -->
       <ion-button class="addEventBtn" color="clear" clear (click)="closeEventSelected()">
         <span [ngClass]="eventSelected ? 'closeAddEvent' : 'openAddEvent'">+</span>
       </ion-button>
@@ -217,6 +217,9 @@
         <div class="eventInfoWrapper">
           
           <div class="headerCardEvent" [style.background]='event.tagColor'>
+            <div class="actionBtnTasksLists">
+              <img (click)="tasksOptionsPopover($event, event)" src="assets/icons/threeDots.svg" />
+            </div>
             <div class="tagCalendarName">
               <!-- <div class="imgCalendarName">
                 <img src="assets/icons/calendar.svg" />

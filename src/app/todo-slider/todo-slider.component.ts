@@ -4,8 +4,6 @@ import { ShareDataService } from '../services/shareData.service';
 import {UserSession} from 'blockstack';
 import { PopTasksComponent} from '../components/pop-tasks/pop-tasks.component';
 
-import { takeWhile } from 'rxjs/operators'
-
 const userSession = new UserSession;
 const gaiaPutOptions = { encrypt: false };
 const gaiaGetOptions = { decrypt: false };

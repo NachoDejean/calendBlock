@@ -301,6 +301,18 @@ $redpinkTag: #CF195E;
     background: #fff;
     border-radius: 25px;
 
+    .actionBtnTasksLists{
+        position: absolute;
+        align-self: flex-end;
+        padding: 2.5%;
+        /* padding-right: 1%; */
+        margin-top: -1.5%;
+
+        img {
+            height: 20px;
+        }
+    }
+
     .eventInfo {
         position: relative;
         width: 100%;
