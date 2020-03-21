@@ -27,15 +27,15 @@
   <div class="newTag" *ngIf=newTagScreen>
     <ion-item>
       <ion-label position="floating">Tag Name</ion-label>
-      <ion-input autofocus="true" class="inputNewTag" [(ngModel)]="tag.label"></ion-input>
+      <ion-input autofocus="true" class="inputNewTag" [(ngModel)]="selectedNewTag.name"></ion-input>
     </ion-item>
 
     <div class="colorTags">
       <ion-radio-group>
-        <ion-item *ngFor="let colorTag of tagsColors" (ionSelect)="radioSelect($event)">      
+        <ion-item *ngFor="let colorTag of tagsColors" (click)="radioSelect(colorTag.color)">      
             <div class="tagCircleColor" [style.background]='colorTag.color'></div>
             <div class="tagName" >{{colorTag.name}}</div>
-          <ion-radio checked=tagsColors[0] slot="end" color="#0cd1e8" mode="ios" [value]="colorTag"></ion-radio>
+          <ion-radio checked=tagsColors[0] slot="end" color="#0cd1e8" mode="ios" [value]="colorTag.color"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </div>

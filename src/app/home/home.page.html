@@ -11,7 +11,7 @@
     <ion-title *ngIf="showAddEventComponent && eventIsEditing">Edit Event</ion-title>
     
     <ion-buttons slot="end">
-    <ion-button *ngIf="!toDosPage && !eventSelected" slot="end" class="addEventBtn" color="clear" clear (click)="openAddEvent()">
+    <ion-button *ngIf="!toDosPage && !eventSelected && !eventIsEditing" slot="end" class="addEventBtn" id="openAddEvent" color="clear" clear (click)="openAddEvent()">
       <!-- <img [ngClass]="showAddEventComponent ? 'closeAddEvent' : 'openAddEvent'" src="../../assets/icons/plusAddEvent.png" /> -->
       <span [ngClass]="showAddEventComponent ? 'closeAddEvent' : 'openAddEvent'">+</span>
     </ion-button>
@@ -21,6 +21,12 @@
     <ion-button *ngIf="toDosPage && taskIsOpen" slot="end" class="addEventBtn" color="clear" clear (click)="closeTaskOpen()">
       <span [ngClass]="taskIsOpen ? 'closeAddEvent' : 'openAddEvent'">+</span>
     </ion-button>
+    <ion-button *ngIf="eventSelected && !eventIsEditing" slot="end" class="addEventBtn" id="closeEventSelected" color="clear" clear (click)="closeEventSelected()">
+      <span [ngClass]="eventSelected ? 'closeAddEvent' : 'openAddEvent'">+</span>
+    </ion-button>
+    <ion-button *ngIf="eventIsEditing && !eventSelected" slot="end" class="addEventBtn" id="closeEventEdited" color="clear" clear (click)="closeEventEdited()">
+      <span [ngClass]="eventIsEditing ? 'closeAddEvent' : 'openAddEvent'">+</span>
+    </ion-button>
     </ion-buttons>
 
     <!-- <div class="calendarRow flexRow" *ngIf="eventSelected">
@@ -28,17 +34,17 @@
       <h1 class="calendarName">{{event.tag}}</h1>
     </div> -->
 
-    <ion-buttons slot="end" *ngIf="eventSelected" class="btnsHeaderEventSelected">
-      <!-- <ion-button class="addEventBtn" color="clear" clear (click)="deleteEventSelected(event)">
+    <!--<ion-buttons slot="end" *ngIf="eventSelected" class="btnsHeaderEventSelected">
+       <ion-button class="addEventBtn" color="clear" clear (click)="deleteEventSelected(event)">
         <img src="assets/icons/delete.svg" />
       </ion-button>
       <ion-button class="addEventBtn" color="clear" clear (click)="editEventSelected(event)">
         <img src="assets/icons/editWhite.svg" />
       </ion-button> -->
-      <ion-button class="addEventBtn" color="clear" clear (click)="closeEventSelected()">
+      <!-- <ion-button class="addEventBtn" color="clear" clear (click)="closeEventSelected()">
         <span [ngClass]="eventSelected ? 'closeAddEvent' : 'openAddEvent'">+</span>
-      </ion-button>
-    </ion-buttons>
+      </ion-button> -->
+    <!-- </ion-buttons> -->
 
 
     <!-- <ion-button *ngIf="eventSelected" slot="end" class="addEventBtn" color="clear" clear (click)="closeEventSelected()">
@@ -234,12 +240,13 @@
             <div class="headerRow eventTimeRow flexRow" *ngIf='event.allDay === false'>
               <div class="colTime">
                 <div class="titileTime">From</div>
-                <div class="eventTime ">{{event.startTime|date: 'HH:mm'}}</div>
+                <div class="eventTime ">{{event?.startTime | date: 'HH:mm' }}</div>
+                <!-- <div class="eventTime ">{{parseStartTime }}</div> -->
               </div>
               <div class="timeSeparator"></div>
               <div class="colTime">
                 <div class="titileTime">To</div>
-                <div class="eventTime ">{{event.endTime|date: 'HH:mm'}}</div>
+                <div class="eventTime ">{{event?.endTime | date: 'HH:mm' }}</div>
               </div>
             </div>
             <div class="headerRow eventTimeRow allDayRow flexRow" *ngIf='event.allDay === true'>

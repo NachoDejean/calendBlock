@@ -126,8 +126,10 @@ export class AddEventComponent implements OnInit {
     if(this.editMode){
       eventCopy = {
         title: this.event.title,
-        startTime:  new Date(this.event.startTime),
-        endTime: new Date(this.event.endTime),
+        // startTime:  new Date(this.event.startTime),
+        // endTime: new Date(this.event.endTime),
+        startTime:  parseISO(this.event.startTime),
+        endTime: parseISO(this.event.endTime),
         allDay: this.event.allDay,
         remindMe: this.event.remindMe,
         desc: this.event.desc,
@@ -191,6 +193,7 @@ export class AddEventComponent implements OnInit {
 
   editEventSubscribe(){
     this.dataService.editDataEvent.subscribe(event => {
+      console.log('event a editar => ', event)
       if(event === null) {
         this.resetEvent();
         console.log('el edit event es null no hacemos nada');
@@ -221,6 +224,10 @@ export class AddEventComponent implements OnInit {
         this.tagEvent = {
           name: event.tag,
           color: event.tagColor
+        }
+        if(this.event.remindMe){
+
+          this.reminderSelect(this.event.reminderLegend)
         }
       }
     });
@@ -316,32 +323,36 @@ export class AddEventComponent implements OnInit {
   }
 
   reminderSelect(reminder){
-    console.log('el selected reminder es => ', reminder.detail.value);
-    this.reminderVal = reminder.detail.value;
-    if(this.reminderVal === 'r1') {
+    //console.log('el selected reminder es => ', reminder.detail.value);
+    console.log('el selected reminder es => ', reminder);
+    this.reminderVal = reminder;
+    if(this.reminderVal === 'r1' || this.event.reminderLegend === 'r1') {
       this.reminderTime = parseISO(this.event.startTime);
       console.log('elegimos el 1 => ', this.reminderTime);
       this.reminderText = 'At time of the event';
     }
-    if(this.reminderVal === 'r2') {
+    if(this.reminderVal === 'r2' || this.event.reminderLegend === 'r2') {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 5);
       console.log('elegimos el 2 => ', this.reminderTime);
       this.reminderText = '5 minutes before';
     }
-    if(this.reminderVal === 'r3') {
+    if(this.reminderVal === 'r3' || this.event.reminderLegend === 'r3') {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 15);
       console.log('elegimos el 3 => ', this.reminderTime);
       this.reminderText = '15 minutes before';
     }
-    if(this.reminderVal === 'r4') {
+    if(this.reminderVal === 'r4' || this.event.reminderLegend === 'r4') {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 60);
       console.log('elegimos el 4 => ', this.reminderTime);
       this.reminderText = '1 hour before';
     }
-    if(this.reminderVal === 'r5') {
+    if(this.reminderVal === 'r5' || this.event.reminderLegend === 'r5') {
       this.reminderTime = subDays(parseISO(this.event.startTime), 1);
       console.log('elegimos el 5 => ', this.reminderTime);
       this.reminderText = '1 day before';
+    }
+    if(this.reminderVal === null || this.reminderVal == '' || this.event.reminderLegend === null || this.event.reminderLegend === '') {
+      this.reminderVal === 'r1';
     }
   }
 

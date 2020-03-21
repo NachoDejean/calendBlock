@@ -68,7 +68,10 @@ export class TagSelectorComponent implements OnInit {
       color: '#8B572A'
     },
   ];
-  selectedNewTag: any;
+  selectedNewTag = {
+    name: '',
+    color: ''
+  };
   
   constructor( private dataService: ShareDataService,
                private nav: NavController) { }
@@ -81,6 +84,11 @@ export class TagSelectorComponent implements OnInit {
   //   this.newTagScreen = true;
   // }
 
+  resetTag(){
+    this.selectedNewTag.name = '';
+    this.selectedNewTag.color = '';
+  }
+
   tagSelected(tag){
     console.log('xq pasamos tagselector');
     this.dataService.shareTag(tag);
@@ -88,19 +96,25 @@ export class TagSelectorComponent implements OnInit {
   }
 
   createNewTag(){
-    let tagLabel = this.tag.label;
-    console.log(tagLabel, this.selectedNewTag, this.selectedNewTag.color);
+    //this.selectedNewTag.name = this.tag.label;
+    //console.log(tagLabel, this.selectedNewTag, this.selectedNewTag.color);
     this.newTagScreen = !this.newTagScreen;
+    // let tagObject = {
+    //   name: tagLabel,
+    //   color: this.selectedNewTag.color
+    // }
     let tagObject = {
-      name: tagLabel,
+      name: this.selectedNewTag.name,
       color: this.selectedNewTag.color
     }
+    console.log(tagObject)
     this.tags.push(tagObject);
     this.storeTheTags();
   }
 
-  radioSelect(event) {
-    this.selectedNewTag = event.detail.value;
+  radioSelect(color) {
+    console.log(color);
+    this.selectedNewTag.color = color
   }
 
   loadTheTags(){
@@ -117,6 +131,7 @@ export class TagSelectorComponent implements OnInit {
   storeTheTags(){
     let tagsToString = JSON.stringify(this.tags);
     userS.putFile('tags/calTags.json', tagsToString);
+    this.resetTag();
   }
 
 }

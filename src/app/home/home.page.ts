@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 //import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
@@ -59,6 +59,9 @@ export class HomePage implements OnInit{
   textDay: string;
   numberDay: string;
 
+  parseStartTime: any;
+  parseEndTime: any;
+
   calendar = {
     mode: 'month',
     currentDate: new Date(),
@@ -86,7 +89,8 @@ export class HomePage implements OnInit{
               //private geolocation: Geolocation,
               private dataService: ShareDataService,
               private alertCtrl: AlertController,
-              public popoverController: PopoverController
+              public popoverController: PopoverController,
+              private ref: ChangeDetectorRef
               //private ws: WeatherService
               ) {}
 
@@ -225,6 +229,7 @@ export class HomePage implements OnInit{
     this.dataService.editEventData(event);
     this.showAddEventComponent = !this.showAddEventComponent;
     this.eventIsEditing = true;
+    this.eventSelected = false;
   }
 
   async deleteEventSelected(event){
@@ -265,6 +270,7 @@ export class HomePage implements OnInit{
   }
 
   closeEventSelected (){
+    console.log("closeEvent")
     this.eventSelected = false;
     this.resetEvent();
   }
@@ -295,6 +301,11 @@ export class HomePage implements OnInit{
     console.log('pasamos ppor el close evenet?')
     this.showAddEventComponent = false;
   }
+  closeEventEdited(){
+    this.showAddEventComponent = false;
+    this.eventIsEditing = false;
+    this.eventSelected = true;
+  }
 
   openAddEvent(){
     this.showAddEventComponent = !this.showAddEventComponent;
@@ -312,7 +323,7 @@ export class HomePage implements OnInit{
     this.currentPopOver = await this.popoverController.create({
       component: PopTasksComponent,
       event: ev,
-      translucent: true,
+      translucent: false,
       animated: true,
       mode: "ios"
     });
@@ -346,14 +357,18 @@ export class HomePage implements OnInit{
   storeEditEvent(event){
     userSession.deleteFile('calenderEvent/' + event.storeDate + '.json')
     .then(() => {
-      this.eventSource.splice(this.eventSource.indexOf(event.storeDate), 1);
+      this.eventSource.splice(this.eventSource.indexOf(event.storeDate), 1, event);
       this.eventIndex.splice(this.eventIndex.indexOf(event.storeDate), 1);
       this.eventIndex.push(event.storeDate);
-      this.eventSource.push(event);
+      //this.eventSource.push(event);
       //this.closeEventSelected();
+      //this.loadGaiaEvents();
       this.myCal.loadEvents();
       this.onEventSelected(event);
       this.closeAddEvent();
+      // this.ref.detach();
+      // this.ref.detectChanges();
+      //this.ref.markForCheck();
       this.showAddEventComponent = false;
       let eventIndexToString = JSON.stringify(this.eventIndex);
       let eventOnlyToString = JSON.stringify(event);
@@ -362,10 +377,14 @@ export class HomePage implements OnInit{
       userSession.putFile('calenderEvent/' + event.storeDate + '.json', eventOnlyToString, gaiaPutOptions)
       .then((data) => {
         console.log('data del then despues del EDIT ', data);
-        //this.loadGaiaEvents();
-        
-        
         //this.resetEvent();
+        //this.closeAddEvent();
+        
+        // this.parseStartTime = parseISO(event.startTime);
+        // this.parseEndTime = parseISO(event.endTime);
+        //this.onEventSelected(event);
+        
+        
         //event = null;
         
       });

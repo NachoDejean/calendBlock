@@ -70,6 +70,30 @@ ion-toolbar {
     }
 }
 
+ion-backdrop {
+    --backdrop-opacity: .25 !important;
+}
+
+// .popover-viewport{
+//     --width: 140px !important;
+
+//     button {
+//         width: 80%;
+//         /* border-bottom: 0; */
+//         text-transform: uppercase;
+//         font-size: 16px;
+//         font-weight: 500;
+//         color: #444;
+//     }
+
+//     button:last-of-type {
+//         border: 0 !important;
+//     }
+
+//     .input-wrapper {
+//         justify-content: right !important;
+//     }
+// }
 .addEventBtn {
     img {
         max-height: 24px;

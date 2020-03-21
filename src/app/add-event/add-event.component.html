@@ -72,7 +72,7 @@
         <ion-col *ngIf="event.remindMe">
           <ion-item >
             <!-- <ion-select value="r1" (ionChange)="reminderSelect($event)" class="reminderSelect" mode="ios" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select a reminder"> -->
-            <ion-select value="r1" (ionChange)="reminderSelect($event)" class="reminderSelect" mode="ios" interface="popover" placeholder="Select a reminder">
+            <ion-select [value]="this.reminderVal" (ionChange)="reminderSelect($event.detail.value)" class="reminderSelect" mode="ios" interface="popover" placeholder="Select a reminder">
               <ion-select-option value="r1">At time of the event</ion-select-option>
               <ion-select-option value="r2">5 min before</ion-select-option>
               <ion-select-option value="r3">15 min before</ion-select-option>
