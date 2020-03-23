@@ -14,6 +14,7 @@ export class TagSelectorComponent implements OnInit {
   
   createTagScreen: boolean = false;
   newTagScreen: boolean = false;
+  slideOpen: boolean = false;
 
   tag = {
     label: ''
@@ -72,6 +73,8 @@ export class TagSelectorComponent implements OnInit {
     name: '',
     color: ''
   };
+  tagFromEdit: boolean = false;
+  validateCreate: boolean = false;
   
   constructor( private dataService: ShareDataService,
                private nav: NavController) { }
@@ -80,36 +83,33 @@ export class TagSelectorComponent implements OnInit {
     this.loadTheTags();
   }
 
-  // newTag() {
-  //   this.newTagScreen = true;
-  // }
-
   resetTag(){
     this.selectedNewTag.name = '';
-    this.selectedNewTag.color = '';
+    this.selectedNewTag.color = this.tagsColors[0].color;
   }
 
   tagSelected(tag){
-    console.log('xq pasamos tagselector');
+    //console.log('xq pasamos tagselector');
     this.dataService.shareTag(tag);
     this.nav.pop();
   }
 
   createNewTag(){
-    //this.selectedNewTag.name = this.tag.label;
-    //console.log(tagLabel, this.selectedNewTag, this.selectedNewTag.color);
-    this.newTagScreen = !this.newTagScreen;
-    // let tagObject = {
-    //   name: tagLabel,
-    //   color: this.selectedNewTag.color
-    // }
-    let tagObject = {
-      name: this.selectedNewTag.name,
-      color: this.selectedNewTag.color
+    if(this.selectedNewTag.name != ''){
+      this.validateCreate = true;
+      
+      let tagObject = {
+        name: this.selectedNewTag.name,
+        color: this.selectedNewTag.color
+      }
+      console.log(tagObject)
+      this.tags.push(tagObject);
+      this.storeTheTags();
     }
-    console.log(tagObject)
-    this.tags.push(tagObject);
-    this.storeTheTags();
+    else {
+      console.log('error validate');
+      this.validateCreate = false;
+    }
   }
 
   radioSelect(color) {
@@ -126,12 +126,64 @@ export class TagSelectorComponent implements OnInit {
         this.tags = this.defaultTags;
       }
     });
+    this.selectedNewTag.color = this.tagsColors[0].color;
+  }
+
+  saveEditTag(){
+    //let tagIndex = this.tags.findIndex(tag => tag.name === item.name);
   }
 
   storeTheTags(){
     let tagsToString = JSON.stringify(this.tags);
     userS.putFile('tags/calTags.json', tagsToString);
     this.resetTag();
+    this.newTagScreen = !this.newTagScreen;
+    this.validateCreate = false;
+  }
+
+
+
+
+
+  slideOptions(item, action){
+    if(action === 0){
+      console.log('edit item');
+      this.newTagScreen = true;
+      this.tagFromEdit = true;
+      this.selectedNewTag.name = item.name;
+      this.selectedNewTag.color = item.color;
+
+    }
+    if(action === 1){
+      console.log('delete item');
+      let tagIndex = this.tags.findIndex(tag => tag.name === item.name);
+      console.log(tagIndex);
+      this.tags.splice(tagIndex, 1);
+      let tagsToString = JSON.stringify(this.tags);
+      userS.putFile('tags/calTags.json', tagsToString);
+    }
+
+    if(action === 2){
+      //item.closeSlidingItems();
+      let newId = new Date().getMilliseconds();
+      //Date.parse(newId);
+      console.log(newId)
+    }
+    console.log(item);
+    //item.close();
+  }
+
+  itemSlide(item){
+    item.open();
+    // this.slideOpen = !this.slideOpen;
+    // console.log(this.slideOpen);
+    // if(this.slideOpen){
+    //   item.open();
+    // } else {
+    //   console.log('close slide')
+    //   item.close();
+    // }
+    //console.log(item)
   }
 
 }

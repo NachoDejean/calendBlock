@@ -74,6 +74,14 @@ ion-backdrop {
     --backdrop-opacity: .25 !important;
 }
 
+ion-item-option, ion-activated {
+    --background: none !important;
+    --ion-item-background-activated: none;
+    --background-activated: none;
+    background: none;
+}
+
+
 // .popover-viewport{
 //     --width: 140px !important;
 

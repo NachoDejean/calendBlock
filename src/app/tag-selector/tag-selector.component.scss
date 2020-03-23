@@ -9,10 +9,28 @@
     font-weight: bold;
     letter-spacing: -.25px;
     cursor: pointer;
+    //color: greenyellow !important;
 }
 
+.btnsHeader-green {
+    color: greenyellow !important;
+}
+
+ion-icon {
+    color: white;
+}
+
+.optionsIcons {
+    font-size: 22px;
+}
+
+.okIcon {
+    ion-icon {
+        color: greenyellow !important;
+    }
+}
 .contentTagsWrapper {
-    --background: #222;
+    --background: #173847;
 
     ion-item {
         --background: transparent;
@@ -26,7 +44,7 @@
         ion-label {
             font-size: 12px !important;
             font-weight: bold;
-            text-transform: uppercase;
+            //text-transform: uppercase;
         }
     }
     // ion-item:hover {

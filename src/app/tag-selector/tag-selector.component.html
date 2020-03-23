@@ -4,38 +4,69 @@
       <ion-back-button class="backBtnHeader" defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end" *ngIf=!newTagScreen>
-      <span class="btnsHeader" (click)='newTagScreen = !newTagScreen'>New Tag</span>
+      <span class="btnsHeader btnsHeader-green" (click)='newTagScreen = !newTagScreen'>New Tag</span>
     </ion-buttons>
     <ion-title>Tags</ion-title>
     <ion-buttons slot="start" *ngIf=newTagScreen>
-      <span class="btnsHeader" (click)='newTagScreen = !newTagScreen'>Cancel</span>
+      <span class="btnsHeader" (click)='newTagScreen = !newTagScreen; tagFromEdit = false'>Cancel</span>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf=newTagScreen>
-      <span class="btnsHeader" (click)='createNewTag()'>Save</span>
+    <ion-buttons slot="end" *ngIf="newTagScreen && !tagFromEdit">
+      <span class="btnsHeader btnsHeader-green"  (click)='createNewTag()'>Create</span>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf=tagFromEdit>
+      <span class="btnsHeader btnsHeader-green" (click)='saveEditTag()'>Save</span>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding contentTagsWrapper">
   <div class="calendarTagsWrapper" *ngIf=!newTagScreen>
     <div class="calendTags">
-      <ion-item  class="tag" *ngFor="let tag of tags" (click)="tagSelected(tag)">
+      <ion-item-sliding #slidingItem *ngFor="let tag of tags" >
+      <ion-item class="tag">
+      <!--  -->
         <div class="tagCircleColor" [style.background]='tag.color'></div>
-        <span>{{tag.name}} </span>
+        <!-- <span>{{tag.name}} </span> -->
+        <ion-label (click)="tagSelected(tag)">{{tag.name}} </ion-label>
+        <!-- <ion-icon class="actionSlidingIcon" slot="end" name="ellipsis-horizontal" (click)="slidingItem.open()"></ion-icon> -->
+        <ion-icon class="actionSlidingIcon" slot="end" size="large" name="ellipsis-horizontal-outline" (click)="itemSlide(slidingItem)"></ion-icon>
       </ion-item>
+      <!-- <ion-item *ngIf="slideOpen" [ngClass]="slideOpen ? 'openSlide' : 'closedSlide'"  class="tag">
+      </ion-item> -->
+      <ion-item-options side="end">
+        <ion-item-option class="optionsIcons" mode="ios" (click)="slideOptions(tag, 0); slidingItem.close()">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option class="optionsIcons" mode="ios" (click)="slideOptions(tag, 1); slidingItem.close()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option class="optionsIcons okIcon" mode="ios" (click)="slideOptions(tag, 2); slidingItem.close()">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
     </div>
   </div>
   <div class="newTag" *ngIf=newTagScreen>
     <ion-item>
       <ion-label position="floating">Tag Name</ion-label>
-      <ion-input autofocus="true" class="inputNewTag" [(ngModel)]="selectedNewTag.name"></ion-input>
+      <ion-input autofocus="true" class="inputNewTag" [(ngModel)]="selectedNewTag.name" name="title" type="text" required minlength="2" maxlength="50" #title="ngModel"></ion-input>
     </ion-item>
+    <div class="formAlert" *ngIf="title.errors && (title.dirty || title.touched)">
+      <div [hidden]="!title.errors.required">
+          The tag name is required
+      </div>
+      <div [hidden]="!title.errors.minlength">
+        The tag must have a minimum of 2 characters
+      </div>
+    </div>
 
     <div class="colorTags">
-      <ion-radio-group>
-        <ion-item *ngFor="let colorTag of tagsColors" (click)="radioSelect(colorTag.color)">      
+      <!-- <ion-radio-group [value]="tagsColors[0].color"> -->
+      <ion-radio-group [value]="selectedNewTag.color">
+        <ion-item *ngFor="let colorTag of tagsColors; let i = index" (click)="radioSelect(colorTag.color)">      
             <div class="tagCircleColor" [style.background]='colorTag.color'></div>
             <div class="tagName" >{{colorTag.name}}</div>
-          <ion-radio checked=tagsColors[0] slot="end" color="#0cd1e8" mode="ios" [value]="colorTag.color"></ion-radio>
+            <ion-radio slot="end" color="#0cd1e8" mode="ios" [value]="colorTag.color"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </div>
