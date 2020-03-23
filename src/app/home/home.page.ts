@@ -277,6 +277,7 @@ export class HomePage implements OnInit{
 
   onEventSelected(event) {
     this.eventSelected = true;
+    this.eventIsEditing = false;
     this.event = event;
   }
 
@@ -364,12 +365,12 @@ export class HomePage implements OnInit{
       //this.closeEventSelected();
       //this.loadGaiaEvents();
       this.myCal.loadEvents();
-      this.onEventSelected(event);
       this.closeAddEvent();
+      this.onEventSelected(event);
       // this.ref.detach();
       // this.ref.detectChanges();
       //this.ref.markForCheck();
-      this.showAddEventComponent = false;
+      //this.showAddEventComponent = false;
       let eventIndexToString = JSON.stringify(this.eventIndex);
       let eventOnlyToString = JSON.stringify(event);
       userSession.putFile('calenderEventIndex.json', eventIndexToString, gaiaPutOptions)

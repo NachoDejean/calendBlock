@@ -37,15 +37,18 @@ export class AddEventComponent implements OnInit {
   defaultTags = [
     {
       name: 'Personal',
-      color: '#4FC3F7'
+      color: '#4FC3F7',
+      id: 1
     },
     {
       name: 'Work',
-      color: '#CF195E'
+      color: '#CF195E',
+      id: 2,
     },
     {
       name: 'Home',
-      color: '#46C4B5'
+      color: '#46C4B5',
+      id: 3
     }
   ];
 
@@ -53,12 +56,6 @@ export class AddEventComponent implements OnInit {
     name: '',
     color: ''
   }
-
-  // customPopoverOptions: any = {
-  //   header: 'Hair Color',
-  //   subHeader: 'Select your hair color',
-  //   message: 'Only select your dominant hair color'
-  // };
  
   minDate = new Date().toISOString();
 
@@ -249,71 +246,78 @@ export class AddEventComponent implements OnInit {
     //   });
   }
 
-  loadPickerElements(){
-    let inputStart = document.getElementById('inputStart');
-    let inputEnd = document.getElementById('inputEnd');
+  // loadPickerElements(){
+  //   let inputStart = document.getElementById('inputStart');
+  //   let inputEnd = document.getElementById('inputEnd');
 
-    //console.log(this.inputStart);
+  //   //console.log(this.inputStart);
 
-    const pickerStart = new Picker(inputStart, {
-      //inline: true,
-      date: new Date(),
-      format: 'MMM D, YYYY HH:mm',
-      container: '.pickerContainer',
-    });
-    //pickerStart.getDate(true);
+  //   const pickerStart = new Picker(inputStart, {
+  //     //inline: true,
+  //     date: new Date(),
+  //     format: 'MMM D, YYYY HH:mm',
+  //     container: '.pickerContainer',
+  //   });
+  //   //pickerStart.getDate(true);
     
-    const pickerEnd = new Picker(inputEnd, {
-      date: new Date(),
-      format: 'MMM D, YYYY HH:mm',
-      container: '.pickerContainer'
-    });
-  }
+  //   const pickerEnd = new Picker(inputEnd, {
+  //     date: new Date(),
+  //     format: 'MMM D, YYYY HH:mm',
+  //     container: '.pickerContainer'
+  //   });
+  // }
 
-  editPickerElements(startTime, endTime){
-    let inputStart = document.getElementById('inputStart');
-    //let formatStart = new Date(startTime);
-    let inputEnd = document.getElementById('inputEnd');
-    //inputEnd.innerHTML = endTime;
+  // editPickerElements(startTime, endTime){
+  //   let inputStart = document.getElementById('inputStart');
+  //   //let formatStart = new Date(startTime);
+  //   let inputEnd = document.getElementById('inputEnd');
+  //   //inputEnd.innerHTML = endTime;
 
-    const pickerStart = new Picker(inputStart, {
-      //inline: true,
-      date: new Date(startTime),
-      format: 'MMM D, YYYY HH:mm',
-      container: '.pickerContainer',
-    });
-    this.event.startTime = pickerStart.getDate(true);
-    //console.log(pickerStart.getDate(true));
-    //pickerStart.pick();
+  //   const pickerStart = new Picker(inputStart, {
+  //     //inline: true,
+  //     date: new Date(startTime),
+  //     format: 'MMM D, YYYY HH:mm',
+  //     container: '.pickerContainer',
+  //   });
+  //   this.event.startTime = pickerStart.getDate(true);
+  //   //console.log(pickerStart.getDate(true));
+  //   //pickerStart.pick();
     
-    const pickerEnd = new Picker(inputEnd, {
-      date: new Date(endTime),
-      format: 'MMM D, YYYY HH:mm',
-      container: '.pickerContainer'
-    });
-    this.event.endTime = pickerEnd.getDate(true);
-  }
+  //   const pickerEnd = new Picker(inputEnd, {
+  //     date: new Date(endTime),
+  //     format: 'MMM D, YYYY HH:mm',
+  //     container: '.pickerContainer'
+  //   });
+  //   this.event.endTime = pickerEnd.getDate(true);
+  // }
 
   loadTags(){
     
-    userSession.getFile('tags/calTags.json').then(dataTags => {
+    userSession.getFile('tags/caleTags.json').then(dataTags => {
       if(dataTags !== null) {
         let parsedTags = JSON.parse(dataTags as string);
         this.tags = parsedTags;
-      }
-      if (this.editMode) {
         this.tagEvent = {
-          name: this.event.tag,
-          color: this.event.tagColor
+          name: this.tags[0].name,
+          color: this.tags[0].color
         }
       }
-      else {
+      if(dataTags === null) {
         this.tags = this.defaultTags;
         this.tagEvent = {
           name: this.tags[0].name,
           color: this.tags[0].color
         }
       }
+      if(this.editMode) {
+        this.tagEvent = {
+          name: this.event.tag,
+          color: this.event.tagColor
+        }
+      }
+      // else {
+      //   
+      // }
     });
   }
 

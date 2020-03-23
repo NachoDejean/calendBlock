@@ -27,15 +27,18 @@ export class TagSelectorComponent implements OnInit {
   defaultTags = [
     {
       name: 'Personal',
-      color: '#4FC3F7'
+      color: '#4FC3F7',
+      id: 1
     },
     {
       name: 'Work',
-      color: '#CF195E'
+      color: '#CF195E',
+      id: 2,
     },
     {
       name: 'Home',
-      color: '#46C4B5'
+      color: '#46C4B5',
+      id: 3
     }
   ];
   
@@ -71,8 +74,10 @@ export class TagSelectorComponent implements OnInit {
   ];
   selectedNewTag = {
     name: '',
-    color: ''
+    color: '',
+    id: 0
   };
+
   tagFromEdit: boolean = false;
   validateCreate: boolean = false;
   
@@ -95,12 +100,14 @@ export class TagSelectorComponent implements OnInit {
   }
 
   createNewTag(){
+    let timeId = new Date().getTime();
     if(this.selectedNewTag.name != ''){
       this.validateCreate = true;
       
       let tagObject = {
         name: this.selectedNewTag.name,
-        color: this.selectedNewTag.color
+        color: this.selectedNewTag.color,
+        id: timeId
       }
       console.log(tagObject)
       this.tags.push(tagObject);
@@ -117,8 +124,13 @@ export class TagSelectorComponent implements OnInit {
     this.selectedNewTag.color = color
   }
 
+  newTagScreenUI(){
+    this.newTagScreen = true;
+    this.selectedNewTag.name = ''
+  }
+
   loadTheTags(){
-    userS.getFile('tags/calTags.json').then(dataTags => {
+    userS.getFile('tags/caleTags.json').then(dataTags => {
       if(dataTags !== null) {
         let parsedTags = JSON.parse(dataTags as string);
         this.tags = parsedTags;
@@ -130,20 +142,25 @@ export class TagSelectorComponent implements OnInit {
   }
 
   saveEditTag(){
-    //let tagIndex = this.tags.findIndex(tag => tag.name === item.name);
+    let tagIndex = this.tags.findIndex(tag => tag.id === this.selectedNewTag.id);
+    console.log(tagIndex);
+    let editObject = {
+      name: this.selectedNewTag.name,
+      color: this.selectedNewTag.color,
+      id: this.selectedNewTag.id
+    }
+    this.tags.splice(tagIndex, 1, editObject );
+    this.storeTheTags();
   }
 
   storeTheTags(){
     let tagsToString = JSON.stringify(this.tags);
-    userS.putFile('tags/calTags.json', tagsToString);
+    userS.putFile('tags/caleTags.json', tagsToString);
     this.resetTag();
     this.newTagScreen = !this.newTagScreen;
+    this.tagFromEdit = false;
     this.validateCreate = false;
   }
-
-
-
-
 
   slideOptions(item, action){
     if(action === 0){
@@ -152,7 +169,7 @@ export class TagSelectorComponent implements OnInit {
       this.tagFromEdit = true;
       this.selectedNewTag.name = item.name;
       this.selectedNewTag.color = item.color;
-
+      this.selectedNewTag.id = item.id;
     }
     if(action === 1){
       console.log('delete item');
@@ -160,30 +177,12 @@ export class TagSelectorComponent implements OnInit {
       console.log(tagIndex);
       this.tags.splice(tagIndex, 1);
       let tagsToString = JSON.stringify(this.tags);
-      userS.putFile('tags/calTags.json', tagsToString);
+      userS.putFile('tags/caleTags.json', tagsToString);
     }
 
     if(action === 2){
-      //item.closeSlidingItems();
-      let newId = new Date().getMilliseconds();
-      //Date.parse(newId);
-      console.log(newId)
+    
     }
-    console.log(item);
-    //item.close();
-  }
-
-  itemSlide(item){
-    item.open();
-    // this.slideOpen = !this.slideOpen;
-    // console.log(this.slideOpen);
-    // if(this.slideOpen){
-    //   item.open();
-    // } else {
-    //   console.log('close slide')
-    //   item.close();
-    // }
-    //console.log(item)
   }
 
 }
