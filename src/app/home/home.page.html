@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar mode="ios">
     
-      <!-- <ion-menu-toggle autoHide="false">
+      <ion-menu-toggle autoHide="false">
         <ion-button class="openMenu" color="clear" clear>
             <img src="../../assets/icons/customMenu.svg" />
         </ion-button>
-      </ion-menu-toggle> -->
+      </ion-menu-toggle>
     <ion-title *ngIf="!showAddEventComponent">Hi {{personaName}}</ion-title>
     <ion-title *ngIf="showAddEventComponent && !eventIsEditing">Add New Event</ion-title>
     <ion-title *ngIf="showAddEventComponent && eventIsEditing">Edit Event</ion-title>
@@ -95,7 +95,8 @@
         <div class="todayOverflow">
           <div class="todayEvent" [style.background]='event.tagColor' *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
             <div class="hsDetail"  *ngIf='event.allDay'><h4 class=" allDayTxt">All <br/>day</h4> </div>
-            <div class="hsDetail"  *ngIf='!event.allDay'><h4 class=" allDayTxt">{{event.startTime|date: 'HH:mm'}} <br /> {{event.endTime|date: 'HH:mm'}}</h4> </div>
+            <div class="hsDetail"  *ngIf='!event.allDay && !ampm'><h4 class="dateDay allDayTxt">{{event.startTime|date: 'HH:mm'}} <br /> {{event.endTime|date: 'HH:mm'}}</h4> </div>
+            <div class="hsDetail"  *ngIf='!event.allDay && ampm'><h4 class="dateDay allDayTxt">{{event.startTime|date: 'h:mm a'}} <br /> {{event.endTime|date: 'h:mm a'}}</h4> </div>
             <span class="event-detail">  {{event.title}}</span>
             <div class="moreInfoEvent">+</div>
           </div>
@@ -186,8 +187,8 @@
         <div class="listEventsOverflow">
           <div class="todayEventCalendar" [style.background]='event.tagColor' *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
             <div class="hsDetail"  *ngIf='event.allDay'><h4 class=" allDayTxt">All <br/>day</h4> </div>
-            <div class="hsDetail"  *ngIf='!event.allDay'><h4 class=" allDayTxt">{{event.startTime|date: 'HH:mm'}} <br/> {{event.endTime|date: 'HH:mm'}}</h4> </div>
-            <!-- <div class="hsDetail">{{event.startTime|date: 'HH:mm'}} <br/> {{event.endTime|date: 'HH:mm'}} </div> -->
+            <div class="hsDetail"  *ngIf='!event.allDay && !ampm'><h4 class="dateDay allDayTxt">{{event.startTime|date: 'HH:mm'}} <br/> {{event.endTime|date: 'HH:mm'}}</h4> </div>
+            <div class="hsDetail"  *ngIf='!event.allDay && ampm'><h4 class="dateDay allDayTxt">{{event.startTime|date: 'h:mm a'}}<br/>{{event.endTime|date: 'h:mm a'}}</h4> </div>
             <span class="event-detail">  {{event.title}}</span>
           </div>
           <div class="todayNoEvents" *ngIf="selectedDate?.events.length == 0">
@@ -215,6 +216,11 @@
     <app-todo-slider></app-todo-slider>
   </div>
 
+
+  <div id="settingsPage" class="settingsPage" *ngIf="settingsPage">
+    <app-settings-page></app-settings-page>
+  </div>
+
   <div class="eventDetailScreen" *ngIf="eventSelected">   
     <div class="eventDetailWrapper">
       <!-- <div class="eventDetailBg defaultEventBg" [style.background]='event.tagColor'></div> -->
@@ -224,7 +230,8 @@
           
           <div class="headerCardEvent" [style.background]='event.tagColor'>
             <div class="actionBtnTasksLists">
-              <img (click)="tasksOptionsPopover($event, event)" src="assets/icons/threeDots.svg" />
+              <!-- <img (click)="tasksOptionsPopover($event, event)" src="assets/icons/threeDots.svg" /> -->
+              <ion-icon name="ellipsis-vertical" (click)="tasksOptionsPopover($event, event)"></ion-icon>
             </div>
             <div class="tagCalendarName">
               <!-- <div class="imgCalendarName">
@@ -240,13 +247,14 @@
             <div class="headerRow eventTimeRow flexRow" *ngIf='event.allDay === false'>
               <div class="colTime">
                 <div class="titileTime">From</div>
-                <div class="eventTime ">{{event?.startTime | date: 'HH:mm' }}</div>
-                <!-- <div class="eventTime ">{{parseStartTime }}</div> -->
+                <div *ngIf="!ampm" class="eventTime ">{{event?.startTime | date: 'HH:mm' }}</div>
+                <div *ngIf="ampm" class="eventTime ">{{event?.startTime | date: 'h:mm a' }}</div>
               </div>
               <div class="timeSeparator"></div>
               <div class="colTime">
                 <div class="titileTime">To</div>
-                <div class="eventTime ">{{event?.endTime | date: 'HH:mm' }}</div>
+                <div *ngIf="!ampm" class="eventTime ">{{event?.endTime | date: 'HH:mm' }}</div>
+                <div *ngIf="ampm" class="eventTime ">{{event?.endTime | date: 'h:mm a' }}</div>
               </div>
             </div>
             <div class="headerRow eventTimeRow allDayRow flexRow" *ngIf='event.allDay === true'>
@@ -290,6 +298,9 @@
       </div>
     </div>
   </div>
+
+
+  
   
 </ion-content>
 
@@ -307,11 +318,11 @@
           <span>Tasks</span> 
          </a>
         </ion-col>
-      <ion-col> <a class="tabMenuLink settingsMenu" [ngClass]="{'tabMenuLinkActive': settingsPage }" (click)="changeScreen('settings')"> 
+      <!-- <ion-col> <a class="tabMenuLink settingsMenu" [ngClass]="{'tabMenuLinkActive': settingsPage }" (click)="changeScreen('settings')"> 
         <div class="icon"></div>
           <span>Settings</span> 
          </a>
-        </ion-col>
+        </ion-col> -->
     </ion-row>
   </ion-grid>
 </ion-footer>

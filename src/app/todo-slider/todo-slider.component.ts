@@ -108,19 +108,6 @@ export class TodoSliderComponent implements OnInit {
                private alertCtrl: AlertController,
                public popoverController: PopoverController ) { 
     this.todoSources = [];
-    // this.dataService.openPopOverList.subscribe(action => {
-    //   if(action === null){ console.log('null no hacemos nada')}
-    //   if(action === 'edit'){
-    //     console.log('editamos la lista');
-    //     //this.dataService.openPopOver(null);
-    //     //this.dataService.openPopOverList.unsubscribe();
-    //   }
-    //   if(action === 'delete'){
-    //     this.deleteTaskList(this.taskListOpen);
-    //     this.dataService.openPopOver(null);
-    //   }
-    // }).unsubscribe();
-    //this.dataService.openPopOverList.takeUntil()
   }
 
   ngOnInit() {
@@ -133,10 +120,9 @@ export class TodoSliderComponent implements OnInit {
     });
     this.dataService.openTaskList.subscribe(isOpenTask => {
       if(!isOpenTask){  
-        console.log('is open task es false asi que cerramos');
+        //console.log('is open task es false asi que cerramos');
         this.openTaskView = false;
         this.newTaskList = true;
-        //this.dataService.openPopOver(null);
         this.listTitileEdit = false;
       }
     });
@@ -144,9 +130,9 @@ export class TodoSliderComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    console.log('on destroy');
-    this.dataService.openPopOverList.subscribe().unsubscribe();
-    //this.dataService.openPopOverList.pipe(takeUntil(this.openTaskView === false));
+    //console.log('on destroy');
+    //this.dataService.openPopOverList.subscribe().unsubscribe();
+    this.dataService.openToDoList(false);
   }
 
   loadGaiaTodos(){
@@ -156,10 +142,10 @@ export class TodoSliderComponent implements OnInit {
         let todosIndexInGaia = JSON.parse(data as string);
         this.todosIndex = todosIndexInGaia;
       } else {
-        console.log('no hay data en gaia');
+        //console.log('no hay data en gaia');
         this.todosIndex = this.todosIndexDefaults;
       }
-      console.log(this.todosIndex)  
+      //console.log(this.todosIndex)  
     });
   }
 
@@ -177,7 +163,6 @@ export class TodoSliderComponent implements OnInit {
     console.log(this.taskOpen);
     this.todoSources = this.taskOpen.task;
     console.log(this.todoSources);
-    //this.dataService.openPopOver(null);
   }
 
   createNewList(newList){
@@ -193,18 +178,10 @@ export class TodoSliderComponent implements OnInit {
       this.slides.slideTo(0, 1500);
     } 
     if(!newList){
-      //console.log("pasamos por aqui...")
       this.todosIndex.shift();
       this.newList = false;
-      //this.dataService.createToDoList(false);
     }    
   }
-
-  // saveCreateNewList(){
-  //   console.log('save create new list');
-  //   this.openTaskView = false;
-  //   this.newTaskList = false;
-  // }
 
   storeNewList(list){
     this.todosIndex.shift();
@@ -214,12 +191,12 @@ export class TodoSliderComponent implements OnInit {
       task: []
     }
     //this.todosIndex.splice(0, 0, newTareasList);
-    this.todosIndex.unshift(newTareasList);
-    //this.todosIndex.push(newTareasList);
-    console.log(this.todosIndex)
+    //this.todosIndex.unshift(newTareasList);
+    this.todosIndex.push(newTareasList);
+    //console.log(this.todosIndex)
     this.slides.update();
-    //this.slides.slideTo(this.todosIndex.length, 1500);
-    this.slides.slideTo(0, 1500);
+    this.slides.slideTo(this.todosIndex.length, 1500);
+    //this.slides.slideTo(0, 1500);
     let todosIndexToString = JSON.stringify(this.todosIndex);
     userSession.putFile('tareasIndex.json', todosIndexToString, gaiaPutOptions)
     .then(()=>{
@@ -227,22 +204,8 @@ export class TodoSliderComponent implements OnInit {
       this.dataService.closeToDoList(false);
       this.createTaskList.name = '';
       this.createTaskList.color = this.tagsColors[0].color;
-      //this.saveAndCloseNewList = true;
     });
   }
-
-  
-
-  // identify(index, item){
-  //   console.log(index, item);
-
-  //   return item;
-  // }
-
-  // slideTask(task, item){
-  //     item.close();
-  //     task.style
-  // }
 
   async tasksOptionsPopover(ev: any, taskListOpen) {
     this.dataService.openPopOver('');
@@ -258,21 +221,15 @@ export class TodoSliderComponent implements OnInit {
 
     ev.preventDefault();
 
-    //this.currentPopOver = popover;
-
     popOverSub = this.dataService.openPopOverList.subscribe(action => {
       if(action === ''){ 
-        console.log('null no hacemos nada');
-        //this.popOverSub.unsubscribe();
+        //console.log('null no hacemos nada');
       }
       if(action === 'edit'){
         this.editTheList();
-        //this.dataService.openPopOver(null);
       }
       if(action === 'delete'){
         this.deleteTaskList(this.taskListOpen);
-        //this.dataService.openPopOver(null);
-        //this.popOverSub.unsubscribe();
       }
     });
 
@@ -294,13 +251,12 @@ export class TodoSliderComponent implements OnInit {
           cssClass: 'secondary',
           handler: (blah) => {
             console.log('Confirm Cancel: blah');
-            //this.dataService.openPopOver(null);
             popOverSub.unsubscribe();
           }
         }, {
           text: 'Okay',
           handler: () => {
-            console.log('Confirm Okay');
+            //console.log('Confirm Okay');
             let indexArrName: string = taskList.nameList;
             let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
             this.todosIndex.splice(arrIndex, 1);
@@ -319,7 +275,7 @@ export class TodoSliderComponent implements OnInit {
   }
 
   editTheList(){
-    console.log('editamos la lista');
+    //console.log('editamos la lista');
     this.listTitileEdit = true;
     this.createTaskList.name = this.taskOpen.nameList;
     this.newTagColor = this.taskOpen.color;
@@ -328,7 +284,7 @@ export class TodoSliderComponent implements OnInit {
   }
 
   saveEditList(list){
-    console.log(list, this.newTagColor, this.taskListOpen)
+    //console.log(list, this.newTagColor, this.taskListOpen)
     let indexArrName: string = this.taskListOpen.nameList;
     let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
     let editTaskList = {
@@ -344,10 +300,6 @@ export class TodoSliderComponent implements OnInit {
     let todosIndexData = JSON.stringify(this.todosIndex);
     userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
   }
-
-  // editColorTaskList(color){
-  //   this.newTagColor = color;
-  // }
 
   deleteTask(task, taskIndex, taskList) {
     let indexArrName: string = taskList.nameList;
@@ -374,7 +326,7 @@ export class TodoSliderComponent implements OnInit {
       //console.log(arrIndex);
       //this.todosIndex[arrIndex].task.splice(0, 0, task);
       this.todosIndex[arrIndex].task.splice(0, 0, todoData);
-      console.log(this.todosIndex);
+      //console.log(this.todosIndex);
       let todosIndexData = JSON.stringify(this.todosIndex);
       this.createTask.name = '';
       this.newTaskList = true;
@@ -383,10 +335,10 @@ export class TodoSliderComponent implements OnInit {
   }
 
   storeTaskCompleted(task, taskIndex, taskList, isChecked){
-    console.log('checked dice que... => ' ,isChecked)
+    //console.log('checked dice que... => ' ,isChecked)
     let todoData = {};
     if(isChecked){
-      console.log('NO esta checked');
+      //console.log('NO esta checked');
       todoData = {
         task: task.task,
         isChecked: false
@@ -399,7 +351,7 @@ export class TodoSliderComponent implements OnInit {
         isChecked: true
       }
     }
-    console.log('todoData => ' ,todoData);
+    //console.log('todoData => ' ,todoData);
     let indexArrName: string = taskList.nameList;
     let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
     this.todosIndex[arrIndex].task.splice(taskIndex, 1, todoData);
@@ -407,43 +359,4 @@ export class TodoSliderComponent implements OnInit {
     userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
     //this.getPercentageCompleted(this.todosIndex[arrIndex].task)
   }
-
-  getPercentageCompleted(tasksList){
-    // for (let task of this.todosIndex[].length) {
-
-    // }
-
-    console.log(tasksList);
-
-    // let arrayPercentages = [];
-
-    // for (let taskChecked of this.todosIndex){
-    //   for (let checkTasks of taskChecked.task){
-    //     //let isCheckedTaskLabel = checkTasks.isChecked;
-    //     // arrayPercentages = checkTasks.filter(checked => checked.isChecked === true);
-    //     // console.log(arrayPercentages);
-    //     // let checkedTasks = checkTasks.find(taskCompleted => taskCompleted.isChecked === true);
-    //     console.log(checkTasks.isChecked);
-    //   }
-    // }
-
-    // for (let i = 0; i < this.todosIndex.length; i++) {
-    //   // let totalTasksChecked = [];
-    //   // let totalTasks = this.todosIndex[i].task.length;
-    //   // console.log("totalTasks => ", totalTasks);
-    //   let totalTasks = this.todosIndex[i].task[i].task;
-    //   //console.log(totalTasks);
-    //   //totalTasks.find(task => task.isChecked === true);
-    //   // for(let taskCompleted of this.todosIndex[i].task) {
-    //   //   console.log('taskCompleted => ', taskCompleted);
-    //   //   if(taskCompleted.isChecked === true){
-    //   //     totalTasksChecked.push(taskCompleted);
-    //   //   }
-    //   // }
-    //   //console.log("totalTasksChecked", totalTasksChecked.length);
-    //   //let getPercentage = Math.round(total)
-    // }
-  }
-
-
 }

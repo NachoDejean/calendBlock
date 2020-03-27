@@ -13,14 +13,14 @@
           <h4 class="todoTaskLength" *ngIf="todosIndexList.task.length > 1 || todosIndexList.task.length == 0">{{todosIndexList.task.length}} Tasks</h4>
           <h4 class="todoTaskLength" *ngIf="todosIndexList.task.length == 1">{{todosIndexList.task.length}} Task</h4>
         </div>
-        <div class="percentCompleted">
+        <!-- <div class="percentCompleted">
           <div class="progressBar">
             <div class="progress-outer">
-             <!-- <div class="progress-inner" [style.width]="balloon.speed + '%'"></div> -->
+             
              <div class="progress-inner"></div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="taskWrapper" *ngIf="newList && i === 0" [style.background]='newTagColor'>
@@ -72,7 +72,8 @@
     
     <div class="actionBtnTasksLists">
       <!-- <img (click)="deleteTaskList(taskOpen)" src="assets/icons/threeDots.svg" /> -->
-      <img (click)="tasksOptionsPopover($event, taskOpen)" src="assets/icons/threeDots.svg" />
+      <!-- <img (click)="tasksOptionsPopover($event, taskOpen)" src="assets/icons/threeDots.svg" /> -->
+      <ion-icon name="ellipsis-vertical" (click)="tasksOptionsPopover($event, taskOpen)"></ion-icon>
       <!-- <ion-icon name="trash-outline" slot="end" (click)="deleteTaskList(taskOpen)"></ion-icon> -->
     </div>
   </div>

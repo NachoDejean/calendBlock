@@ -28,7 +28,7 @@
         <!-- <span>{{tag.name}} </span> -->
         <ion-label (click)="tagSelected(tag)">{{tag.name}} </ion-label>
         <!-- <ion-icon class="actionSlidingIcon" slot="end" name="ellipsis-horizontal" (click)="slidingItem.open()"></ion-icon> -->
-        <ion-icon class="actionSlidingIcon" slot="end" size="large" name="ellipsis-horizontal-outline" (click)="slidingItem.open()"></ion-icon>
+        <ion-icon class="actionSlidingIcon" slot="end" size="large" name="ellipsis-horizontal-outline" (click)="slidingItem.open($event)"></ion-icon>
       </ion-item>
       <!-- <ion-item *ngIf="slideOpen" [ngClass]="slideOpen ? 'openSlide' : 'closedSlide'"  class="tag">
       </ion-item> -->

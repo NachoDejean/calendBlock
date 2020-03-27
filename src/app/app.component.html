@@ -1,3 +1,64 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu swipeGesture="false" side="start" id="menuLeft" contentId="menu-content">
+
+    <ion-header no-border>
+      <ion-toolbar class="brandMenu">
+        <div class="imgBrandMenu">
+          <img class="calendBlockLogo" src="assets/calendBlock.svg" />
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="contentMenu">
+      <div class="wrapMenuContent">
+      <ion-item-group>
+        <ion-radio-group value="gringo" (ionChange)="changeTheTime($event.detail.value)">
+          <ion-list-header>
+            <ion-label>
+              Time
+            </ion-label>
+          </ion-list-header>
+      
+          <ion-item>
+            <ion-label>AM/PM</ion-label>
+            <ion-radio value="gringo"></ion-radio>
+          </ion-item>
+      
+          <ion-item>
+            <ion-label>24 Hs</ion-label>
+            <ion-radio value="world"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-item-group>
+
+      <ion-item-group>
+        <ion-item>
+          <ion-icon name="star-half-outline"></ion-icon>
+          <ion-label>Vote for us on Product Hunt</ion-label>
+        </ion-item>
+      </ion-item-group>
+
+      <ion-item-group *ngIf=!isUserLogged>
+        <ion-item lines="none" (click)="login()">
+          <ion-icon name="log-in-outline"></ion-icon>
+          <ion-label class="txtUpper lebelMenu"> Login </ion-label>
+        </ion-item>
+      </ion-item-group>
+      <ion-item-group *ngIf=isUserLogged>
+        <ion-item lines="none" (click)="logOut()">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <ion-label class="txtUpper lebelMenu"> Log Out </ion-label>
+        </ion-item>
+      </ion-item-group>
+
+    </div>
+
+  
+
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="menu-content" swipeGesture="false"></ion-router-outlet>
+
 </ion-app>
+

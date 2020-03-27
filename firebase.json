@@ -1,0 +1,18 @@
+{
+  "hosting": {
+    "headers": [ {
+      "source": "*",
+      "headers": [ {
+        "key": "Access-Control-Allow-Origin",
+        "value": "*"
+      } ]
+    }],
+    "site": "calendarblock",
+    "public": "www",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

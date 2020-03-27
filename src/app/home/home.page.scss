@@ -24,7 +24,7 @@ $redpinkTag: #CF195E;
 
 //TODAY
 
-#todayPage, #calendarPage {
+#todayPage, #calendarPage, #settingsPage {
     position: absolute;
     width: 100%;
     top: 0;
@@ -233,14 +233,19 @@ $redpinkTag: #CF195E;
     .hsDetail, .allDayTxt {
         color: $whiteSmoke;
         font-weight: 900;
-        font-size: 14px;
+        font-size: 12px;
         text-transform: uppercase;
+        margin-right: 5px;
+    }
+
+    .dateDay {
+        text-align: right;
     }
 
     .hsDetail {
         border-right: 1px solid rgba(255,255,255, .5);
         //padding-right: 1.5%; 
-        width: 50px;
+        width: 60px;
     }
 
     // .allDayTxt {
@@ -307,6 +312,7 @@ $redpinkTag: #CF195E;
         padding: 2.5%;
         /* padding-right: 1%; */
         margin-top: -1.5%;
+        font-size: 22px;
 
         img {
             height: 20px;
@@ -748,13 +754,21 @@ $redpinkTag: #CF195E;
         font-size: 12px;
         font-weight: bold;
         margin-right: 2.5vw;
-        width: 50px;
+        width: 60px;
         border-right: 1px solid;
 
         h4 {
             font-size: 12px;
             margin: 0;
             text-transform: uppercase;
+            letter-spacing: -.5px;
+            font-weight: 700;
+            //text-align: right;
+            margin-right: 5px;
+        }
+
+        .dateDay {
+            text-align: right;
         }
     }
 

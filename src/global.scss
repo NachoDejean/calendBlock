@@ -40,7 +40,7 @@
     background: whitesmoke !important;
 }
 
-#todayPage, #calendarPage, #tasksPage, .eventDetailScreen {
+#todayPage, #calendarPage, #tasksPage, .eventDetailScreen, #settingsPage {
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }
@@ -123,6 +123,7 @@ ion-item-option, ion-activated {
     }
     .closeAddEvent {
         transform: rotate(45deg);
+        color: aquamarine;
         //transition: 1 ease-in-out;
         
     }
@@ -271,7 +272,8 @@ ion-item-option, ion-activated {
             opacity: .7;
         }
         th {
-            background: darkslategray;
+            //background: darkslategray;
+            //background: #2B4E5E;
         }
         td {
             // padding: 4%;
@@ -280,19 +282,24 @@ ion-item-option, ion-activated {
     }
 
     .monthview-primary-with-event {
-        background-color: darkslategray;
+        //background-color: darkslategray;
+        background-color: #2B4E5E;
     }
     
     .monthview-selected {
         //background-color: transparent;
-        background-color: $linkBlueClear;
+        //background-color: $linkBlueClear;
+        background-color: #50E3CF;
     }
     .monthview-current {
-        background-color: #0cd1e8;
+        background-color: whitesmoke;
+        color: $linkBlueClear2 !important;
     }
 
     .monthview-primary-with-event.monthview-selected {
-        background-color: #46C4B5;
+        //background-color: #46C4B5;
+        background-color: #50E3CF;
+        color: whitesmoke !important;
     }
 
     .table-bordered{

@@ -7,7 +7,6 @@ import {parseISO, endOfDay } from 'date-fns';
 
 import * as blockstack from 'blockstack';
 
-
 //import { WeatherService } from '../services/weather.service';
 import { ShareDataService } from '../services/shareData.service';
 import { PopTasksComponent} from '../components/pop-tasks/pop-tasks.component';
@@ -19,10 +18,10 @@ const appConfig = new blockstack.AppConfig(['store_write', 'publish_data']);
 const userSession = new blockstack.UserSession({ appConfig: appConfig });
 
 //const transitPrivateKey = userSession.generateAndStoreTransitKey();
-const redirectURI = 'https://calendblock.appassionates.com';
-const manifestURI = 'https://calendblock.appassionates.com/manifest.json';
+const redirectURI = 'https://calendarblock.web.app';
+const manifestURI = 'https://calendarblock.web.app/manifest.json';
 const scopes = ['store_write', 'publish_data'];
-const appDomain = 'https://calendblock.appassionates.com';
+const appDomain = 'https://calendarblock.web.app';
 const gaiaPutOptions = { encrypt: false };
 const gaiaGetOptions = { decrypt: false };
 
@@ -84,6 +83,7 @@ export class HomePage implements OnInit{
 
   @ViewChild(CalendarComponent, null) myCal: CalendarComponent;
   currentPopOver: any;
+  ampm: boolean;
 
   constructor(
               //private geolocation: Geolocation,
@@ -107,7 +107,7 @@ export class HomePage implements OnInit{
 
   beSubscribe(){
     this.dataService.addDataEvent.subscribe(event => {
-      console.log('event del service es ', event);
+      //console.log('event del service es ', event);
       if(event !== null){
         this.storeTheEvent(event);
       }
@@ -119,8 +119,17 @@ export class HomePage implements OnInit{
       }
     });
     this.dataService.loginEvent.subscribe(doTheLogin => {
-      if(doTheLogin){
+      console.log(doTheLogin);
+      if(doTheLogin === null){
+
+      }
+      if(doTheLogin == true){
         this.login();
+        //this.loginBlock();
+      } 
+      if(doTheLogin == false) {
+        //this.loginBlockstack();
+        this.showLoginComponent = true;
       }
     });
     this.dataService.openTaskList.subscribe(isOpenTask => {
@@ -136,6 +145,17 @@ export class HomePage implements OnInit{
         this.createToDoList();
       }
     });
+
+    this.dataService.changeHour.subscribe(time => {
+      if(time === 'gringo'){
+        console.log('gringo time');
+        this.ampm = true;
+      }
+      if(time === 'world'){
+        console.log('world time');
+        this.ampm = false;
+      }
+    });
     
   }
 
@@ -146,19 +166,15 @@ export class HomePage implements OnInit{
       if(data){
       let eventsIndexInGaia = JSON.parse(data as string);
       this.eventIndex = eventsIndexInGaia;
-      console.log('index en Gaia => ', eventsIndexInGaia, 'events en arr => ', this.eventIndex);
+      //console.log('index en Gaia => ', eventsIndexInGaia, 'events en arr => ', this.eventIndex);
       for (let indexEvent of eventsIndexInGaia){
         userSession.getFile('calenderEvent/' + indexEvent + '.json', gaiaGetOptions)
         .then(data => {
           if(data){
-            console.log(data);
+            //console.log(data);
             let eventDataGaia = JSON.parse(data as string);
             let eventData = {
               title: eventDataGaia.title,
-              // startTime:  eventDataGaia.startTime,
-              // endTime: eventDataGaia.endTime,
-              //startTime:  new Date(eventDataGaia.startTime),
-              //endTime: new Date(eventDataGaia.endTime),
               startTime:  parseISO(eventDataGaia.startTime),
               endTime: parseISO(eventDataGaia.endTime),
               allDay: eventDataGaia.allDay,
@@ -172,13 +188,7 @@ export class HomePage implements OnInit{
               reminderLegend: eventDataGaia.reminderLegend
             }
             if (eventData.allDay) {
-              // let start = eventData.startTime;
-              // let end = eventData.endTime;
-
               eventData.endTime = endOfDay(eventData.endTime);
-  
-              //eventData.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-              //eventData.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
             }
 
             this.eventSource.push(eventData);
@@ -329,10 +339,6 @@ export class HomePage implements OnInit{
       mode: "ios"
     });
 
-    //ev.preventDefault();
-
-    //this.currentPopOver = popover;
-
     popOverSub = this.dataService.openPopOverList.subscribe(action => {
       if(action === ''){ 
         console.log('null no hacemos nada');
@@ -341,14 +347,10 @@ export class HomePage implements OnInit{
       if(action === 'edit'){
         this.editEventSelected(eventOpen);
         this.currentPopOver.dismiss();
-        //this.editTheList();
-        //this.dataService.openPopOver(null);
       }
       if(action === 'delete'){
         this.deleteEventSelected(eventOpen);
         this.currentPopOver.dismiss();
-        //this.dataService.openPopOver(null);
-        //this.popOverSub.unsubscribe();
       }
     });
 
@@ -361,39 +363,13 @@ export class HomePage implements OnInit{
       this.eventSource.splice(this.eventSource.indexOf(event.storeDate), 1, event);
       this.eventIndex.splice(this.eventIndex.indexOf(event.storeDate), 1);
       this.eventIndex.push(event.storeDate);
-      //this.eventSource.push(event);
-      //this.closeEventSelected();
-      //this.loadGaiaEvents();
       this.myCal.loadEvents();
       this.closeAddEvent();
       this.onEventSelected(event);
-      // this.ref.detach();
-      // this.ref.detectChanges();
-      //this.ref.markForCheck();
-      //this.showAddEventComponent = false;
       let eventIndexToString = JSON.stringify(this.eventIndex);
       let eventOnlyToString = JSON.stringify(event);
-      userSession.putFile('calenderEventIndex.json', eventIndexToString, gaiaPutOptions)
-      //.then(data => {console.log('dataIndexGaia => ', data)});
-      userSession.putFile('calenderEvent/' + event.storeDate + '.json', eventOnlyToString, gaiaPutOptions)
-      .then((data) => {
-        console.log('data del then despues del EDIT ', data);
-        //this.resetEvent();
-        //this.closeAddEvent();
-        
-        // this.parseStartTime = parseISO(event.startTime);
-        // this.parseEndTime = parseISO(event.endTime);
-        //this.onEventSelected(event);
-        
-        
-        //event = null;
-        
-      });
-      //userSession.putFile('calenderEventIndex.json', eventIndexToString, gaiaPutOptions)
-      // .then(() => {
-      //   this.loadGaiaEvents();
-      //   this.closeEventSelected();
-      // });
+      userSession.putFile('calenderEventIndex.json', eventIndexToString, gaiaPutOptions);
+      userSession.putFile('calenderEvent/' + event.storeDate + '.json', eventOnlyToString, gaiaPutOptions);
     });
   }
 
@@ -419,12 +395,12 @@ export class HomePage implements OnInit{
 
   createToDoList(){
     this.createNewToDoList = !this.createNewToDoList;
-    console.log("createNewToDoList => " ,this.createNewToDoList);
+    //console.log("createNewToDoList => " ,this.createNewToDoList);
     this.dataService.createToDoList(this.createNewToDoList);
   }
 
   closeTaskOpen(){
-    console.log('closeTaskOpen!')
+    //console.log('closeTaskOpen!')
     this.taskIsOpen = !this.taskIsOpen;
     this.dataService.openToDoList(false);
 
@@ -435,12 +411,17 @@ export class HomePage implements OnInit{
   login(){
     userSession.redirectToSignIn();
     this.loginBlockstack();
-    //userSession.handlePendingSignIn()
+  }
+
+  logOut(){
+    userSession.signUserOut()
   }
 
   // loginBlock(){
+  //   console.log('pasando por el calendBlock custom');
   //   const authRequest = blockstack.makeAuthRequest(transitPrivateKey, redirectURI, manifestURI, scopes, appDomain);
   //   blockstack.redirectToSignInWithAuthRequest(authRequest);
+  //   this.loginBlockstack();
   // }
 
   loginBlockstack(){
@@ -468,6 +449,7 @@ export class HomePage implements OnInit{
     this.personaName = person.name();
     this.isUserLogged = userSession.isUserSignedIn();
     if(this.isUserLogged){
+      this.getUserSettings();
       this.loadGaiaEvents();
       //this.loadEventsInGaia();
       //this.dataService.passUserInfo(userSession);
@@ -478,6 +460,14 @@ export class HomePage implements OnInit{
 
     // document.getElementById('heading-name').innerHTML = person.name()
     // document.getElementById('avatar-image').setAttribute('src', person.avatarUrl())
+  }
+
+  getUserSettings(){
+    userSession.getFile('users/settings.json', gaiaGetOptions).then((data) => {
+      if(data){
+
+      }
+    });
   }
 
   // getWeatherData(){
@@ -523,25 +513,28 @@ export class HomePage implements OnInit{
       this.todayPage = true;
       this.calendarPage = false;
       this.toDosPage = false;
+      this.settingsPage = false;
     }
     if(screen == 'calendar'){
+      this.calendarPage = true;
       this.todayPage = false;
       this.toDosPage = false;
-      this.calendarPage = true;
+      this.settingsPage = false;
     }
     if(screen == 'todos'){
+      this.toDosPage = true;
       this.todayPage = false;
       this.calendarPage = false;
-      this.toDosPage = true;
+      this.settingsPage = false;
+      this.eventSelected = false;
     }
     
     if(screen == 'settings'){
+      console.log('settings pagge?')
       this.todayPage = false;
       this.calendarPage = false;
       this.toDosPage = false;
-      this.settingsPage = false;
-      
-      //this.testNoti();
+      this.settingsPage = true;
     }
   }
 

@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 @Injectable()
 export class ShareDataService {
 
-    private loginToBlockstack = new BehaviorSubject<boolean>(false);
+    private loginToBlockstack = new BehaviorSubject<boolean>(null);
     loginEvent = this.loginToBlockstack.asObservable();
     doTheLogin(dataLogin: any){
         this.loginToBlockstack.next(dataLogin);
@@ -56,6 +56,12 @@ export class ShareDataService {
     openPopOverList = this.popOverOps.asObservable();
     openPopOver(action: string){
         this.popOverOps.next(action);
+    }
+    
+    private changeTime = new BehaviorSubject<string>('');
+    changeHour = this.changeTime.asObservable();
+    changeHourTime(action: string){
+        this.changeTime.next(action);
     }
     
     

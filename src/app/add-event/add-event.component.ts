@@ -103,10 +103,6 @@ export class AddEventComponent implements OnInit {
     if(!this.editMode){
       eventCopy = {
         title: this.event.title,
-        // startTime:  new Date(this.event.startTime),
-        // endTime: new Date(this.event.endTime),
-        // startTime:  format(new Date(this.event.startTime), 'MMM D, YYYY HH:mm'),
-        // endTime: format(new Date(this.event.endTime), 'MMM D, YYYY HH:mm'),
         startTime:  parseISO(this.event.startTime),
         endTime: parseISO(this.event.endTime),
         allDay: this.event.allDay,
@@ -123,8 +119,6 @@ export class AddEventComponent implements OnInit {
     if(this.editMode){
       eventCopy = {
         title: this.event.title,
-        // startTime:  new Date(this.event.startTime),
-        // endTime: new Date(this.event.endTime),
         startTime:  parseISO(this.event.startTime),
         endTime: parseISO(this.event.endTime),
         allDay: this.event.allDay,
@@ -137,21 +131,11 @@ export class AddEventComponent implements OnInit {
         reminder: this.reminderTime,
         reminderLegend: this.reminderVal
       }
-  //this.editPickerElements(this.event.startTime, this.event.endTime);
    }
  
     if (eventCopy.allDay) {
-      // eventCopy.startTime = startOfDay(new Date(this.event.startTime));
-      // eventCopy.endTime = endOfDay(new Date(this.event.endTime));
-      // eventCopy.endTime = endOfDay(eventCopy.endTime);
       let start = eventCopy.startTime;
       let end = eventCopy.endTime;
- 
-      //eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-      //eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()));
-
-      // eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-      // eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
     }
     if(!this.editMode){
       this.dataService.addEventData(eventCopy);
@@ -162,31 +146,6 @@ export class AddEventComponent implements OnInit {
     }
     this.resetEvent();
   }
-  
-  // saveEdit() {
-  //   let eventCopy = {
-  //     title: this.event.title,
-  //     startTime:  new Date(this.event.startTime),
-  //     endTime: new Date(this.event.endTime),
-  //     allDay: this.event.allDay,
-  //     desc: this.event.desc,
-  //     loc: this.event.loc,
-  //     storeDate: this.event.storeDate,
-  //     tag: this.tagEvent.name,
-  //     tagColor: this.tagEvent.color
-  //   }
- 
-  //   if (eventCopy.allDay) {
-  //     let start = eventCopy.startTime;
-  //     let end = eventCopy.endTime;
- 
-  //     eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-  //     eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
-  //   }
-    
-  //   this.dataService.addEventData(eventCopy);
-  //   this.resetEvent();
-  // }
 
   editEventSubscribe(){
     this.dataService.editDataEvent.subscribe(event => {
@@ -202,10 +161,6 @@ export class AddEventComponent implements OnInit {
         this.event = {
           title: event.title,
           desc: event.desc,
-          // startTime: null,
-          // endTime: null,
-          // startTime: new Date(event.startTime),
-          // endTime: new Date(event.endTime),
           startTime: formatStart,
           endTime: formatEnd,
           allDay: event.allDay,
@@ -217,7 +172,6 @@ export class AddEventComponent implements OnInit {
           reminder: event.reminder,
           reminderLegend: event.reminderLegend
         };
-        //this.editPickerElements(event.startTime, event.endTime);
         this.tagEvent = {
           name: event.tag,
           color: event.tagColor
@@ -228,68 +182,12 @@ export class AddEventComponent implements OnInit {
         }
       }
     });
-
-    // this.dataService.resetDataEvent.subscribe(reset => {
-    //   if(reset === true){
-    //     this.resetEvent();
-    //     this.dataService.resetEventData(false);
-    //   }
-    // });
   }
 
   saveEditEvent(){
     console.log('guardando edit event...');
     this.addEvent();
-    // userSession.deleteFile('calenderEvent/' + this.event.storeDate + '.json')
-    //   .then(() => {
-    //     this.addEvent();
-    //   });
   }
-
-  // loadPickerElements(){
-  //   let inputStart = document.getElementById('inputStart');
-  //   let inputEnd = document.getElementById('inputEnd');
-
-  //   //console.log(this.inputStart);
-
-  //   const pickerStart = new Picker(inputStart, {
-  //     //inline: true,
-  //     date: new Date(),
-  //     format: 'MMM D, YYYY HH:mm',
-  //     container: '.pickerContainer',
-  //   });
-  //   //pickerStart.getDate(true);
-    
-  //   const pickerEnd = new Picker(inputEnd, {
-  //     date: new Date(),
-  //     format: 'MMM D, YYYY HH:mm',
-  //     container: '.pickerContainer'
-  //   });
-  // }
-
-  // editPickerElements(startTime, endTime){
-  //   let inputStart = document.getElementById('inputStart');
-  //   //let formatStart = new Date(startTime);
-  //   let inputEnd = document.getElementById('inputEnd');
-  //   //inputEnd.innerHTML = endTime;
-
-  //   const pickerStart = new Picker(inputStart, {
-  //     //inline: true,
-  //     date: new Date(startTime),
-  //     format: 'MMM D, YYYY HH:mm',
-  //     container: '.pickerContainer',
-  //   });
-  //   this.event.startTime = pickerStart.getDate(true);
-  //   //console.log(pickerStart.getDate(true));
-  //   //pickerStart.pick();
-    
-  //   const pickerEnd = new Picker(inputEnd, {
-  //     date: new Date(endTime),
-  //     format: 'MMM D, YYYY HH:mm',
-  //     container: '.pickerContainer'
-  //   });
-  //   this.event.endTime = pickerEnd.getDate(true);
-  // }
 
   loadTags(){
     
@@ -315,9 +213,6 @@ export class AddEventComponent implements OnInit {
           color: this.event.tagColor
         }
       }
-      // else {
-      //   
-      // }
     });
   }
 
