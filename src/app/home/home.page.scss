@@ -70,7 +70,7 @@ $redpinkTag: #CF195E;
     max-width: 300px;
     margin: 0 auto;
     position: relative;
-    height: 10%;
+    //height: 10%;
 
     .flexCol {
         flex: 1;
@@ -104,7 +104,8 @@ $redpinkTag: #CF195E;
 
     .colRowDay {
         display: flex;
-        flex-flow: column; 
+        flex-flow: column;
+        line-height: .9; 
     }
 
     .todayTextDay {

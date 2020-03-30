@@ -147,14 +147,21 @@ export class HomePage implements OnInit{
     });
 
     this.dataService.changeHour.subscribe(time => {
-      if(time === 'gringo'){
+      if(time === 'gringo' || time === null || time === undefined){
         console.log('gringo time');
         this.ampm = true;
+        return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
+        // let timeString = JSON.stringify(this.ampm);
+        // userSession.putFile('user/timeFormat.json', timeString , gaiaPutOptions);
       }
       if(time === 'world'){
         console.log('world time');
         this.ampm = false;
+        return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
+        // let timeString = JSON.stringify(this.ampm);
+        // userSession.putFile('user/timeFormat.json', timeString , gaiaPutOptions);
       }
+      
     });
     
   }
@@ -463,31 +470,19 @@ export class HomePage implements OnInit{
   }
 
   getUserSettings(){
-    userSession.getFile('users/settings.json', gaiaGetOptions).then((data) => {
-      if(data){
-
+    userSession.getFile('user/timeFormat.json', gaiaGetOptions).then((time) => {
+      console.log("time format => ", time)
+      if(time === 'gringo' || time === null){
+        //let formatData = JSON.parse(data as string);
+        this.ampm = true;
+      } 
+      if(time === 'world'){
+        this.ampm =  false;
+       // console.log("no hay data vamos con el ampm => ", this.ampm)
       }
+      this.dataService.changeHourTime(time as string)
     });
   }
-
-  // getWeatherData(){
-  //   //alert('weather?');
-  //   this.geolocation.getCurrentPosition().then(data => {
-  //     let lat = data.coords.latitude;
-  //     let long = data.coords.longitude;
-  //     this.ws.getWeather(lat, long).subscribe(weather => {
-  //       console.log('wethereando... ', weather);
-  //       this.weatherObj = weather;
-  //       //console.log(weather);
-  //       let todayDate = new Date();
-  //       //console.log(todayDate, todayDate.getDay());
-  //       this.textMonth = todayDate.toLocaleString('default', { day: 'numeric', month: 'long' });
-  //       //console.log(this.textMonth);
-  //     });
-  //    }).catch((error) => {
-  //      console.log('Error getting location', error);
-  //    });
-  // }
 
   segmentCalendar(screen){
     //console.log(screen);

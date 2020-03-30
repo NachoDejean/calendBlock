@@ -17,6 +17,7 @@ const userSession = new UserSession;
 export class AppComponent {
 
   isUserLogged: boolean;
+  time: string;
 
   constructor(
     private platform: Platform,
@@ -32,14 +33,30 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.isUserLogged = userSession.isUserSignedIn();
+      this.timeFormat();
       //this.dataService.doTheLogin(this.isUserLogged);
       //console.log(this.isUserLogged )
     });
   }
 
   changeTheTime(time){
-    console.log(time);
+    //console.log(time);
     this.dataService.changeHourTime(time);
+  }
+
+  timeFormat(){
+    //this.dataService.ho
+    this.dataService.changeHour.subscribe(time => {
+      if(time === 'gringo' || time === null){
+        this.time = 'gringo'
+        
+      }
+      if(time === 'world'){
+        console.log('world time');
+        this.time = 'world'
+      }
+    });
+    console.log("time => ", this.time)
   }
 
   login(){

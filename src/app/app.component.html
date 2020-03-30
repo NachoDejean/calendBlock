@@ -12,7 +12,7 @@
     <ion-content class="contentMenu">
       <div class="wrapMenuContent">
       <ion-item-group>
-        <ion-radio-group value="gringo" (ionChange)="changeTheTime($event.detail.value)">
+        <ion-radio-group [value]="time" (ionChange)="changeTheTime($event.detail.value)">
           <ion-list-header>
             <ion-label>
               Time

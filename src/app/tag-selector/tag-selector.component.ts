@@ -80,6 +80,8 @@ export class TagSelectorComponent implements OnInit {
 
   tagFromEdit: boolean = false;
   validateCreate: boolean = false;
+
+  item: any;
   
   constructor( private dataService: ShareDataService,
                private nav: NavController) { }
