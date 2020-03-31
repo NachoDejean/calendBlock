@@ -336,6 +336,13 @@ ion-item-option, ion-activated {
 //         flex: 1 0 auto; 
 // }
 
+.allContentWrapper {
+    // max-width: 1200px;
+    // width: 100%;
+    // height: 100%;
+    // margin: 0 auto;
+}
+
 @media screen and (min-width: 1023px) {
 
     .wrapTodayEvents{
@@ -347,8 +354,25 @@ ion-item-option, ion-activated {
     }
 
     .todayEvent {
-        width: 30% !important;
-        margin: 1% !important;
+        width: 75% !important;
+        margin: 1% auto !important;
+        padding: 0% !important;
+    }
+
+    .moreInfoEvent {
+        margin: 1vw;
+    }
+
+    .todayEventCalendar {
+        width: 75% !important;
+        padding: 1% !important;
+        margin: .5% auto !important;
+    }
+
+    #calendarPage {
+        .table {
+            width: 75% !important;
+        }
     }
 }
 

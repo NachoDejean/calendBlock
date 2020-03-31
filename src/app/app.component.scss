@@ -22,7 +22,7 @@ ion-list {
     background: transparent !important;
     color: whitesmoke;
 
-    ion-label {
+    ion-label, ion-icon {
         color: whitesmoke;
     }
 }
@@ -33,6 +33,7 @@ ion-item-group {
     ion-icon {
         margin-right: 10px;
         font-size: 22px;
+        color: whitesmoke;
     }
 }
 //--background: #173847;
