@@ -1,6 +1,8 @@
 .contentMenu, #background-content, .brandMenu {
     //--background: #2A6682 !important;
-    --background: #333 !important;
+    //--background: #333 !important;
+    //--background: rgba(28,73,94, .9) !important;
+    --background: #254E61 !important;
 }
 
 .imgBrandMenu {
@@ -30,6 +32,7 @@ ion-item-group {
 
     ion-icon {
         margin-right: 10px;
+        font-size: 22px;
     }
 }
 //--background: #173847;
@@ -53,4 +56,18 @@ ion-item {
 ion-item:hover, .item-radio-checked {
     --color: #0cd1e8;
     color: #0cd1e8;
+}
+
+
+
+.wrapMenuContent {
+    ion-list-header {
+        color: whitesmoke;
+        align-items: center;
+        padding-inline-start: 0;
+
+        ion-label {
+            margin: 0;
+        }
+    }
 }

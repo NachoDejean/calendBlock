@@ -109,7 +109,13 @@
     <ion-item>
       <!-- <ion-label position="floating">List Name</ion-label> -->
       <ion-input autofocus="true" placeholder="New Task" class="inputNewTag" [(ngModel)]="createTask.name"></ion-input>
-      <ion-button *ngIf="createTask.name != ''" class="btnAddTask" fill="none" clear (click)="storeTask(createTask.name, taskOpen)"> Add</ion-button>
+      <!-- <ion-button *ngIf="createTask.name != ''" class="btnAddTask"  (click)="storeTask(createTask.name, taskOpen)"> 
+        <ion-icon name="add" mode="ios"></ion-icon>
+      </ion-button> -->
+      <!-- <ion-fab-button *ngIf="createTask.name != ''"  class="bgFabAdd">
+        <ion-icon name="add" mode="ios"></ion-icon>
+      </ion-fab-button> -->
+      <ion-icon *ngIf="createTask.name != ''" name="add" slot="end" (click)="storeTask(createTask.name, taskOpen)"></ion-icon>
     </ion-item>     
     
   </div>
