@@ -36,6 +36,19 @@
 
 @import "app/add-event/picker.min.css";
 
+.loadingComponent {
+    position: fixed;
+    z-index: 100000;
+    background: $blueDarkTwo;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    /* place-content: center; */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 .swiper-pagination-bullet-active {
     background: whitesmoke !important;
 }

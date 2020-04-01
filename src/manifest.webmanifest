@@ -1,8 +1,8 @@
 {
-  "name": "app",
-  "short_name": "app",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "CalendBlock",
+  "short_name": "CalendBlock",
+  "theme_color": "#173847",
+  "background_color": "#2A6682",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

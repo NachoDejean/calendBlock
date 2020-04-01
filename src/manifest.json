@@ -1,7 +1,7 @@
 {
-  "name": "Blockstack CalendBlock",
-  "short_name": "New CalendBlock",
-  "description": "Blockstack Encrypted Calendar",
+  "name": "CalendBlock",
+  "short_name": "CalendBlock",
+  "description": "Blockstack Encrypted Calendar and Task Manager",
   "icons": [
     {
       "src": "favicon.ico",

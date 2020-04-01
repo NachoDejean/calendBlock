@@ -47,6 +47,7 @@ export class HomePage implements OnInit{
   showLoginComponent: boolean = false;
   createNewToDoList: boolean = false;
   taskIsOpen: boolean = false;
+  isLoading: boolean = false;
 
   eventIndex = [];
   eventSource = [];
@@ -95,6 +96,7 @@ export class HomePage implements OnInit{
               ) {}
 
   ngOnInit(){
+    this.isLoading = true;
     this.loginBlockstack();
     //this.getWeatherData();
     this.changeScreen('today');
@@ -106,6 +108,16 @@ export class HomePage implements OnInit{
   }
 
   beSubscribe(){
+    this.dataService.isLoadingScreen.subscribe(loading => {
+      if(loading === null){}
+      if(loading === true){
+        this.isLoading = true;
+      }
+      if(loading === false){
+        this.isLoading = false;
+      }
+    })
+
     this.dataService.addDataEvent.subscribe(event => {
       //console.log('event del service es ', event);
       if(event !== null){
@@ -148,14 +160,12 @@ export class HomePage implements OnInit{
 
     this.dataService.changeHour.subscribe(time => {
       if(time === 'gringo' || time === null || time === undefined){
-        console.log('gringo time');
         this.ampm = true;
         return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
         // let timeString = JSON.stringify(this.ampm);
         // userSession.putFile('user/timeFormat.json', timeString , gaiaPutOptions);
       }
       if(time === 'world'){
-        console.log('world time');
         this.ampm = false;
         return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
         // let timeString = JSON.stringify(this.ampm);
@@ -203,6 +213,7 @@ export class HomePage implements OnInit{
           } else {
             this.eventSource = [];
           }
+          //this.isLoading = false;
         });
       }
       }
@@ -443,6 +454,7 @@ export class HomePage implements OnInit{
     } else {
       // go to login component
       console.log('show login component');
+      this.isLoading = false;
       this.showLoginComponent = true;
       //userSession.redirectToSignIn();
     }
@@ -458,6 +470,7 @@ export class HomePage implements OnInit{
     if(this.isUserLogged){
       this.getUserSettings();
       this.loadGaiaEvents();
+      this.isLoading = false;
       //this.loadEventsInGaia();
       //this.dataService.passUserInfo(userSession);
     } 
@@ -517,6 +530,7 @@ export class HomePage implements OnInit{
       this.settingsPage = false;
     }
     if(screen == 'todos'){
+      this.dataService.doTheLoading(true);
       this.toDosPage = true;
       this.todayPage = false;
       this.calendarPage = false;

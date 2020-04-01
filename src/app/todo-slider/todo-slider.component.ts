@@ -108,9 +108,11 @@ export class TodoSliderComponent implements OnInit {
                private alertCtrl: AlertController,
                public popoverController: PopoverController ) { 
     this.todoSources = [];
+    
   }
 
   ngOnInit() {
+    
     this.loadGaiaTodos();
     this.dataService.newToDoList.subscribe(list => {
       if(list === null){
@@ -145,7 +147,8 @@ export class TodoSliderComponent implements OnInit {
         //console.log('no hay data en gaia');
         this.todosIndex = this.todosIndexDefaults;
       }
-      //console.log(this.todosIndex)  
+      //console.log(this.todosIndex)
+      this.dataService.doTheLoading(false);  
     });
   }
 

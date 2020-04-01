@@ -13,6 +13,15 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "rewrites": [{
+      "source": "/www/**",
+      "destination": "/index.html"
+    },
+    {
+      "source": "**",
+      "destination": "/index.html"
+    }
+  ]
   }
 }

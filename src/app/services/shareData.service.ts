@@ -64,7 +64,11 @@ export class ShareDataService {
         this.changeTime.next(action);
     }
     
-    
+    private isLoadingService = new BehaviorSubject<boolean>(null);
+    isLoadingScreen = this.isLoadingService.asObservable();
+    doTheLoading(boo: boolean){
+        this.isLoadingService.next(boo);
+    }
 
     
     
