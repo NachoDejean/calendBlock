@@ -11,7 +11,10 @@ export class LoginBlockComponent implements OnInit {
   slideOpts = {
     initialSlide: 0,
     speed: 400,
-    slidesPerColumnFill: 'column'
+    slidesPerColumnFill: 'column',
+    autoplay: {
+      delay: 3000,
+    },
   };
 
   constructor( private dataService: ShareDataService) { }

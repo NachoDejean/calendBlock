@@ -31,7 +31,6 @@
     "core-js": "^2.5.4",
     "date-fns": "^2.10.0",
     "ionic2-calendar": "^0.5.8",
-    "pickerjs": "^1.2.1",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

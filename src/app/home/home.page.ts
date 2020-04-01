@@ -18,10 +18,10 @@ const appConfig = new blockstack.AppConfig(['store_write', 'publish_data']);
 const userSession = new blockstack.UserSession({ appConfig: appConfig });
 
 //const transitPrivateKey = userSession.generateAndStoreTransitKey();
-const redirectURI = 'https://calendarblock.web.app';
-const manifestURI = 'https://calendarblock.web.app/manifest.json';
-const scopes = ['store_write', 'publish_data'];
-const appDomain = 'https://calendarblock.web.app';
+// const redirectURI = 'https://calendarblock.web.app';
+// const manifestURI = 'https://calendarblock.web.app/manifest.json';
+// const scopes = ['store_write', 'publish_data'];
+// const appDomain = 'https://calendarblock.web.app';
 const gaiaPutOptions = { encrypt: false };
 const gaiaGetOptions = { decrypt: false };
 
@@ -87,12 +87,10 @@ export class HomePage implements OnInit{
   ampm: boolean;
 
   constructor(
-              //private geolocation: Geolocation,
               private dataService: ShareDataService,
               private alertCtrl: AlertController,
               public popoverController: PopoverController,
               private ref: ChangeDetectorRef
-              //private ws: WeatherService
               ) {}
 
   ngOnInit(){
@@ -119,28 +117,23 @@ export class HomePage implements OnInit{
     })
 
     this.dataService.addDataEvent.subscribe(event => {
-      //console.log('event del service es ', event);
       if(event !== null){
         this.storeTheEvent(event);
       }
     });
     this.dataService.saveEditDataEvent.subscribe(event => {
       if(event !== null){
-        console.log('salvamos el event editado ', event);
         this.storeEditEvent(event);
       }
     });
     this.dataService.loginEvent.subscribe(doTheLogin => {
-      console.log(doTheLogin);
       if(doTheLogin === null){
 
       }
       if(doTheLogin == true){
         this.login();
-        //this.loginBlock();
       } 
       if(doTheLogin == false) {
-        //this.loginBlockstack();
         this.showLoginComponent = true;
       }
     });
@@ -162,14 +155,10 @@ export class HomePage implements OnInit{
       if(time === 'gringo' || time === null || time === undefined){
         this.ampm = true;
         return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
-        // let timeString = JSON.stringify(this.ampm);
-        // userSession.putFile('user/timeFormat.json', timeString , gaiaPutOptions);
       }
       if(time === 'world'){
         this.ampm = false;
         return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
-        // let timeString = JSON.stringify(this.ampm);
-        // userSession.putFile('user/timeFormat.json', timeString , gaiaPutOptions);
       }
       
     });
@@ -188,7 +177,6 @@ export class HomePage implements OnInit{
         userSession.getFile('calenderEvent/' + indexEvent + '.json', gaiaGetOptions)
         .then(data => {
           if(data){
-            //console.log(data);
             let eventDataGaia = JSON.parse(data as string);
             let eventData = {
               title: eventDataGaia.title,
@@ -272,13 +260,11 @@ export class HomePage implements OnInit{
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
             popOverSub.unsubscribe();
           }
         }, {
           text: 'Okay',
           handler: () => {
-            console.log('Confirm Okay');
             popOverSub.unsubscribe();
             userSession.deleteFile('calenderEvent/' + event.storeDate + '.json')
             .then(() => {
@@ -298,7 +284,6 @@ export class HomePage implements OnInit{
   }
 
   closeEventSelected (){
-    console.log("closeEvent")
     this.eventSelected = false;
     this.resetEvent();
   }
@@ -327,7 +312,6 @@ export class HomePage implements OnInit{
   }
 
   closeAddEvent(){
-    console.log('pasamos ppor el close evenet?')
     this.showAddEventComponent = false;
   }
   closeEventEdited(){
@@ -345,7 +329,6 @@ export class HomePage implements OnInit{
   }
 
   async tasksOptionsPopover(ev: any, eventOpen) {
-    console.log(ev);
     this.dataService.openPopOver('');
     
     //this.taskListOpen = taskListOpen;
@@ -358,9 +341,7 @@ export class HomePage implements OnInit{
     });
 
     popOverSub = this.dataService.openPopOverList.subscribe(action => {
-      if(action === ''){ 
-        console.log('null no hacemos nada');
-        //this.popOverSub.unsubscribe();
+      if(action === ''){
       }
       if(action === 'edit'){
         this.editEventSelected(eventOpen);
@@ -396,15 +377,14 @@ export class HomePage implements OnInit{
     this.eventSource.push(event);
     let eventIndexToString = JSON.stringify(this.eventIndex);
     let eventOnlyToString = JSON.stringify(event);
-    userSession.putFile('calenderEventIndex.json', eventIndexToString, gaiaPutOptions)
-    .then(data => {console.log('dataIndexGaia => ', data)});
+    this.showAddEventComponent = false;
+    userSession.putFile('calenderEventIndex.json', eventIndexToString, gaiaPutOptions);
     userSession.putFile('calenderEvent/' + event.storeDate + '.json', eventOnlyToString, gaiaPutOptions)
     .then((data) => {
-      console.log('data del then despues del store ', data);
       this.myCal.loadEvents();
       this.resetEvent();
       event = null;
-      this.showAddEventComponent = false;
+      //this.showAddEventComponent = false;
     });
     if(event.remindMe){
       this.addEventNotification(event);
@@ -413,12 +393,10 @@ export class HomePage implements OnInit{
 
   createToDoList(){
     this.createNewToDoList = !this.createNewToDoList;
-    //console.log("createNewToDoList => " ,this.createNewToDoList);
     this.dataService.createToDoList(this.createNewToDoList);
   }
 
   closeTaskOpen(){
-    //console.log('closeTaskOpen!')
     this.taskIsOpen = !this.taskIsOpen;
     this.dataService.openToDoList(false);
 
@@ -435,13 +413,6 @@ export class HomePage implements OnInit{
     userSession.signUserOut()
   }
 
-  // loginBlock(){
-  //   console.log('pasando por el calendBlock custom');
-  //   const authRequest = blockstack.makeAuthRequest(transitPrivateKey, redirectURI, manifestURI, scopes, appDomain);
-  //   blockstack.redirectToSignInWithAuthRequest(authRequest);
-  //   this.loginBlockstack();
-  // }
-
   loginBlockstack(){
     if (userSession.isUserSignedIn()) {
       let profile = userSession.loadUserData().profile;
@@ -452,8 +423,6 @@ export class HomePage implements OnInit{
         this.showProfile(profile);
       });
     } else {
-      // go to login component
-      console.log('show login component');
       this.isLoading = false;
       this.showLoginComponent = true;
       //userSession.redirectToSignIn();
@@ -462,9 +431,7 @@ export class HomePage implements OnInit{
 
   showProfile(profile) {
     this.showLoginComponent = false;
-    //console.log(userSession.loadUserData());
     let person = new blockstack.Person(profile);
-    //console.log('person => ', person);
     this.personaName = person.name();
     this.isUserLogged = userSession.isUserSignedIn();
     if(this.isUserLogged){
@@ -475,7 +442,6 @@ export class HomePage implements OnInit{
       //this.dataService.passUserInfo(userSession);
     } 
     else if(!this.isUserLogged){
-      console.log('deberiamos de mostrar que el usuario no esta logeado y hubo algún problema');
     } 
 
     // document.getElementById('heading-name').innerHTML = person.name()
@@ -484,21 +450,17 @@ export class HomePage implements OnInit{
 
   getUserSettings(){
     userSession.getFile('user/timeFormat.json', gaiaGetOptions).then((time) => {
-      console.log("time format => ", time)
       if(time === 'gringo' || time === null){
-        //let formatData = JSON.parse(data as string);
         this.ampm = true;
       } 
       if(time === 'world'){
         this.ampm =  false;
-       // console.log("no hay data vamos con el ampm => ", this.ampm)
       }
       this.dataService.changeHourTime(time as string)
     });
   }
 
   segmentCalendar(screen){
-    //console.log(screen);
     if(screen.detail.value == 'today'){
       this.todayPage = true;
       this.calendarPage = false;
@@ -539,7 +501,6 @@ export class HomePage implements OnInit{
     }
     
     if(screen == 'settings'){
-      console.log('settings pagge?')
       this.todayPage = false;
       this.calendarPage = false;
       this.toDosPage = false;
@@ -548,9 +509,6 @@ export class HomePage implements OnInit{
   }
 
   addEventNotification(event){
-    console.log('test notifications => ', event);
-    //console.log(LocalNotifications.areEnabled());
-    //LocalNotifications.areEnabled().then(()=>{console.log('notis are enabled!')})
     LocalNotifications.schedule({
       notifications: [
         {

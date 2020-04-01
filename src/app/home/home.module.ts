@@ -9,7 +9,6 @@ import { HomePage } from './home.page';
 import {AddEventComponent} from '../add-event/add-event.component';
 import {LoginBlockComponent} from '../login-block/login-block.component';
 import {TodoSliderComponent} from '../todo-slider/todo-slider.component';
-import {SettingsPageComponent} from '../settings-page/settings-page.component';
 import {LoadingComponent} from '../loading/loading.component';
 
 @NgModule({
@@ -26,6 +25,6 @@ import {LoadingComponent} from '../loading/loading.component';
     NgCalendarModule,
     
   ],
-  declarations: [HomePage, AddEventComponent, LoginBlockComponent, TodoSliderComponent, SettingsPageComponent, LoadingComponent]
+  declarations: [HomePage, AddEventComponent, LoginBlockComponent, TodoSliderComponent, LoadingComponent]
 })
 export class HomePageModule {}

@@ -1,62 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { ShareDataService } from '../services/shareData.service';
-import { ModalController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { ShareDataService } from "../services/shareData.service";
+import { ModalController } from "@ionic/angular";
+import { Router } from "@angular/router";
 
-import {parseISO, subMinutes, subDays, endOfDay, startOfDay } from 'date-fns';
+import { parseISO, subMinutes, subDays, endOfDay, startOfDay } from "date-fns";
 
-import Picker from 'pickerjs';
+//import Picker from "pickerjs";
 //import { TagSelectorComponent } from '../tag-selector/tag-selector.component'
-import { UserSession } from 'blockstack';
-const userSession = new UserSession;
+import { UserSession } from "blockstack";
+const userSession = new UserSession();
 
 @Component({
-  selector: 'app-add-event',
-  templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.scss']
+  selector: "app-add-event",
+  templateUrl: "./add-event.component.html",
+  styleUrls: ["./add-event.component.scss"]
 })
 export class AddEventComponent implements OnInit {
-
   event = {
-    title: '',
-    desc: '',
+    title: "",
+    desc: "",
     startTime: null,
     endTime: null,
     allDay: false,
     remindMe: false,
-    loc: '',
-    storeDate: '',
-    tag: '',
-    tagColor: '',
+    loc: "",
+    storeDate: "",
+    tag: "",
+    tagColor: "",
     reminder: null,
-    reminderLegend: ''
+    reminderLegend: ""
   };
 
   tags = [];
 
   defaultTags = [
     {
-      name: 'Personal',
-      color: '#4FC3F7',
+      name: "Personal",
+      color: "#4FC3F7",
       id: 1
     },
     {
-      name: 'Work',
-      color: '#CF195E',
-      id: 2,
+      name: "Work",
+      color: "#CF195E",
+      id: 2
     },
     {
-      name: 'Home',
-      color: '#46C4B5',
+      name: "Home",
+      color: "#46C4B5",
       id: 3
     }
   ];
 
   tagEvent = {
-    name: '',
-    color: ''
-  }
- 
+    name: "",
+    color: ""
+  };
+
   minDate = new Date().toISOString();
 
   createTagScreen: boolean = false;
@@ -68,9 +67,11 @@ export class AddEventComponent implements OnInit {
   reminderVal: any;
   reminderText: string;
 
-  constructor( private dataService: ShareDataService,
-               private nav: Router,
-               private modalCtrl: ModalController) { }
+  constructor(
+    private dataService: ShareDataService,
+    private nav: Router,
+    private modalCtrl: ModalController
+  ) {}
 
   ngOnInit() {
     this.editMode = false;
@@ -78,32 +79,32 @@ export class AddEventComponent implements OnInit {
     this.resetEvent();
     this.editEventSubscribe();
     this.reminderSelectBoo = true;
-    //this.loadPickerElements();  
+    //this.loadPickerElements();
   }
 
   resetEvent() {
     this.event = {
-      title: '',
-      desc: '',
-      startTime: '',
-      endTime: '',
+      title: "",
+      desc: "",
+      startTime: "",
+      endTime: "",
       allDay: false,
       remindMe: false,
-      loc: '',
-      storeDate: '',
-      tag: '',
-      tagColor: '',
+      loc: "",
+      storeDate: "",
+      tag: "",
+      tagColor: "",
       reminder: null,
-      reminderLegend: ''
+      reminderLegend: ""
     };
   }
 
   addEvent() {
     let eventCopy;
-    if(!this.editMode){
+    if (!this.editMode) {
       eventCopy = {
         title: this.event.title,
-        startTime:  parseISO(this.event.startTime),
+        startTime: parseISO(this.event.startTime),
         endTime: parseISO(this.event.endTime),
         allDay: this.event.allDay,
         remindMe: this.event.remindMe,
@@ -114,12 +115,12 @@ export class AddEventComponent implements OnInit {
         tagColor: this.tagEvent.color,
         reminder: this.reminderTime,
         reminderLegend: this.reminderVal
-      }
-   }
-    if(this.editMode){
+      };
+    }
+    if (this.editMode) {
       eventCopy = {
         title: this.event.title,
-        startTime:  parseISO(this.event.startTime),
+        startTime: parseISO(this.event.startTime),
         endTime: parseISO(this.event.endTime),
         allDay: this.event.allDay,
         remindMe: this.event.remindMe,
@@ -130,32 +131,31 @@ export class AddEventComponent implements OnInit {
         tagColor: this.tagEvent.color,
         reminder: this.reminderTime,
         reminderLegend: this.reminderVal
-      }
-   }
- 
+      };
+    }
+
     if (eventCopy.allDay) {
       let start = eventCopy.startTime;
       let end = eventCopy.endTime;
     }
-    if(!this.editMode){
+    if (!this.editMode) {
       this.dataService.addEventData(eventCopy);
     }
-    if(this.editMode){
+    if (this.editMode) {
       this.dataService.saveEditEventData(eventCopy);
-      console.log('editamos el evento')
     }
     this.resetEvent();
   }
 
-  editEventSubscribe(){
+  editEventSubscribe() {
     this.dataService.editDataEvent.subscribe(event => {
-      console.log('event a editar => ', event)
-      if(event === null) {
+      //console.log('event a editar => ', event)
+      if (event === null) {
         this.resetEvent();
-        console.log('el edit event es null no hacemos nada');
+        //console.log('el edit event es null no hacemos nada');
       } else {
         this.editMode = true;
-        console.log('el edit event NO es null, cargamos la data => ', event);
+        //console.log('el edit event NO es null, cargamos la data => ', event);
         let formatStart = new Date(event.startTime).toISOString();
         let formatEnd = new Date(event.endTime).toISOString();
         this.event = {
@@ -175,109 +175,100 @@ export class AddEventComponent implements OnInit {
         this.tagEvent = {
           name: event.tag,
           color: event.tagColor
-        }
-        if(this.event.remindMe){
-
-          this.reminderSelect(this.event.reminderLegend)
+        };
+        if (this.event.remindMe) {
+          this.reminderSelect(this.event.reminderLegend);
         }
       }
     });
   }
 
-  saveEditEvent(){
-    console.log('guardando edit event...');
+  saveEditEvent() {
     this.addEvent();
   }
 
-  loadTags(){
-    
-    userSession.getFile('tags/caleTags.json').then(dataTags => {
-      if(dataTags !== null) {
+  loadTags() {
+    userSession.getFile("tags/caleTags.json").then(dataTags => {
+      if (dataTags !== null) {
         let parsedTags = JSON.parse(dataTags as string);
         this.tags = parsedTags;
         this.tagEvent = {
           name: this.tags[0].name,
           color: this.tags[0].color
-        }
+        };
       }
-      if(dataTags === null) {
+      if (dataTags === null) {
         this.tags = this.defaultTags;
         this.tagEvent = {
           name: this.tags[0].name,
           color: this.tags[0].color
-        }
+        };
       }
-      if(this.editMode) {
+      if (this.editMode) {
         this.tagEvent = {
           name: this.event.tag,
           color: this.event.tagColor
-        }
+        };
       }
     });
   }
 
-  dataSelected(date){
-    //console.log(date);
+  dataSelected(date) {
     this.reminderSelectBoo = false;
   }
 
-  reminderSelect(reminder){
-    //console.log('el selected reminder es => ', reminder.detail.value);
-    console.log('el selected reminder es => ', reminder);
+  reminderSelect(reminder) {
     this.reminderVal = reminder;
-    if(this.reminderVal === 'r1' || this.event.reminderLegend === 'r1') {
+    if (this.reminderVal === "r1" || this.event.reminderLegend === "r1") {
       this.reminderTime = parseISO(this.event.startTime);
-      console.log('elegimos el 1 => ', this.reminderTime);
-      this.reminderText = 'At time of the event';
+
+      this.reminderText = "At time of the event";
     }
-    if(this.reminderVal === 'r2' || this.event.reminderLegend === 'r2') {
+    if (this.reminderVal === "r2" || this.event.reminderLegend === "r2") {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 5);
-      console.log('elegimos el 2 => ', this.reminderTime);
-      this.reminderText = '5 minutes before';
+
+      this.reminderText = "5 minutes before";
     }
-    if(this.reminderVal === 'r3' || this.event.reminderLegend === 'r3') {
+    if (this.reminderVal === "r3" || this.event.reminderLegend === "r3") {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 15);
-      console.log('elegimos el 3 => ', this.reminderTime);
-      this.reminderText = '15 minutes before';
+
+      this.reminderText = "15 minutes before";
     }
-    if(this.reminderVal === 'r4' || this.event.reminderLegend === 'r4') {
+    if (this.reminderVal === "r4" || this.event.reminderLegend === "r4") {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 60);
-      console.log('elegimos el 4 => ', this.reminderTime);
-      this.reminderText = '1 hour before';
+
+      this.reminderText = "1 hour before";
     }
-    if(this.reminderVal === 'r5' || this.event.reminderLegend === 'r5') {
+    if (this.reminderVal === "r5" || this.event.reminderLegend === "r5") {
       this.reminderTime = subDays(parseISO(this.event.startTime), 1);
-      console.log('elegimos el 5 => ', this.reminderTime);
-      this.reminderText = '1 day before';
+
+      this.reminderText = "1 day before";
     }
-    if(this.reminderVal === null || this.reminderVal == '' || this.event.reminderLegend === null || this.event.reminderLegend === '') {
-      this.reminderVal === 'r1';
+    if (
+      this.reminderVal === null ||
+      this.reminderVal == "" ||
+      this.event.reminderLegend === null ||
+      this.event.reminderLegend === ""
+    ) {
+      this.reminderVal === "r1";
     }
   }
 
-  onSubmit(){
-    console.log('submitted');
-  }
+  onSubmit() {}
 
-  chooseTag(){
-    console.log('chooseTag');
-    this.nav.navigate(['/tagSelector']);
+  chooseTag() {
+    this.nav.navigate(["/tagSelector"]);
     this.dataService.shareTagObject.subscribe(tag => {
-      if(tag !== null){
+      if (tag !== null) {
         this.tagEvent = {
           name: tag.name,
           color: tag.color
-        }
-        console.log(this.tagEvent)
+        };
       }
     });
-
-    //this.createTagScreen = true;
   }
 
-  closeModal(){
+  closeModal() {
     this.modalCtrl.dismiss();
   }
-  
-
 }
