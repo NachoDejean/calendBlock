@@ -40,10 +40,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { ShareDataService } from './services/shareData.service';
-
-//import {EventDetailComponent} from './event-detail/event-detail.component';
 import { TagSelectorComponent } from '../app/tag-selector/tag-selector.component';
-import { PopTasksComponent } from '../app/components/pop-tasks/pop-tasks.component';
+import { PopTasksComponent } from '../app/pop-tasks/pop-tasks.component';
 
 @NgModule({
   declarations: [AppComponent, TagSelectorComponent, PopTasksComponent],

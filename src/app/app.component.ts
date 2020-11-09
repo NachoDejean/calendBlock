@@ -34,29 +34,23 @@ export class AppComponent {
       this.splashScreen.hide();
       this.isUserLogged = userSession.isUserSignedIn();
       this.timeFormat();
-      //this.dataService.doTheLogin(this.isUserLogged);
-      //console.log(this.isUserLogged )
     });
   }
 
   changeTheTime(time){
-    //console.log(time);
     this.dataService.changeHourTime(time);
   }
 
   timeFormat(){
-    //this.dataService.ho
     this.dataService.changeHour.subscribe(time => {
-      if(time === 'gringo' || time === null){
-        this.time = 'gringo'
+      if(time === 'usa' || time === null){
+        this.time = 'usa'
         
       }
       if(time === 'world'){
-        console.log('world time');
         this.time = 'world'
       }
     });
-    console.log("time => ", this.time)
   }
 
   login(){

@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { ShareDataService } from '../services/shareData.service';
 import {UserSession} from 'blockstack';
-import { PopTasksComponent} from '../components/pop-tasks/pop-tasks.component';
+import { PopTasksComponent} from '../pop-tasks/pop-tasks.component';
 
 const userSession = new UserSession;
 const gaiaPutOptions = { encrypt: false };
@@ -34,8 +34,6 @@ export class TodoSliderComponent implements OnInit {
   saveAndCloseNewList: boolean = false;
   listTitileEdit: boolean = false;
   taskOpen: any;
-
-  
 
   todosIndex = [];
   todoSources = [];
@@ -107,8 +105,7 @@ export class TodoSliderComponent implements OnInit {
   constructor( private dataService: ShareDataService,
                private alertCtrl: AlertController,
                public popoverController: PopoverController ) { 
-    this.todoSources = [];
-    
+    this.todoSources = [];  
   }
 
   ngOnInit() {
@@ -132,8 +129,6 @@ export class TodoSliderComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    //console.log('on destroy');
-    //this.dataService.openPopOverList.subscribe().unsubscribe();
     this.dataService.openToDoList(false);
   }
 
@@ -144,10 +139,8 @@ export class TodoSliderComponent implements OnInit {
         let todosIndexInGaia = JSON.parse(data as string);
         this.todosIndex = todosIndexInGaia;
       } else {
-        //console.log('no hay data en gaia');
         this.todosIndex = this.todosIndexDefaults;
       }
-      //console.log(this.todosIndex)
       this.dataService.doTheLoading(false);  
     });
   }
@@ -163,9 +156,7 @@ export class TodoSliderComponent implements OnInit {
     this.taskOpen = taskList;
     this.fabBgColor = this.taskOpen.color;
     this.createTask.name = '';
-    console.log(this.taskOpen);
     this.todoSources = this.taskOpen.task;
-    console.log(this.todoSources);
   }
 
   createNewList(newList){
@@ -187,19 +178,14 @@ export class TodoSliderComponent implements OnInit {
   }
 
   storeNewList(list){
-    this.todosIndex.shift();
+    
     let newTareasList = {
       nameList: list.name,
       color: this.newTagColor,
       task: []
     }
-    //this.todosIndex.splice(0, 0, newTareasList);
-    //this.todosIndex.unshift(newTareasList);
     this.todosIndex.push(newTareasList);
-    //console.log(this.todosIndex)
-    this.slides.update();
     this.slides.slideTo(this.todosIndex.length, 1500);
-    //this.slides.slideTo(0, 1500);
     let todosIndexToString = JSON.stringify(this.todosIndex);
     userSession.putFile('tareasIndex.json', todosIndexToString, gaiaPutOptions)
     .then(()=>{
@@ -225,9 +211,7 @@ export class TodoSliderComponent implements OnInit {
     ev.preventDefault();
 
     popOverSub = this.dataService.openPopOverList.subscribe(action => {
-      if(action === ''){ 
-        //console.log('null no hacemos nada');
-      }
+      if(action === ''){}
       if(action === 'edit'){
         this.editTheList();
       }
@@ -238,8 +222,6 @@ export class TodoSliderComponent implements OnInit {
 
     return await this.currentPopOver.present();
   }
-
-  
 
   async deleteTaskList(taskList){
     this.currentPopOver.dismiss();
@@ -252,21 +234,17 @@ export class TodoSliderComponent implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+          handler: () => {
             popOverSub.unsubscribe();
           }
         }, {
           text: 'Okay',
           handler: () => {
-            //console.log('Confirm Okay');
             let indexArrName: string = taskList.nameList;
             let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
             this.todosIndex.splice(arrIndex, 1);
             this.openTaskView = false;
             this.dataService.openToDoList(false);
-            
-            //this.dataService.openPopOver(null);
             popOverSub.unsubscribe();
             let todosIndexData = JSON.stringify(this.todosIndex);
             userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
@@ -278,7 +256,6 @@ export class TodoSliderComponent implements OnInit {
   }
 
   editTheList(){
-    //console.log('editamos la lista');
     this.listTitileEdit = true;
     this.createTaskList.name = this.taskOpen.nameList;
     this.newTagColor = this.taskOpen.color;
@@ -287,7 +264,6 @@ export class TodoSliderComponent implements OnInit {
   }
 
   saveEditList(list){
-    //console.log(list, this.newTagColor, this.taskListOpen)
     let indexArrName: string = this.taskListOpen.nameList;
     let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
     let editTaskList = {
@@ -326,10 +302,7 @@ export class TodoSliderComponent implements OnInit {
       }
 
       let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
-      //console.log(arrIndex);
-      //this.todosIndex[arrIndex].task.splice(0, 0, task);
       this.todosIndex[arrIndex].task.splice(0, 0, todoData);
-      //console.log(this.todosIndex);
       let todosIndexData = JSON.stringify(this.todosIndex);
       this.createTask.name = '';
       this.newTaskList = true;
@@ -338,28 +311,23 @@ export class TodoSliderComponent implements OnInit {
   }
 
   storeTaskCompleted(task, taskIndex, taskList, isChecked){
-    //console.log('checked dice que... => ' ,isChecked)
     let todoData = {};
     if(isChecked){
-      //console.log('NO esta checked');
       todoData = {
         task: task.task,
         isChecked: false
       }
     }
     if(!isChecked){
-      console.log('esta checked');
       todoData = {
         task: task.task,
         isChecked: true
       }
     }
-    //console.log('todoData => ' ,todoData);
     let indexArrName: string = taskList.nameList;
     let arrIndex = this.todosIndex.findIndex(list => list.nameList === indexArrName);
     this.todosIndex[arrIndex].task.splice(taskIndex, 1, todoData);
     let todosIndexData = JSON.stringify(this.todosIndex);
     userSession.putFile('tareasIndex.json', todosIndexData, gaiaPutOptions);
-    //this.getPercentageCompleted(this.todosIndex[arrIndex].task)
   }
 }

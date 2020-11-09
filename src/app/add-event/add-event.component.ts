@@ -3,10 +3,7 @@ import { ShareDataService } from "../services/shareData.service";
 import { ModalController } from "@ionic/angular";
 import { Router } from "@angular/router";
 
-import { parseISO, subMinutes, subDays, endOfDay, startOfDay } from "date-fns";
-
-//import Picker from "pickerjs";
-//import { TagSelectorComponent } from '../tag-selector/tag-selector.component'
+import { parseISO, subMinutes, subDays} from "date-fns";
 import { UserSession } from "blockstack";
 const userSession = new UserSession();
 
@@ -149,13 +146,10 @@ export class AddEventComponent implements OnInit {
 
   editEventSubscribe() {
     this.dataService.editDataEvent.subscribe(event => {
-      //console.log('event a editar => ', event)
       if (event === null) {
         this.resetEvent();
-        //console.log('el edit event es null no hacemos nada');
       } else {
         this.editMode = true;
-        //console.log('el edit event NO es null, cargamos la data => ', event);
         let formatStart = new Date(event.startTime).toISOString();
         let formatEnd = new Date(event.endTime).toISOString();
         this.event = {
@@ -221,27 +215,22 @@ export class AddEventComponent implements OnInit {
     this.reminderVal = reminder;
     if (this.reminderVal === "r1" || this.event.reminderLegend === "r1") {
       this.reminderTime = parseISO(this.event.startTime);
-
       this.reminderText = "At time of the event";
     }
     if (this.reminderVal === "r2" || this.event.reminderLegend === "r2") {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 5);
-
       this.reminderText = "5 minutes before";
     }
     if (this.reminderVal === "r3" || this.event.reminderLegend === "r3") {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 15);
-
       this.reminderText = "15 minutes before";
     }
     if (this.reminderVal === "r4" || this.event.reminderLegend === "r4") {
       this.reminderTime = subMinutes(parseISO(this.event.startTime), 60);
-
       this.reminderText = "1 hour before";
     }
     if (this.reminderVal === "r5" || this.event.reminderLegend === "r5") {
       this.reminderTime = subDays(parseISO(this.event.startTime), 1);
-
       this.reminderText = "1 day before";
     }
     if (

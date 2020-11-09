@@ -5,8 +5,6 @@ $blueTasks: #2A6682;
 $whiteSmoke: whitesmoke;
 $loginBg: #112238;
 $footerBg: #3A404A;
-
-//tags
 $standardBlue: rgb(79, 195, 247);
 $redpinkTag: #CF195E;
 
@@ -18,13 +16,14 @@ $redpinkTag: #CF195E;
 }
 
 #homePage {
-    //--background: #09121F;
     --background: #2A6682;
 }
 
 //TODAY
 
-#todayPage, #calendarPage, #settingsPage {
+#todayPage,
+#calendarPage,
+#settingsPage {
     position: absolute;
     width: 100%;
     top: 0;
@@ -32,21 +31,11 @@ $redpinkTag: #CF195E;
     overflow: hidden;
     background: $blueDarkTwo;
 }
-// #todayPage, #calendarPage, #settingsPage {
-//     position: relative;
-//     width: 100%;
-//     height: 100%;
-//     overflow: hidden;
-//     background: $blueDarkTwo;
-// }
 
 .weatherObj {
     position: relative;
-    //margin-top: -5vh;
-    //text-align: center;
 
     .weatherGrid {
-        //width: 60vw;
         padding: 0;
         color: $whiteSmoke;
         display: flex;
@@ -58,6 +47,7 @@ $redpinkTag: #CF195E;
 
 .mainWeahterRow {
     align-items: center;
+
     ion-col {
         text-align: center;
     }
@@ -77,15 +67,14 @@ $redpinkTag: #CF195E;
     max-width: 300px;
     margin: 0 auto;
     position: relative;
-    //height: 10%;
 
     .flexCol {
         flex: 1;
-        //cursor: pointer;
     }
 
     .calendarMode {
         text-align: center;
+
         img {
             width: 30px;
         }
@@ -112,29 +101,24 @@ $redpinkTag: #CF195E;
     .colRowDay {
         display: flex;
         flex-flow: column;
-        line-height: .9; 
+        line-height: .9;
     }
 
     .todayTextDay {
         font-size: 14px;
         font-weight: 700;
     }
+
     .todayTextMonth {
         font-size: 32px;
         font-weight: 500;
     }
 
-    .todayNumberDay{
+    .todayNumberDay {
         font-size: 56px;
         line-height: 1;
-        margin-left: 10px; 
+        margin-left: 10px;
     }
-
-    // span {
-    //     font-size: 32px;
-    //     font-weight: bold;
-    //     letter-spacing: -1px;
-    // }
 }
 
 .calendarSegment {
@@ -149,13 +133,12 @@ $redpinkTag: #CF195E;
         padding: 15px 0;
         background: #2B4E5E;
         border-radius: 30px;
-        /* max-width: 40%; */
         text-align: center;
         margin: 2.5%;
         width: 150px;
         position: relative;
         height: 40px;
-        
+
         a {
             font-size: 14px;
             font-weight: 600;
@@ -172,37 +155,15 @@ $redpinkTag: #CF195E;
     .segmentLinkActive {
         transition: ease-in-out;
         transition-duration: .55s;
-       background: #9BB6CA;
-       
-       a {
-           color: #2A6682;
-       }
+        background: #9BB6CA;
+
+        a {
+            color: #2A6682;
+        }
     }
 }
 
-// .calSegment {
-//     --background: transparent;
-//     text-transform: uppercase;
-    
-//     ion-segment-button {
-//         padding: 10px;
-//         ion-label {
-//             padding: 0 25px;
-//             font-size: 14px;
-//         }
-        
-//     }
-
-//     .segment-button-indicator-background {
-//         border-radius: 100px !important;
-//         --border-radius: 100px !important;
-//     }
-    
-// }
-
-.wrapTodayEvents{
-    // display: flex;
-    // flex-wrap: wrap;
+.wrapTodayEvents {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -213,10 +174,6 @@ $redpinkTag: #CF195E;
         width: 100%;
         overflow: auto;
         height: 90%;
-        //padding-bottom: 120px;
-        // display: flex;
-        // flex-wrap: wrap;
-        
     }
 }
 
@@ -231,14 +188,9 @@ $redpinkTag: #CF195E;
     margin: 2.5%;
     color: $whiteSmoke;
     align-items: center;
-    //justify-content: space-between;
-    //max-height: 120px;
-    //flex: 1 0 auto;
 
-    //border: 1px solid #ccc;
-    //max-width: 33%;
-
-    .hsDetail, .allDayTxt {
+    .hsDetail,
+    .allDayTxt {
         color: $whiteSmoke;
         font-weight: 900;
         font-size: 12px;
@@ -251,22 +203,15 @@ $redpinkTag: #CF195E;
     }
 
     .hsDetail {
-        border-right: 1px solid rgba(255,255,255, .5);
-        //padding-right: 1.5%; 
+        border-right: 1px solid rgba(255, 255, 255, .5);
         width: 60px;
     }
-
-    // .allDayTxt {
-    //     text-transform: uppercase;
-    // }
 
     .event-detail {
         color: $whiteSmoke;
         font-weight: 400;
         font-size: 20px;
         letter-spacing: -.5px;
-        // padding-top: 5%;
-        // padding-bottom: 5%;
         padding: 2.5%;
         flex-grow: 1;
     }
@@ -281,23 +226,15 @@ $redpinkTag: #CF195E;
 .todayBg {
     position: absolute;
     width: 100%;
-    //height: 75vh;
-    top: 0; 
-    bottom: 0; 
-    // background: url('../../assets/bgs/todayBgPage.svg') no-repeat;
-    // background-size: cover;
-    // background-position: 0 15vh;
+    top: 0;
+    bottom: 0;
 }
-
-// EVENT DETAIL SCREEN
 
 .eventDetailScreen {
     width: 100%;
     min-width: 100vw;
     position: absolute;
     height: 100%;
-    // top: 0;
-    // bottom: 0;
     display: flex;
     align-items: center;
     background: $blueDarkTwo;
@@ -314,11 +251,10 @@ $redpinkTag: #CF195E;
     background: #fff;
     border-radius: 25px;
 
-    .actionBtnTasksLists{
+    .actionBtnTasksLists {
         position: absolute;
         align-self: flex-end;
         padding: 2.5%;
-        /* padding-right: 1%; */
         margin-top: -1.5%;
         font-size: 22px;
 
@@ -331,7 +267,6 @@ $redpinkTag: #CF195E;
         position: relative;
         width: 100%;
         height: 100%;
-        //padding: 2.5%;
         display: flex;
         flex-direction: column;
 
@@ -372,9 +307,8 @@ $redpinkTag: #CF195E;
         position: relative;
         padding-bottom: 1.25vh;
     }
+
     .dateTime {
-        //width: 100%;
-        //margin: 5% auto;
         font-size: 20px;
         font-weight: 400;
         letter-spacing: 1px;
@@ -384,11 +318,8 @@ $redpinkTag: #CF195E;
     .calendarName {
         margin: 0;
         padding: 0;
-        // font-size: 16px;
-        // font-weight: 500;
         font-size: 14px;
         font-weight: 700;
-        //letter-spacing: .5px;
     }
 
     .eventTimeRow {
@@ -398,14 +329,10 @@ $redpinkTag: #CF195E;
         display: flex;
         flex-direction: row;
         justify-content: center;
-        //height: 35px;
         align-items: center;
-        margin:0 auto;
-        //margin-top: 2.5%;
-        // border-bottom: 1px dashed #888;
-        // border-top: 1px dashed #888;
+        margin: 0 auto;
         padding: 2.5vh 0;
-            
+
 
         .colTime {
             flex: 1 0 auto;
@@ -417,7 +344,6 @@ $redpinkTag: #CF195E;
             text-transform: uppercase;
             opacity: .8;
             font-weight: 700;
-            //color: #777;
         }
 
         .timeSeparator {
@@ -460,7 +386,7 @@ $redpinkTag: #CF195E;
         }
     }
 
-    
+
 
     .eventColorWhite {
         color: $whiteSmoke;
@@ -486,7 +412,7 @@ $redpinkTag: #CF195E;
         .colTime {
             margin-right: 50%;
             position: relative;
-            text-align: center;  
+            text-align: center;
         }
 
         .titileTime {
@@ -497,21 +423,11 @@ $redpinkTag: #CF195E;
         }
     }
 
-    // .eventDescription {
-    //     font-size: 20px;
-    //     font-weight: 500;
-    //     letter-spacing: 1.25px;
-    //     //max-height: 150px;
-    //     line-height: 1;
-    //     overflow: auto;
-    //     position: relative;
-    // }
     .eventDescription {
         font-size: 16px;
         font-weight: 400;
         overflow: auto;
         position: relative;
-        //border-top: 1px dashed #f1f1f1;
         max-height: 30vh;
         padding: 15px;
         padding-top: 0;
@@ -519,16 +435,16 @@ $redpinkTag: #CF195E;
         line-height: 1.25;
         letter-spacing: .5px;
         text-align: center;
-        //margin-top: 2.5vh;
 
         p {
             padding: 0;
             margin-block-start: 0em;
-            margin-block-end: 1em; 
+            margin-block-end: 1em;
         }
     }
 
-    .locationRow, .reminderRow {
+    .locationRow,
+    .reminderRow {
         border-top: 1px dashed #bbb;
         width: 90%;
         margin: 0 auto;
@@ -565,16 +481,15 @@ $redpinkTag: #CF195E;
 
         .eventLocation {
             font-size: 14px;
-            //font-weight: 500;
-            //letter-spacing: 1.25px;
             line-height: 1;
             overflow: auto;
             margin-left: 2.5vw;
             color: $blueDarkTwo;
         }
     }
-    
+
 }
+
 .calendarRow {
     display: flex;
     flex-flow: row;
@@ -597,14 +512,12 @@ $redpinkTag: #CF195E;
 
 .btnsHeaderEventSelected {
     ion-button {
-        margin-inline-start: 12px !important; 
+        margin-inline-start: 12px !important;
     }
 }
 
 .imgCalendarName {
-    img {
-
-    }
+    img {}
 }
 
 .eventDetailBg {
@@ -612,10 +525,6 @@ $redpinkTag: #CF195E;
     width: 100%;
     height: 100%;
     border-radius: 20px;
-}
-
-.defaultEventBg {
-   // background: $standardBlue;
 }
 
 .todayNoEventsWrap {
@@ -631,14 +540,12 @@ $redpinkTag: #CF195E;
 .todayNoEvents {
     position: relative;
     width: 95%;
-    //max-width: 500px;
     display: flex;
     flex-flow: column;
     padding: 2.5%;
     border-radius: 10px;
     margin: 2.5%;
     margin-top: 1.5vh;
-    //color: $whiteSmoke;
     align-items: center;
 
     h1 {
@@ -647,14 +554,13 @@ $redpinkTag: #CF195E;
     }
 
     h2 {
-      //color: #A8BFD7;
-      color: #F17E7E;
-      opacity: 0.8;
-      text-align: center;
-      font-size: 3vh;
-      font-weight: bold;
-      letter-spacing: -.5px;
-      margin: 0;
+        color: #F17E7E;
+        opacity: 0.8;
+        text-align: center;
+        font-size: 3vh;
+        font-weight: bold;
+        letter-spacing: -.5px;
+        margin: 0;
     }
 
     .btnCreateEvent {
@@ -668,6 +574,7 @@ $redpinkTag: #CF195E;
         width: 250px;
         height: 50px;
     }
+
     .btnCreateEvent:hover {
         background: #0cd1e8;
     }
@@ -677,16 +584,13 @@ $redpinkTag: #CF195E;
     opacity: .5;
 }
 
-
-// CALENDAR PAGE
-
 #calendarPage {
     .table {
-        
+
         td {
             border: none !important;
         }
-    }   
+    }
 }
 
 .monthViewHeader {
@@ -696,14 +600,15 @@ $redpinkTag: #CF195E;
     align-items: center;
     justify-content: space-between;
 
-    .backMonth, .fwMonth {
+    .backMonth,
+    .fwMonth {
         ion-button {
             color: $whiteSmoke;
         }
     }
 }
 
-.table-bordered{
+.table-bordered {
     border: none !important;
 }
 
@@ -715,39 +620,24 @@ $redpinkTag: #CF195E;
     margin: 0;
 }
 
-// .wrapListEvents {
-//     display: flex;
-//     flex-flow: wrap;
-//     justify-content: center;
-//     align-items: center;
-//     flex: 1 0 auto;
-//     overflow: auto;
-//     position: absolute;
-//     width: 100%;
-//     height: 100%;
-// }
-
 .wrapListEvents {
     display: flex;
     flex-flow: column;
-    //justify-content: center;
     align-items: center;
-    //flex: 1 0 auto;
-    //overflow: auto;
-    //position: absolute;
     width: 100%;
     height: 50%;
     overflow: auto;
     position: absolute;
 }
+
 .listEventsOverflow {
     width: 100%;
     padding-bottom: 30px;
 }
+
 .todayEventCalendar {
     position: relative;
     width: 95%;
-    //max-width: 500px;
     display: flex;
     flex-flow: row;
     padding: 2.5%;
@@ -771,7 +661,6 @@ $redpinkTag: #CF195E;
             text-transform: uppercase;
             letter-spacing: -.5px;
             font-weight: 700;
-            //text-align: right;
             margin-right: 5px;
         }
 
@@ -790,17 +679,15 @@ $redpinkTag: #CF195E;
 
 .wrapNoEvents {
     background: rgba(107, 107, 107, 0.7);
+
     span {
         margin: 0 auto;
         text-transform: uppercase;
         font-size: 14px;
-        /* font-weight: bold; */
         letter-spacing: -.5px;
         color: $whiteSmoke;
     }
 }
-
-// LOGIN WRAPPER
 
 .loginPage {
     position: fixed;
@@ -812,16 +699,9 @@ $redpinkTag: #CF195E;
     z-index: 11;
 }
 
-// TODOS WRAPPER 
-
 .toDoPage {
     background: $blueDarkTwo;
     position: absolute;
     width: 100%;
     height: 100%;
-    // border-bottom-left-radius: 25px;
-    // border-bottom-right-radius: 25px;
 }
-
-
-

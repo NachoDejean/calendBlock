@@ -1,30 +1,17 @@
-import { Component, ViewChild, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
-//import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
-
 import {parseISO, endOfDay } from 'date-fns';
 
 import * as blockstack from 'blockstack';
-
-//import { WeatherService } from '../services/weather.service';
 import { ShareDataService } from '../services/shareData.service';
-import { PopTasksComponent} from '../components/pop-tasks/pop-tasks.component';
-
+import { PopTasksComponent} from '../pop-tasks/pop-tasks.component';
 import { Plugins } from '@capacitor/core';
 const { LocalNotifications } = Plugins;
-
 const appConfig = new blockstack.AppConfig(['store_write', 'publish_data']);
 const userSession = new blockstack.UserSession({ appConfig: appConfig });
-
-//const transitPrivateKey = userSession.generateAndStoreTransitKey();
-// const redirectURI = 'https://calendarblock.web.app';
-// const manifestURI = 'https://calendarblock.web.app/manifest.json';
-// const scopes = ['store_write', 'publish_data'];
-// const appDomain = 'https://calendarblock.web.app';
 const gaiaPutOptions = { encrypt: false };
 const gaiaGetOptions = { decrypt: false };
-
 let popOverSub = null;
 
 @Component({
@@ -48,17 +35,12 @@ export class HomePage implements OnInit{
   createNewToDoList: boolean = false;
   taskIsOpen: boolean = false;
   isLoading: boolean = false;
-
   eventIndex = [];
   eventSource = [];
-  
-  weatherObj: Object;
-
   viewTitle: string;
   textMonth: string;
   textDay: string;
   numberDay: string;
-
   parseStartTime: any;
   parseEndTime: any;
 
@@ -96,16 +78,15 @@ export class HomePage implements OnInit{
   ngOnInit(){
     this.isLoading = true;
     this.loginBlockstack();
-    //this.getWeatherData();
     this.changeScreen('today');
-    this.beSubscribe();
+    this.watchSubjects();
     let todayDate = new Date();
     this.textDay = todayDate.toLocaleString('default', { weekday: 'long' });
     this.textMonth = todayDate.toLocaleString('default', { month: 'short' });
     this.numberDay = todayDate.toLocaleString('default', { day: 'numeric'});
   }
 
-  beSubscribe(){
+  watchSubjects(){
     this.dataService.isLoadingScreen.subscribe(loading => {
       if(loading === null){}
       if(loading === true){
@@ -152,17 +133,15 @@ export class HomePage implements OnInit{
     });
 
     this.dataService.changeHour.subscribe(time => {
-      if(time === 'gringo' || time === null || time === undefined){
+      if(time === 'usa' || time === null || time === undefined){
         this.ampm = true;
         return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
       }
       if(time === 'world'){
         this.ampm = false;
         return userSession.putFile('user/timeFormat.json', time , gaiaPutOptions);
-      }
-      
+      }     
     });
-    
   }
 
   loadGaiaEvents(){
@@ -172,7 +151,6 @@ export class HomePage implements OnInit{
       if(data){
       let eventsIndexInGaia = JSON.parse(data as string);
       this.eventIndex = eventsIndexInGaia;
-      //console.log('index en Gaia => ', eventsIndexInGaia, 'events en arr => ', this.eventIndex);
       for (let indexEvent of eventsIndexInGaia){
         userSession.getFile('calenderEvent/' + indexEvent + '.json', gaiaGetOptions)
         .then(data => {
@@ -195,20 +173,17 @@ export class HomePage implements OnInit{
             if (eventData.allDay) {
               eventData.endTime = endOfDay(eventData.endTime);
             }
-
             this.eventSource.push(eventData);
             this.myCal.loadEvents();
           } else {
             this.eventSource = [];
           }
-          //this.isLoading = false;
         });
       }
       }
     });
   }
 
-  //////CALENDAR///////
   resetEvent() {
     this.event = {
       title: '',
@@ -226,12 +201,10 @@ export class HomePage implements OnInit{
     };
   }
 
-  // Change between month/week/day
   changeMode(mode) {
     this.calendar.mode = mode;
   } 
 
-  // Focus today
   today() {
     this.calendar.currentDate = new Date();
   }
@@ -402,8 +375,6 @@ export class HomePage implements OnInit{
 
   }
 
-  /////////////////////////
-
   login(){
     userSession.redirectToSignIn();
     this.loginBlockstack();
@@ -425,7 +396,6 @@ export class HomePage implements OnInit{
     } else {
       this.isLoading = false;
       this.showLoginComponent = true;
-      //userSession.redirectToSignIn();
     }
   }
 
@@ -438,19 +408,14 @@ export class HomePage implements OnInit{
       this.getUserSettings();
       this.loadGaiaEvents();
       this.isLoading = false;
-      //this.loadEventsInGaia();
-      //this.dataService.passUserInfo(userSession);
     } 
     else if(!this.isUserLogged){
     } 
-
-    // document.getElementById('heading-name').innerHTML = person.name()
-    // document.getElementById('avatar-image').setAttribute('src', person.avatarUrl())
   }
 
   getUserSettings(){
     userSession.getFile('user/timeFormat.json', gaiaGetOptions).then((time) => {
-      if(time === 'gringo' || time === null){
+      if(time === 'usa' || time === null){
         this.ampm = true;
       } 
       if(time === 'world'){
@@ -515,7 +480,6 @@ export class HomePage implements OnInit{
           title: event.title,
           body: event.desc,
           id: event.storeDate,
-          //schedule: { at: new Date(Date.now() + 1000 * 5) },
           schedule: { at: event.reminder },
           sound: null,
           attachments: null,

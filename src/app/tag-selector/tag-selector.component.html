@@ -23,15 +23,10 @@
     <div class="calendTags">
       <ion-item-sliding #slidingItem *ngFor="let tag of tags" >
       <ion-item class="tag">
-      <!--  -->
         <div class="tagCircleColor" [style.background]='tag.color'></div>
-        <!-- <span>{{tag.name}} </span> -->
         <ion-label (click)="tagSelected(tag)">{{tag.name}} </ion-label>
         <ion-icon class="actionSlidingIcon" slot="end" name="ellipsis-horizontal" (click)="slidingItem.open(item)"></ion-icon>
-        <!-- <ion-icon class="actionSlidingIcon" size="large" name="ellipsis-horizontal-outline" (click)="slidingItem.open($event)"></ion-icon> -->
       </ion-item>
-      <!-- <ion-item *ngIf="slideOpen" [ngClass]="slideOpen ? 'openSlide' : 'closedSlide'"  class="tag">
-      </ion-item> -->
       <ion-item-options side="end">
         <ion-item-option class="optionsIcons" mode="ios" (click)="slideOptions(tag, 0); slidingItem.close()">
           <ion-icon name="create-outline"></ion-icon>
@@ -61,7 +56,6 @@
     </div>
 
     <div class="colorTags">
-      <!-- <ion-radio-group [value]="tagsColors[0].color"> -->
       <ion-radio-group [value]="selectedNewTag.color">
         <ion-item *ngFor="let colorTag of tagsColors; let i = index" (click)="radioSelect(colorTag.color)">      
             <div class="tagCircleColor" [style.background]='colorTag.color'></div>

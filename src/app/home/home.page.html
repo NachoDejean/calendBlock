@@ -17,7 +17,6 @@
     <ion-buttons slot="end">
       <ion-button *ngIf="!toDosPage && !eventSelected && !eventIsEditing" slot="end" class="addEventBtn"
         id="openAddEvent" color="clear" clear (click)="openAddEvent()">
-        <!-- <img [ngClass]="showAddEventComponent ? 'closeAddEvent' : 'openAddEvent'" src="../../assets/icons/plusAddEvent.png" /> -->
         <span [ngClass]="showAddEventComponent ? 'closeAddEvent' : 'openAddEvent'">+</span>
       </ion-button>
       <ion-button *ngIf="toDosPage && !taskIsOpen" slot="end" class="addEventBtn" color="clear" clear
@@ -199,14 +198,11 @@
 
     <div class="eventDetailScreen" *ngIf="eventSelected">
       <div class="eventDetailWrapper">
-        <!-- <div class="eventDetailBg defaultEventBg" [style.background]='event.tagColor'></div> -->
-        <!-- <div class="eventDetailBg defaultEventBg" ></div> -->
         <div class="eventInfo">
           <div class="eventInfoWrapper">
 
             <div class="headerCardEvent" [style.background]='event.tagColor'>
               <div class="actionBtnTasksLists">
-                <!-- <img (click)="tasksOptionsPopover($event, event)" src="assets/icons/threeDots.svg" /> -->
                 <ion-icon name="ellipsis-vertical" (click)="tasksOptionsPopover($event, event)"></ion-icon>
               </div>
               <div class="tagCalendarName">

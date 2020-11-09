@@ -4,10 +4,10 @@
   "description": "Blockstack Encrypted Calendar and Task Manager",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "assets/favicon.ico",
       "sizes": "400x400",
       "type": "image/png"
     }
   ],
-  "start_url": "https://calendarblock.web.app/home"
+  "start_url": "https://calendarblock.web.app"
 }
